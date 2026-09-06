@@ -1,13 +1,14 @@
 import Link from "next/link";
 
 import { Button } from "@/shared/ui/button";
+import { Container } from "@/shared/ui/container";
 
 export function HomePage() {
   return (
-    <div>
+    <Container>
       <Button>
         <Link href="/">Click me</Link>
       </Button>
-    </div>
+    </Container>
   );
 }

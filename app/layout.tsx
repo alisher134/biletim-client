@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 
 import { AppProviders } from "@/_app";
+import { MainLayout } from "@/_app/layouts/main-layout";
 
 import "./globals.css";
 
@@ -23,7 +24,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${manrope.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-sans">
-        <AppProviders>{children}</AppProviders>
+        <AppProviders>
+          <MainLayout>{children}</MainLayout>
+        </AppProviders>
       </body>
     </html>
   );
