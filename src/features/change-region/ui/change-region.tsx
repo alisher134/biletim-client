@@ -1,3 +1,5 @@
+import { getTranslations } from "next-intl/server";
+
 import { buttonVariants } from "@/shared/ui/button";
 import {
   Dialog,
@@ -10,7 +12,9 @@ import { SearchInput } from "@/shared/ui/search-input";
 import { cn } from "cn";
 import { ChevronDownIcon } from "lucide-react";
 
-export function ChangeRegion() {
+export async function ChangeRegion() {
+  const t = await getTranslations("changeRegion");
+
   return (
     <Dialog>
       <DialogTrigger
@@ -25,9 +29,9 @@ export function ChangeRegion() {
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Выберите регион</DialogTitle>
+          <DialogTitle>{t("title")}</DialogTitle>
         </DialogHeader>
-        <SearchInput />
+        <SearchInput placeholder={t("searchPlaceholder")} />
       </DialogContent>
     </Dialog>
   );

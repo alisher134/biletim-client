@@ -1,9 +1,13 @@
+import { getTranslations } from "next-intl/server";
+
 import { ChangeLanguage } from "@/features/change-language";
 import { ChangeRegion } from "@/features/change-region";
 import { Container } from "@/shared/ui/container";
 import { LinkButton } from "@/shared/ui/link-button";
 
-export function Header() {
+export async function Header() {
+  const t = await getTranslations("header");
+
   return (
     <header className="py-1 border-b">
       <Container>
@@ -23,7 +27,7 @@ export function Header() {
           <div className="flex items-center gap-2">
             <ChangeLanguage />
 
-            <LinkButton href="/login">Войти</LinkButton>
+            <LinkButton href="/login">{t("login")}</LinkButton>
           </div>
         </div>
       </Container>

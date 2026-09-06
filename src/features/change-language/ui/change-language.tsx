@@ -1,3 +1,6 @@
+import { getLocale, getTranslations } from "next-intl/server";
+
+import { getLocaleOption } from "@/shared/config/i18n";
 import { buttonVariants } from "@/shared/ui/button";
 import {
   Popover,
@@ -9,7 +12,13 @@ import {
 import { cn } from "cn";
 import { ChevronDownIcon } from "lucide-react";
 
-export function ChangeLanguage() {
+import { ChangeLanguageList } from "./change-language-list";
+
+export async function ChangeLanguage() {
+  const locale = await getLocale();
+  const t = await getTranslations("changeLanguage");
+  const current = getLocaleOption(locale);
+
   return (
     <Popover>
       <PopoverTrigger
@@ -18,14 +27,18 @@ export function ChangeLanguage() {
           "font-medium text-base gap-1 items-center",
         )}
       >
-        <span className="uppercase text-muted-foreground">Каз</span>
+        <span className="uppercase text-muted-foreground">
+          {current.shortLabel}
+        </span>
         <ChevronDownIcon className="size-4 text-muted-foreground" />
       </PopoverTrigger>
 
-      <PopoverContent className="w-40">
+      <PopoverContent className="w-32">
         <PopoverHeader>
-          <PopoverTitle>Выберите язык</PopoverTitle>
+          <PopoverTitle>{t("title")}</PopoverTitle>
         </PopoverHeader>
+
+        <ChangeLanguageList currentLocale={locale} />
       </PopoverContent>
     </Popover>
   );
