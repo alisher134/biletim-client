@@ -11,7 +11,8 @@ import {
 import { Link, usePathname } from "@/shared/config/i18n/navigation";
 import { Show } from "@/shared/ui/show";
 
-import type { DashboardNavHref } from "../model/nav-items";
+import { isNavItemActive } from "../lib/is-nav-item-active";
+import type { DashboardNavHref, DashboardNavItem } from "../model/nav-items";
 
 const navIcons = {
   "/dashboard": HouseIcon,
@@ -19,13 +20,8 @@ const navIcons = {
   "/dashboard/courses": LibraryIcon,
 } as const satisfies Record<DashboardNavHref, LucideIcon>;
 
-type NavItem = {
-  href: DashboardNavHref;
-  label: string;
-};
-
 type DashboardSidebarNavProps = {
-  items: readonly NavItem[];
+  items: readonly DashboardNavItem[];
 };
 
 export function DashboardSidebarNav({ items }: DashboardSidebarNavProps) {
@@ -69,10 +65,4 @@ export function DashboardSidebarNav({ items }: DashboardSidebarNavProps) {
       </ul>
     </nav>
   );
-}
-
-function isNavItemActive(pathname: string, href: DashboardNavHref): boolean {
-  if (href === "/dashboard") return pathname === "/dashboard";
-
-  return pathname === href || pathname.startsWith(`${href}/`);
 }

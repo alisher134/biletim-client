@@ -8,13 +8,12 @@ import { ChevronDownIcon, LogOutIcon, UserIcon } from "lucide-react";
 import {
   formatUserName,
   useLogout,
+  UserAvatar,
   type SessionUser,
 } from "@/entities/session";
 import { Link } from "@/shared/config/i18n/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
 import { Separator } from "@/shared/ui/separator";
-
-import { HeaderUserAvatar } from "./header-user-avatar";
 
 type HeaderUserMenuProps = {
   user: SessionUser;
@@ -53,7 +52,7 @@ export function HeaderUserMenu({
         <span className="max-w-36 truncate text-sm text-secondary-foreground">
           {displayName}
         </span>
-        <HeaderUserAvatar name={displayName} avatarUrl={user.avatarUrl} />
+        <UserAvatar name={displayName} avatarUrl={user.avatarUrl} />
         <ChevronDownIcon className="size-4 text-muted-foreground" />
       </PopoverTrigger>
 

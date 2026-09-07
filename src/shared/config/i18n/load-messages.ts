@@ -3,6 +3,7 @@ import type { Locale } from "./routing";
 import changeLanguageKz from "./messages/kz/change-language.json";
 import changePasswordKz from "./messages/kz/change-password.json";
 import changeRegionKz from "./messages/kz/change-region.json";
+import dashboardMenuKz from "./messages/kz/dashboard-menu.json";
 import dashboardSidebarKz from "./messages/kz/dashboard-sidebar.json";
 import headerKz from "./messages/kz/header.json";
 import profileKz from "./messages/kz/profile.json";
@@ -13,6 +14,7 @@ import updateProfileKz from "./messages/kz/update-profile.json";
 import changeLanguageRu from "./messages/ru/change-language.json";
 import changePasswordRu from "./messages/ru/change-password.json";
 import changeRegionRu from "./messages/ru/change-region.json";
+import dashboardMenuRu from "./messages/ru/dashboard-menu.json";
 import dashboardSidebarRu from "./messages/ru/dashboard-sidebar.json";
 import headerRu from "./messages/ru/header.json";
 import profileRu from "./messages/ru/profile.json";
@@ -26,6 +28,7 @@ const messages = {
     changeLanguage: changeLanguageKz,
     changePassword: changePasswordKz,
     changeRegion: changeRegionKz,
+    dashboardMenu: dashboardMenuKz,
     dashboardSidebar: dashboardSidebarKz,
     header: headerKz,
     profile: profileKz,
@@ -38,6 +41,7 @@ const messages = {
     changeLanguage: changeLanguageRu,
     changePassword: changePasswordRu,
     changeRegion: changeRegionRu,
+    dashboardMenu: dashboardMenuRu,
     dashboardSidebar: dashboardSidebarRu,
     header: headerRu,
     profile: profileRu,
@@ -52,6 +56,7 @@ const messages = {
     changeLanguage: typeof changeLanguageKz;
     changePassword: typeof changePasswordKz;
     changeRegion: typeof changeRegionKz;
+    dashboardMenu: typeof dashboardMenuKz;
     dashboardSidebar: typeof dashboardSidebarKz;
     header: typeof headerKz;
     profile: typeof profileKz;

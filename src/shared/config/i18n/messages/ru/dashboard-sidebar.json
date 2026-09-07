@@ -2,5 +2,7 @@
   "menu": "Меню",
   "home": "Главная",
   "myCourses": "Мои курсы",
-  "allCourses": "Все курсы"
+  "allCourses": "Все курсы",
+  "profile": "Профиль",
+  "logout": "Выйти"
 }

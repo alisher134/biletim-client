@@ -1,12 +1,13 @@
-export const dashboardNavItems = [
+export const dashboardMenuNavItems = [
   { href: "/dashboard", labelKey: "home" },
   { href: "/dashboard/my-courses", labelKey: "myCourses" },
   { href: "/dashboard/courses", labelKey: "allCourses" },
 ] as const;
 
-export type DashboardNavHref = (typeof dashboardNavItems)[number]["href"];
+export type DashboardMenuNavHref =
+  (typeof dashboardMenuNavItems)[number]["href"];
 
-export type DashboardNavItem = {
-  href: DashboardNavHref;
+export type DashboardMenuNavItem = {
+  href: DashboardMenuNavHref;
   label: string;
 };

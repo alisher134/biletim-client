@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import {
   Card,
   CardContent,
@@ -5,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/ui/card";
-import type { ReactNode } from "react";
 
 type AuthFormLayoutProps = {
   title: string;
