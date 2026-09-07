@@ -10,7 +10,7 @@ export async function Header() {
   const t = await getTranslations("header");
 
   return (
-    <header className="border-b py-4">
+    <header className="shrink-0 border-b bg-card py-4">
       <Container>
         <div className="flex items-center justify-between">
           <AppLogo />
