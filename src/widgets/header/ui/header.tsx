@@ -17,7 +17,12 @@ export async function Header() {
 
           <div className="flex items-center gap-2">
             <ChangeLanguage />
-            <HeaderAuth loginLabel={t("login")} logoutLabel={t("logout")} />
+
+            <HeaderAuth
+              loginLabel={t("login")}
+              logoutLabel={t("logout")}
+              profileLabel={t("profile")}
+            />
           </div>
         </div>
       </Container>

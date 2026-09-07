@@ -23,7 +23,7 @@ export async function ChangeLanguage() {
     <Popover>
       <PopoverTrigger
         className={cn(
-          buttonVariants({ variant: "outline-primary", size: "sm" }),
+          buttonVariants({ variant: "outline-primary", size: "xs" }),
           "font-medium text-base gap-1 items-center",
         )}
       >

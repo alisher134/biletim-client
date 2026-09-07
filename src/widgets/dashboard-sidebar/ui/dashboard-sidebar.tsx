@@ -12,8 +12,8 @@ export async function DashboardSidebar() {
   }));
 
   return (
-    <aside className="flex w-64 shrink-0 flex-col gap-4 overflow-y-auto bg-sidebar px-4 py-6">
-      <p className="px-4 text-sm font-medium text-sidebar-foreground">
+    <aside className="flex w-[15rem] shrink-0 flex-col gap-5 overflow-y-auto border-r border-sidebar-border bg-sidebar pl-3 py-6">
+      <p className="px-3 text-base font-medium text-muted-foreground">
         {t("menu")}
       </p>
       <DashboardSidebarNav items={items} />

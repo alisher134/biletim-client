@@ -1,25 +1,24 @@
 "use client";
 
-import { useQueryClient } from "@tanstack/react-query";
-
-import { resetSession, useSession } from "@/entities/session";
-import { Button } from "@/shared/ui/button";
+import { useSession } from "@/entities/session";
 import { LinkButton } from "@/shared/ui/link-button";
 import { LoaderGate } from "@/shared/ui/loader-gate";
 import { Show } from "@/shared/ui/show";
 
+import { HeaderUserMenu } from "./header-user-menu";
+
 type HeaderAuthProps = {
   loginLabel: string;
   logoutLabel: string;
+  profileLabel: string;
 };
 
-export function HeaderAuth({ loginLabel, logoutLabel }: HeaderAuthProps) {
-  const queryClient = useQueryClient();
+export function HeaderAuth({
+  loginLabel,
+  logoutLabel,
+  profileLabel,
+}: HeaderAuthProps) {
   const { data: user, isLoading } = useSession();
-
-  const handleLogout = () => {
-    resetSession(queryClient);
-  };
 
   return (
     <LoaderGate isLoading={isLoading} loaderSlot={<div className="h-7 w-16" />}>
@@ -29,12 +28,11 @@ export function HeaderAuth({ loginLabel, logoutLabel }: HeaderAuthProps) {
         fallback={<LinkButton href="/sign-in">{loginLabel}</LinkButton>}
       >
         {(user) => (
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">{user.email}</span>
-            <Button variant="ghost" size="sm" onClick={handleLogout}>
-              {logoutLabel}
-            </Button>
-          </div>
+          <HeaderUserMenu
+            user={user}
+            profileLabel={profileLabel}
+            logoutLabel={logoutLabel}
+          />
         )}
       </Show>
     </LoaderGate>
