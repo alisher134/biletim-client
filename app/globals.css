@@ -11,7 +11,7 @@
   --muted: oklch(0.97 0 0);
   --accent: oklch(0.9214 0.0248 257.65);
   --border: oklch(0.92 0 0);
-  --radius: 0.8rem;
+  --radius: 0.6rem;
   --chart-1: oklch(0.9214 0.0248 257.65);
   --chart-2: oklch(0.7597 0.0804 267.01);
   --chart-3: oklch(0.6083 0.1247 272.72);
@@ -55,7 +55,7 @@
   --muted: oklch(0.23 0 0);
   --accent: oklch(0.32 0 0);
   --border: oklch(0.26 0 0);
-  --radius: 0.8rem;
+  --radius: 0.6rem;
   --chart-1: oklch(0.9214 0.0248 257.65);
   --chart-2: oklch(0.7597 0.0804 267.01);
   --chart-3: oklch(0.6083 0.1247 272.72);

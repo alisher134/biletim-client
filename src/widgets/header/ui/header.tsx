@@ -1,7 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
 import { ChangeLanguage } from "@/features/change-language";
-import { ChangeRegion } from "@/features/change-region";
 import { Container } from "@/shared/ui/container";
 import { LinkButton } from "@/shared/ui/link-button";
 
@@ -20,8 +19,6 @@ export async function Header() {
             >
               biletim.kz
             </LinkButton>
-
-            <ChangeRegion />
           </div>
 
           <div className="flex items-center gap-2">
