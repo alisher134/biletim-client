@@ -5,6 +5,7 @@ import changePasswordKz from "./messages/kz/change-password.json";
 import changeRegionKz from "./messages/kz/change-region.json";
 import dashboardMenuKz from "./messages/kz/dashboard-menu.json";
 import dashboardSidebarKz from "./messages/kz/dashboard-sidebar.json";
+import errorsKz from "./messages/kz/errors.json";
 import headerKz from "./messages/kz/header.json";
 import profileKz from "./messages/kz/profile.json";
 import requireAuthKz from "./messages/kz/require-auth.json";
@@ -16,6 +17,7 @@ import changePasswordRu from "./messages/ru/change-password.json";
 import changeRegionRu from "./messages/ru/change-region.json";
 import dashboardMenuRu from "./messages/ru/dashboard-menu.json";
 import dashboardSidebarRu from "./messages/ru/dashboard-sidebar.json";
+import errorsRu from "./messages/ru/errors.json";
 import headerRu from "./messages/ru/header.json";
 import profileRu from "./messages/ru/profile.json";
 import requireAuthRu from "./messages/ru/require-auth.json";
@@ -30,6 +32,7 @@ const messages = {
     changeRegion: changeRegionKz,
     dashboardMenu: dashboardMenuKz,
     dashboardSidebar: dashboardSidebarKz,
+    errors: errorsKz,
     header: headerKz,
     profile: profileKz,
     requireAuth: requireAuthKz,
@@ -43,6 +46,7 @@ const messages = {
     changeRegion: changeRegionRu,
     dashboardMenu: dashboardMenuRu,
     dashboardSidebar: dashboardSidebarRu,
+    errors: errorsRu,
     header: headerRu,
     profile: profileRu,
     requireAuth: requireAuthRu,
@@ -58,6 +62,7 @@ const messages = {
     changeRegion: typeof changeRegionKz;
     dashboardMenu: typeof dashboardMenuKz;
     dashboardSidebar: typeof dashboardSidebarKz;
+    errors: typeof errorsKz;
     header: typeof headerKz;
     profile: typeof profileKz;
     requireAuth: typeof requireAuthKz;

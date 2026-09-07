@@ -1,4 +1,4 @@
-import type { Session } from "../model/types";
+import type { SessionTokens } from "../model/types";
 
 const ACCESS_TOKEN_KEY = "tarih:accessToken";
 const REFRESH_TOKEN_KEY = "tarih:refreshToken";
@@ -15,13 +15,21 @@ export function getAccessToken() {
   return localStorage.getItem(ACCESS_TOKEN_KEY);
 }
 
-export function saveTokens(session: Session) {
+export function getRefreshToken() {
+  if (!canUseStorage()) {
+    return null;
+  }
+
+  return localStorage.getItem(REFRESH_TOKEN_KEY);
+}
+
+export function saveTokens(tokens: SessionTokens) {
   if (!canUseStorage()) {
     return;
   }
 
-  localStorage.setItem(ACCESS_TOKEN_KEY, session.accessToken);
-  localStorage.setItem(REFRESH_TOKEN_KEY, session.refreshToken);
+  localStorage.setItem(ACCESS_TOKEN_KEY, tokens.accessToken);
+  localStorage.setItem(REFRESH_TOKEN_KEY, tokens.refreshToken);
 }
 
 export function clearTokens() {

@@ -11,8 +11,11 @@ export type SessionUser = {
   avatarUrl?: string;
 };
 
-export type Session = {
-  user: SessionUser;
+export type SessionTokens = {
   accessToken: string;
   refreshToken: string;
+};
+
+export type Session = SessionTokens & {
+  user: SessionUser;
 };

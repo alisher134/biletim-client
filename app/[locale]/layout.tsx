@@ -1,6 +1,7 @@
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
 
+import { OfflineGate } from "@/_app";
 import { routing } from "@/shared/config/i18n/routing";
 
 type LocaleLayoutProps = {
@@ -23,6 +24,8 @@ export default async function LocaleLayout({
   }
 
   return (
-    <NextIntlClientProvider locale={locale}>{children}</NextIntlClientProvider>
+    <NextIntlClientProvider locale={locale}>
+      <OfflineGate>{children}</OfflineGate>
+    </NextIntlClientProvider>
   );
 }
