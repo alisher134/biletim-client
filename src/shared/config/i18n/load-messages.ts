@@ -7,6 +7,7 @@ import dashboardMenuKz from "./messages/kz/dashboard-menu.json";
 import dashboardSidebarKz from "./messages/kz/dashboard-sidebar.json";
 import errorsKz from "./messages/kz/errors.json";
 import headerKz from "./messages/kz/header.json";
+import homeKz from "./messages/kz/home.json";
 import profileKz from "./messages/kz/profile.json";
 import requireAuthKz from "./messages/kz/require-auth.json";
 import signInKz from "./messages/kz/sign-in.json";
@@ -19,6 +20,7 @@ import dashboardMenuRu from "./messages/ru/dashboard-menu.json";
 import dashboardSidebarRu from "./messages/ru/dashboard-sidebar.json";
 import errorsRu from "./messages/ru/errors.json";
 import headerRu from "./messages/ru/header.json";
+import homeRu from "./messages/ru/home.json";
 import profileRu from "./messages/ru/profile.json";
 import requireAuthRu from "./messages/ru/require-auth.json";
 import signInRu from "./messages/ru/sign-in.json";
@@ -34,6 +36,7 @@ const messages = {
     dashboardSidebar: dashboardSidebarKz,
     errors: errorsKz,
     header: headerKz,
+    home: homeKz,
     profile: profileKz,
     requireAuth: requireAuthKz,
     signIn: signInKz,
@@ -48,6 +51,7 @@ const messages = {
     dashboardSidebar: dashboardSidebarRu,
     errors: errorsRu,
     header: headerRu,
+    home: homeRu,
     profile: profileRu,
     requireAuth: requireAuthRu,
     signIn: signInRu,
@@ -64,6 +68,7 @@ const messages = {
     dashboardSidebar: typeof dashboardSidebarKz;
     errors: typeof errorsKz;
     header: typeof headerKz;
+    home: typeof homeKz;
     profile: typeof profileKz;
     requireAuth: typeof requireAuthKz;
     signIn: typeof signInKz;
