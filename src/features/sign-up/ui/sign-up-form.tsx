@@ -2,16 +2,20 @@
 
 import { useTranslations } from "next-intl";
 
+import { getErrorMessage } from "@/shared/api";
 import { useZodForm } from "@/shared/hooks/use-zod-form";
 import { AppForm } from "@/shared/ui/app-form";
 import { Button } from "@/shared/ui/button";
 import { EmailField } from "@/shared/ui/email-field";
 import { PasswordField } from "@/shared/ui/password-field";
+import { showSuccessToast, showErrorToast } from "@/shared/utils";
 
 import { createSignUpSchema, SignUpValues } from "../model/sign-up-schema";
+import { useSignUp } from "../model/use-sign-up";
 
 export function SignUpForm() {
   const t = useTranslations("signUp");
+  const { mutate, isPending } = useSignUp();
 
   const form = useZodForm(createSignUpSchema(t), {
     defaultValues: {
@@ -19,13 +23,22 @@ export function SignUpForm() {
       password: "",
       confirmPassword: "",
     },
-    mode: "onChange",
   });
 
   const { errors } = form.formState;
 
-  const handleSignUp = (values: SignUpValues) => {
-    console.log(values);
+  const handleSignUp = ({ email, password }: SignUpValues) => {
+    mutate(
+      { email, password },
+      {
+        onSuccess: () => {
+          showSuccessToast(t("success"));
+        },
+        onError: (error) => {
+          showErrorToast(getErrorMessage(error, t("errors.requestFailed")));
+        },
+      },
+    );
   };
 
   return (
@@ -59,7 +72,11 @@ export function SignUpForm() {
             {...register("confirmPassword")}
           />
 
-          <Button type="submit" className="mt-2 w-full text-base">
+          <Button
+            type="submit"
+            disabled={isPending}
+            className="mt-2 w-full text-base"
+          >
             {t("submit")}
           </Button>
         </>

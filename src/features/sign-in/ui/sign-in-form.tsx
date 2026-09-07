@@ -2,30 +2,40 @@
 
 import { useTranslations } from "next-intl";
 
+import { getErrorMessage } from "@/shared/api";
 import { Link } from "@/shared/config/i18n/navigation";
 import { useZodForm } from "@/shared/hooks/use-zod-form";
 import { AppForm } from "@/shared/ui/app-form";
 import { Button } from "@/shared/ui/button";
 import { EmailField } from "@/shared/ui/email-field";
 import { PasswordField } from "@/shared/ui/password-field";
+import { showSuccessToast, showErrorToast } from "@/shared/utils";
 
 import { createSignInSchema, SignInValues } from "../model/sign-in-schema";
+import { useSignIn } from "../model/use-sign-in";
 
 export function SignInForm() {
   const t = useTranslations("signIn");
+  const { mutate, isPending } = useSignIn();
 
   const form = useZodForm(createSignInSchema(t), {
     defaultValues: {
       email: "",
       password: "",
     },
-    mode: "onChange",
   });
 
   const { errors } = form.formState;
 
   const handleSignIn = (values: SignInValues) => {
-    console.log(values);
+    mutate(values, {
+      onSuccess: () => {
+        showSuccessToast(t("success"));
+      },
+      onError: (error) => {
+        showErrorToast(getErrorMessage(error, t("errors.requestFailed")));
+      },
+    });
   };
 
   return (
@@ -60,7 +70,11 @@ export function SignInForm() {
             </Link>
           </div>
 
-          <Button type="submit" className="mt-2 w-full text-base">
+          <Button
+            type="submit"
+            disabled={isPending}
+            className="mt-2 w-full text-base"
+          >
             {t("submit")}
           </Button>
         </>

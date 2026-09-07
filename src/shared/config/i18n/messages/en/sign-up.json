@@ -7,6 +7,7 @@
   "confirmPassword": "Repeat password",
   "confirmPasswordPlaceholder": "Repeat password",
   "submit": "Sign up",
+  "success": "Account created",
   "hasAccount": "Already have an account?",
   "signIn": "Sign in",
   "showPassword": "Show password",
@@ -16,6 +17,7 @@
     "emailInvalid": "Enter a valid email",
     "passwordRequired": "Enter your password",
     "confirmPasswordRequired": "Repeat your password",
-    "passwordMismatch": "*Passwords do not match"
+    "passwordMismatch": "*Passwords do not match",
+    "requestFailed": "Could not sign up"
   }
 }

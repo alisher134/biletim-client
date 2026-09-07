@@ -6,6 +6,7 @@
   "passwordPlaceholder": "Enter password",
   "forgotPassword": "Forgot password?",
   "submit": "Sign in",
+  "success": "You are signed in",
   "noAccount": "Don't have an account?",
   "signUp": "Sign up",
   "showPassword": "Show password",
@@ -13,6 +14,7 @@
   "errors": {
     "emailRequired": "Enter your email",
     "emailInvalid": "Enter a valid email",
-    "passwordRequired": "Enter your password"
+    "passwordRequired": "Enter your password",
+    "requestFailed": "Could not sign in"
   }
 }

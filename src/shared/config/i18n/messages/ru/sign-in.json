@@ -6,6 +6,7 @@
   "passwordPlaceholder": "Введите пароль",
   "forgotPassword": "Забыли пароль?",
   "submit": "Войти",
+  "success": "Вы вошли",
   "noAccount": "Нет аккаунта?",
   "signUp": "Регистрация",
   "showPassword": "Показать пароль",
@@ -13,6 +14,7 @@
   "errors": {
     "emailRequired": "Введите email",
     "emailInvalid": "Введите корректный email",
-    "passwordRequired": "Введите пароль"
+    "passwordRequired": "Введите пароль",
+    "requestFailed": "Не удалось войти"
   }
 }

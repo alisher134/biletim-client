@@ -7,6 +7,7 @@
   "confirmPassword": "Құпиясөзді қайталаңыз",
   "confirmPasswordPlaceholder": "Құпиясөзді қайталаңыз",
   "submit": "Тіркелу",
+  "success": "Аккаунт құрылды",
   "hasAccount": "Аккаунтыңыз бар ма?",
   "signIn": "Кіру",
   "showPassword": "Құпиясөзді көрсету",
@@ -16,6 +17,7 @@
     "emailInvalid": "Дұрыс email енгізіңіз",
     "passwordRequired": "Құпиясөзді енгізіңіз",
     "confirmPasswordRequired": "Құпиясөзді қайталаңыз",
-    "passwordMismatch": "*Құпиясөздер сәйкес келмейді"
+    "passwordMismatch": "*Құпиясөздер сәйкес келмейді",
+    "requestFailed": "Тіркелу мүмкін болмады"
   }
 }

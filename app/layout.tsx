@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { getLocale } from "next-intl/server";
 import { Inter } from "next/font/google";
 
+import { Toaster } from "sonner";
+
 import { AppProviders } from "@/_app";
 
 import "./globals.css";
@@ -26,7 +28,10 @@ export default async function RootLayout({
   return (
     <html lang={locale} className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-sans">
-        <AppProviders>{children}</AppProviders>
+        <AppProviders>
+          {children}
+          <Toaster richColors position="top-right" />
+        </AppProviders>
       </body>
     </html>
   );

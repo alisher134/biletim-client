@@ -7,6 +7,7 @@
   "confirmPassword": "Повторите пароль",
   "confirmPasswordPlaceholder": "Повторите пароль",
   "submit": "Зарегистрироваться",
+  "success": "Аккаунт создан",
   "hasAccount": "Уже есть аккаунт?",
   "signIn": "Вход",
   "showPassword": "Показать пароль",
@@ -16,6 +17,7 @@
     "emailInvalid": "Введите корректный email",
     "passwordRequired": "Введите пароль",
     "confirmPasswordRequired": "Повторите пароль",
-    "passwordMismatch": "*Пароли не совпадают"
+    "passwordMismatch": "*Пароли не совпадают",
+    "requestFailed": "Не удалось зарегистрироваться"
   }
 }

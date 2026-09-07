@@ -6,6 +6,7 @@
   "passwordPlaceholder": "Құпиясөзді енгізіңіз",
   "forgotPassword": "Құпиясөзді ұмыттыңыз ба?",
   "submit": "Кіру",
+  "success": "Сіз кірдіңіз",
   "noAccount": "Аккаунтыңыз жоқ па?",
   "signUp": "Тіркелу",
   "showPassword": "Құпиясөзді көрсету",
@@ -13,6 +14,7 @@
   "errors": {
     "emailRequired": "Email енгізіңіз",
     "emailInvalid": "Дұрыс email енгізіңіз",
-    "passwordRequired": "Құпиясөзді енгізіңіз"
+    "passwordRequired": "Құпиясөзді енгізіңіз",
+    "requestFailed": "Кіру мүмкін болмады"
   }
 }
