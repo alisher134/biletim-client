@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 
 import { getErrorMessage } from "@/shared/api";
+import { useRouter } from "@/shared/config/i18n/navigation";
 import { useZodForm } from "@/shared/hooks/use-zod-form";
 import { AppForm } from "@/shared/ui/app-form";
 import { Button } from "@/shared/ui/button";
@@ -15,6 +16,7 @@ import { useSignUp } from "../model/use-sign-up";
 
 export function SignUpForm() {
   const t = useTranslations("signUp");
+  const router = useRouter();
   const { mutate, isPending } = useSignUp();
 
   const form = useZodForm(createSignUpSchema(t), {
@@ -33,6 +35,7 @@ export function SignUpForm() {
       {
         onSuccess: () => {
           showSuccessToast(t("success"));
+          router.replace("/dashboard");
         },
         onError: (error) => {
           showErrorToast(getErrorMessage(error, t("errors.requestFailed")));
