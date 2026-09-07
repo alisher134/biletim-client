@@ -1,5 +1,1 @@
-import { DashboardHome } from "@/_pages/dashboard/home";
-
-export default function DashboardPage() {
-  return <DashboardHome />;
-}
+export { DashboardHome as default } from "@/_pages/dashboard/home";

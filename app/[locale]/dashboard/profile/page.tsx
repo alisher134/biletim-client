@@ -1,5 +1,1 @@
-import { DashboardProfile } from "@/_pages/dashboard/profile";
-
-export default function ProfilePage() {
-  return <DashboardProfile />;
-}
+export { DashboardProfile as default } from "@/_pages/dashboard/profile";

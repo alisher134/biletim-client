@@ -1,13 +1,17 @@
 "use client";
 
+import { useState } from "react";
+
 import { useTranslations } from "next-intl";
 
 import { getErrorMessage } from "@/shared/api";
 import { useZodForm } from "@/shared/hooks/use-zod-form";
 import { AppForm } from "@/shared/ui/app-form";
 import { Button } from "@/shared/ui/button";
+import { ErrorAlert } from "@/shared/ui/error-alert";
 import { PasswordField } from "@/shared/ui/password-field";
-import { showErrorToast, showSuccessToast } from "@/shared/utils";
+import { Show } from "@/shared/ui/show";
+import { showSuccessToast } from "@/shared/utils";
 
 import {
   createChangePasswordSchema,
@@ -24,6 +28,7 @@ const emptyPasswordValues = {
 export function ChangePasswordForm() {
   const t = useTranslations("changePassword");
   const { mutate, isPending } = useChangePassword();
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const form = useZodForm(createChangePasswordSchema(t), {
     defaultValues: emptyPasswordValues,
@@ -35,6 +40,8 @@ export function ChangePasswordForm() {
     currentPassword,
     newPassword,
   }: ChangePasswordValues) => {
+    setSubmitError(null);
+
     mutate(
       { currentPassword, newPassword },
       {
@@ -43,7 +50,7 @@ export function ChangePasswordForm() {
           form.reset(emptyPasswordValues);
         },
         onError: (error) => {
-          showErrorToast(getErrorMessage(error, t("errors.requestFailed")));
+          setSubmitError(getErrorMessage(error, t("errors.requestFailed")));
         },
       },
     );
@@ -52,6 +59,10 @@ export function ChangePasswordForm() {
   return (
     <section className="flex flex-col gap-5">
       <h2 className="text-lg font-semibold">{t("title")}</h2>
+
+      <Show when={submitError != null}>
+        <ErrorAlert errorMessage={submitError!} />
+      </Show>
 
       <AppForm
         form={form}

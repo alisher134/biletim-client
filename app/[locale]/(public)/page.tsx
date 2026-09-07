@@ -1,5 +1,1 @@
-import { Home } from "@/_pages/home/ui/home";
-
-export default function HomePage() {
-  return <Home />;
-}
+export { Home as default } from "@/_pages/home";

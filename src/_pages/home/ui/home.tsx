@@ -1,14 +1,10 @@
-import Link from "next/link";
-
-import { Button } from "@/shared/ui/button";
+import { LinkButton } from "@/shared/ui/link-button";
 import { Container } from "@/shared/ui/container";
 
 export function Home() {
   return (
     <Container>
-      <Button>
-        <Link href="/">Click me</Link>
-      </Button>
+      <LinkButton href="/">Click me</LinkButton>
     </Container>
   );
 }

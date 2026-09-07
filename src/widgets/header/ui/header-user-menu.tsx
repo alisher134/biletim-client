@@ -2,13 +2,12 @@
 
 import { useState } from "react";
 
-import { useQueryClient } from "@tanstack/react-query";
 import { cn } from "cn";
 import { ChevronDownIcon, LogOutIcon, UserIcon } from "lucide-react";
 
 import {
   formatUserName,
-  resetSession,
+  useLogout,
   type SessionUser,
 } from "@/entities/session";
 import { Link } from "@/shared/config/i18n/navigation";
@@ -31,7 +30,7 @@ export function HeaderUserMenu({
   profileLabel,
   logoutLabel,
 }: HeaderUserMenuProps) {
-  const queryClient = useQueryClient();
+  const logout = useLogout();
   const [isOpen, setIsOpen] = useState(false);
   const displayName = formatUserName(user);
 
@@ -45,7 +44,7 @@ export function HeaderUserMenu({
 
   const handleLogout = () => {
     setIsOpen(false);
-    resetSession(queryClient);
+    logout();
   };
 
   return (

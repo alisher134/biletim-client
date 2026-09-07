@@ -1,15 +1,16 @@
 import { AlertCircleIcon } from "lucide-react";
+
 import { Alert, AlertTitle } from "./alert";
 
 type ErrorAlertProps = {
-  errorMessage?: string;
+  errorMessage: string;
 };
 
 export function ErrorAlert({ errorMessage }: ErrorAlertProps) {
   return (
     <Alert variant="destructive">
       <AlertCircleIcon />
-      <AlertTitle>{errorMessage ?? "Произошла ошибка"}</AlertTitle>
+      <AlertTitle>{errorMessage}</AlertTitle>
     </Alert>
   );
 }

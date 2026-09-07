@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { Show } from "@/shared/ui/show";
 
 import { getUserInitials } from "../lib/get-user-initials";
@@ -19,7 +21,9 @@ export function HeaderUserAvatar({ name, avatarUrl }: HeaderUserAvatarProps) {
           </span>
         }
       >
-        {(url) => <img src={url} alt="" className="size-full object-cover" />}
+        {(url) => (
+          <Image src={url} alt="" fill unoptimized className="object-cover" />
+        )}
       </Show>
     </span>
   );

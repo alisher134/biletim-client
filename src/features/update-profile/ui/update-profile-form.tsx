@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import { useTranslations } from "next-intl";
 
 import { useSession } from "@/entities/session";
@@ -7,8 +9,10 @@ import { getErrorMessage } from "@/shared/api";
 import { useZodForm } from "@/shared/hooks/use-zod-form";
 import { AppForm } from "@/shared/ui/app-form";
 import { Button } from "@/shared/ui/button";
+import { ErrorAlert } from "@/shared/ui/error-alert";
 import { InputField } from "@/shared/ui/input-field";
-import { showErrorToast, showSuccessToast } from "@/shared/utils";
+import { Show } from "@/shared/ui/show";
+import { showSuccessToast } from "@/shared/utils";
 
 import {
   createUpdateProfileSchema,
@@ -20,6 +24,7 @@ export function UpdateProfileForm() {
   const t = useTranslations("updateProfile");
   const { data: user } = useSession();
   const { mutate, isPending } = useUpdateProfile();
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const form = useZodForm(createUpdateProfileSchema(t), {
     defaultValues: { lastName: "", firstName: "" },
@@ -32,12 +37,14 @@ export function UpdateProfileForm() {
   const { errors } = form.formState;
 
   const handleSave = (values: UpdateProfileValues) => {
+    setSubmitError(null);
+
     mutate(values, {
       onSuccess: () => {
         showSuccessToast(t("success"));
       },
       onError: (error) => {
-        showErrorToast(getErrorMessage(error, t("errors.requestFailed")));
+        setSubmitError(getErrorMessage(error, t("errors.requestFailed")));
       },
     });
   };
@@ -45,6 +52,10 @@ export function UpdateProfileForm() {
   return (
     <section className="flex flex-col gap-5">
       <h2 className="text-lg font-semibold">{t("title")}</h2>
+
+      <Show when={submitError != null}>
+        <ErrorAlert errorMessage={submitError!} />
+      </Show>
 
       <AppForm
         form={form}

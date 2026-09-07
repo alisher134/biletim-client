@@ -8,13 +8,7 @@ type ErrorGateProps = {
 
 export function ErrorGate({ isError, errorSlot, children }: ErrorGateProps) {
   if (isError) {
-    return (
-      <>
-        {errorSlot ?? (
-          <div className="text-sm text-red-600">Произошла ошибка</div>
-        )}
-      </>
-    );
+    return errorSlot ?? null;
   }
 
   return children;

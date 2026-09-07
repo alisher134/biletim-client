@@ -1,11 +1,12 @@
 import { type ReactNode } from "react";
+
 import { Spinner } from "./spinner";
 
 type AsyncWrapperProps<T> = {
   isLoading: boolean;
   isError: boolean;
   data: T | undefined;
-  children: (data: T) => React.ReactNode;
+  children: (data: T) => ReactNode;
   loaderSlot?: ReactNode;
   errorSlot?: ReactNode;
 };
@@ -23,8 +24,12 @@ export function AsyncWrapper<T>({
   }
 
   if (isError) {
-    return errorSlot ?? "Ошибка";
+    return errorSlot ?? null;
   }
 
-  return children(data as T);
+  if (data == null) {
+    return null;
+  }
+
+  return children(data);
 }

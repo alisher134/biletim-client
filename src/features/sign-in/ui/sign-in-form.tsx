@@ -1,15 +1,19 @@
 "use client";
 
+import { useState } from "react";
+
 import { useTranslations } from "next-intl";
 
 import { getErrorMessage } from "@/shared/api";
-import { Link, useRouter } from "@/shared/config/i18n/navigation";
+import { useRouter } from "@/shared/config/i18n/navigation";
 import { useZodForm } from "@/shared/hooks/use-zod-form";
 import { AppForm } from "@/shared/ui/app-form";
 import { Button } from "@/shared/ui/button";
 import { EmailField } from "@/shared/ui/email-field";
+import { ErrorAlert } from "@/shared/ui/error-alert";
 import { PasswordField } from "@/shared/ui/password-field";
-import { showSuccessToast, showErrorToast } from "@/shared/utils";
+import { Show } from "@/shared/ui/show";
+import { showSuccessToast } from "@/shared/utils";
 
 import { createSignInSchema, SignInValues } from "../model/sign-in-schema";
 import { useSignIn } from "../model/use-sign-in";
@@ -18,6 +22,7 @@ export function SignInForm() {
   const t = useTranslations("signIn");
   const router = useRouter();
   const { mutate, isPending } = useSignIn();
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const form = useZodForm(createSignInSchema(t), {
     defaultValues: {
@@ -29,33 +34,39 @@ export function SignInForm() {
   const { errors } = form.formState;
 
   const handleSignIn = (values: SignInValues) => {
+    setSubmitError(null);
+
     mutate(values, {
       onSuccess: () => {
         showSuccessToast(t("success"));
         router.replace("/dashboard");
       },
       onError: (error) => {
-        showErrorToast(getErrorMessage(error, t("errors.requestFailed")));
+        setSubmitError(getErrorMessage(error, t("errors.requestFailed")));
       },
     });
   };
 
   return (
-    <AppForm
-      form={form}
-      onSubmit={handleSignIn}
-      className="flex flex-col gap-2"
-    >
-      {({ register }) => (
-        <>
-          <EmailField
-            label={t("email")}
-            placeholder={t("emailPlaceholder")}
-            error={errors.email?.message}
-            {...register("email")}
-          />
+    <>
+      <Show when={submitError != null}>
+        <ErrorAlert errorMessage={submitError!} />
+      </Show>
 
-          <div className="flex flex-col gap-2">
+      <AppForm
+        form={form}
+        onSubmit={handleSignIn}
+        className="flex flex-col gap-2"
+      >
+        {({ register }) => (
+          <>
+            <EmailField
+              label={t("email")}
+              placeholder={t("emailPlaceholder")}
+              error={errors.email?.message}
+              {...register("email")}
+            />
+
             <PasswordField
               label={t("password")}
               placeholder={t("passwordPlaceholder")}
@@ -64,23 +75,16 @@ export function SignInForm() {
               {...register("password")}
             />
 
-            <Link
-              href="/forgot-password"
-              className="self-start text-sm text-primary hover:underline"
+            <Button
+              type="submit"
+              disabled={isPending}
+              className="mt-2 w-full text-base"
             >
-              {t("forgotPassword")}
-            </Link>
-          </div>
-
-          <Button
-            type="submit"
-            disabled={isPending}
-            className="mt-2 w-full text-base"
-          >
-            {t("submit")}
-          </Button>
-        </>
-      )}
-    </AppForm>
+              {t("submit")}
+            </Button>
+          </>
+        )}
+      </AppForm>
+    </>
   );
 }

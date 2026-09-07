@@ -1,5 +1,1 @@
-import { AllCourses } from "@/_pages/dashboard/all-courses";
-
-export default function AllCoursesPage() {
-  return <AllCourses />;
-}
+export { AllCourses as default } from "@/_pages/dashboard/all-courses";
