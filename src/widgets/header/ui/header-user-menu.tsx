@@ -6,7 +6,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { cn } from "cn";
 import { ChevronDownIcon, LogOutIcon, UserIcon } from "lucide-react";
 
-import { resetSession, type SessionUser } from "@/entities/session";
+import {
+  formatUserName,
+  resetSession,
+  type SessionUser,
+} from "@/entities/session";
 import { Link } from "@/shared/config/i18n/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
 import { Separator } from "@/shared/ui/separator";
@@ -29,7 +33,7 @@ export function HeaderUserMenu({
 }: HeaderUserMenuProps) {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
-  const displayName = user.name ?? user.email;
+  const displayName = formatUserName(user);
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);

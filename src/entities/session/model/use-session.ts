@@ -12,7 +12,11 @@ function subscribe() {
 }
 
 function useHasHydrated() {
-  return useSyncExternalStore(subscribe, () => true, () => false);
+  return useSyncExternalStore(
+    subscribe,
+    () => true,
+    () => false,
+  );
 }
 
 export function useSession() {
