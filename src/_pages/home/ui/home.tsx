@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Button } from "@/shared/ui/button";
 import { Container } from "@/shared/ui/container";
 
-export function HomePage() {
+export function Home() {
   return (
     <Container>
       <Button>

@@ -23,14 +23,12 @@ export async function ChangeLanguage() {
     <Popover>
       <PopoverTrigger
         className={cn(
-          buttonVariants({ variant: "ghost", size: "lg" }),
+          buttonVariants({ variant: "outline-primary", size: "sm" }),
           "font-medium text-base gap-1 items-center",
         )}
       >
-        <span className="uppercase text-muted-foreground">
-          {current.shortLabel}
-        </span>
-        <ChevronDownIcon className="size-4 text-muted-foreground" />
+        <span className="uppercase text-primary">{current.shortLabel}</span>
+        <ChevronDownIcon className="size-4 text-primary" />
       </PopoverTrigger>
 
       <PopoverContent className="w-32">

@@ -1,0 +1,18 @@
+{
+  "title": "Кіру",
+  "email": "Email",
+  "emailPlaceholder": "email@example.com",
+  "password": "Құпиясөз",
+  "passwordPlaceholder": "Құпиясөзді енгізіңіз",
+  "forgotPassword": "Құпиясөзді ұмыттыңыз ба?",
+  "submit": "Кіру",
+  "noAccount": "Аккаунтыңыз жоқ па?",
+  "signUp": "Тіркелу",
+  "showPassword": "Құпиясөзді көрсету",
+  "hidePassword": "Құпиясөзді жасыру",
+  "errors": {
+    "emailRequired": "Email енгізіңіз",
+    "emailInvalid": "Дұрыс email енгізіңіз",
+    "passwordRequired": "Құпиясөзді енгізіңіз"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Тіркелу",
+  "email": "Email",
+  "emailPlaceholder": "email@example.com",
+  "password": "Құпиясөз",
+  "passwordPlaceholder": "Құпиясөз ойлап табыңыз",
+  "confirmPassword": "Құпиясөзді қайталаңыз",
+  "confirmPasswordPlaceholder": "Құпиясөзді қайталаңыз",
+  "submit": "Тіркелу",
+  "hasAccount": "Аккаунтыңыз бар ма?",
+  "signIn": "Кіру",
+  "showPassword": "Құпиясөзді көрсету",
+  "hidePassword": "Құпиясөзді жасыру",
+  "errors": {
+    "emailRequired": "Email енгізіңіз",
+    "emailInvalid": "Дұрыс email енгізіңіз",
+    "passwordRequired": "Құпиясөзді енгізіңіз",
+    "confirmPasswordRequired": "Құпиясөзді қайталаңыз",
+    "passwordMismatch": "*Құпиясөздер сәйкес келмейді"
+  }
+}
