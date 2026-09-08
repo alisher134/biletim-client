@@ -1,11 +1,12 @@
-import { getTranslations } from "next-intl/server";
+import { Suspense } from "react";
 
-export async function AllCourses() {
-  const t = await getTranslations("dashboardSidebar");
+import { CoursesCatalog } from "@/features/courses";
+import { CenteredSpinner } from "@/shared/ui/spinner";
 
+export function AllCourses() {
   return (
-    <h1 className="text-xl font-semibold text-center md:text-2xl md:text-left">
-      {t("allCourses")}
-    </h1>
+    <Suspense fallback={<CenteredSpinner />}>
+      <CoursesCatalog />
+    </Suspense>
   );
 }

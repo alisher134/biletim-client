@@ -64,21 +64,22 @@ export function UpdateProfileForm() {
       >
         {({ register }) => (
           <>
-            <InputField
-              label={t("lastName")}
-              placeholder={t("lastNamePlaceholder")}
-              error={errors.lastName?.message}
-              autoComplete="family-name"
-              {...register("lastName")}
-            />
-
-            <InputField
-              label={t("firstName")}
-              placeholder={t("firstNamePlaceholder")}
-              error={errors.firstName?.message}
-              autoComplete="given-name"
-              {...register("firstName")}
-            />
+            <div className="grid gap-5 sm:grid-cols-2">
+              <InputField
+                label={t("lastName")}
+                placeholder={t("lastNamePlaceholder")}
+                error={errors.lastName?.message}
+                autoComplete="family-name"
+                {...register("lastName")}
+              />
+              <InputField
+                label={t("firstName")}
+                placeholder={t("firstNamePlaceholder")}
+                error={errors.firstName?.message}
+                autoComplete="given-name"
+                {...register("firstName")}
+              />
+            </div>
 
             <Button type="submit" disabled={isPending} className="self-end">
               {t("save")}

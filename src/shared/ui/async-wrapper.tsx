@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 
-import { Spinner } from "./spinner";
+import { LoaderGate } from "./loader-gate";
 
 type AsyncWrapperProps<T> = {
   isLoading: boolean;
@@ -19,17 +19,9 @@ export function AsyncWrapper<T>({
   loaderSlot,
   errorSlot,
 }: AsyncWrapperProps<T>) {
-  if (isLoading) {
-    return loaderSlot ?? <Spinner />;
-  }
-
-  if (isError) {
-    return errorSlot ?? null;
-  }
-
-  if (data == null) {
-    return null;
-  }
-
-  return children(data);
+  return (
+    <LoaderGate isLoading={isLoading} loaderSlot={loaderSlot}>
+      {isError ? (errorSlot ?? null) : data == null ? null : children(data)}
+    </LoaderGate>
+  );
 }

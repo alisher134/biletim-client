@@ -2,6 +2,10 @@
 
 import { AppError } from "@/_pages/app-error";
 
-export default function ErrorPage() {
-  return <AppError />;
+type ErrorPageProps = {
+  reset: () => void;
+};
+
+export default function ErrorPage({ reset }: ErrorPageProps) {
+  return <AppError reset={reset} />;
 }

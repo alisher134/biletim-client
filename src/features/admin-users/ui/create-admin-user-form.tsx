@@ -83,18 +83,20 @@ export function CreateAdminUserForm() {
               error={errors.email?.message}
               {...register("email")}
             />
-            <InputField
-              label={t("firstName")}
-              error={errors.firstName?.message}
-              autoComplete="given-name"
-              {...register("firstName")}
-            />
-            <InputField
-              label={t("lastName")}
-              error={errors.lastName?.message}
-              autoComplete="family-name"
-              {...register("lastName")}
-            />
+            <div className="grid gap-5 sm:grid-cols-2">
+              <InputField
+                label={t("firstName")}
+                error={errors.firstName?.message}
+                autoComplete="given-name"
+                {...register("firstName")}
+              />
+              <InputField
+                label={t("lastName")}
+                error={errors.lastName?.message}
+                autoComplete="family-name"
+                {...register("lastName")}
+              />
+            </div>
             <PasswordField
               label={t("password")}
               error={errors.password?.message}

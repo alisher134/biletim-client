@@ -1,7 +1,12 @@
 "use client";
 
 import { cn } from "cn";
-import { HouseIcon, UsersIcon, type LucideIcon } from "lucide-react";
+import {
+  HouseIcon,
+  LibraryIcon,
+  UsersIcon,
+  type LucideIcon,
+} from "lucide-react";
 
 import { Link, usePathname } from "@/shared/config/i18n/navigation";
 import { isNavItemActive } from "@/shared/lib/is-nav-item-active";
@@ -11,6 +16,7 @@ import type { AdminNavHref, AdminNavItem } from "../model/nav-items";
 const tabIcons = {
   "/admin": HouseIcon,
   "/admin/users": UsersIcon,
+  "/admin/courses": LibraryIcon,
 } as const satisfies Record<AdminNavHref, LucideIcon>;
 
 type AdminTabBarNavProps = {

@@ -1,0 +1,19 @@
+{
+  "courseFallback": "Курс",
+  "testFallback": "Тест",
+  "submit": "Сдать тест",
+  "timeLeft": "Осталось: {time}",
+  "resultTitle": "Результат",
+  "score": "Балл: {score}%",
+  "passed": "Тест сдан",
+  "failed": "Тест не сдан",
+  "backToCourse": "К курсу",
+  "startingAttempt": "Подготовка попытки...",
+  "empty": "В тесте пока нет вопросов",
+  "errors": {
+    "loadFailed": "Не удалось загрузить тест",
+    "startFailed": "Не удалось начать попытку",
+    "submitFailed": "Не удалось сдать тест",
+    "unanswered": "Ответьте на все вопросы"
+  }
+}

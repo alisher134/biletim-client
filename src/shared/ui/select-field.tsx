@@ -1,7 +1,9 @@
 "use client";
 
 import { useId } from "react";
+
 import { cn } from "cn";
+import { ChevronDownIcon } from "lucide-react";
 
 import type { FormUIProps } from "../types/form";
 import { Field, FieldError, FieldLabel } from "./field";
@@ -22,17 +24,23 @@ export function SelectField({
           {label}
         </FieldLabel>
       )}
-      <select
-        id={id}
-        className={cn(
-          "h-8 w-full min-w-0 appearance-none rounded-lg border border-input bg-transparent px-2.5 py-1 text-base outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:bg-input/30",
-          className,
-        )}
-        aria-invalid={error ? true : undefined}
-        {...props}
-      >
-        {children}
-      </select>
+      <div className="relative">
+        <select
+          id={id}
+          className={cn(
+            "h-8 w-full min-w-0 appearance-none rounded-lg border border-input bg-transparent py-1 pr-8 pl-2.5 text-base outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:bg-input/30",
+            className,
+          )}
+          aria-invalid={error ? true : undefined}
+          {...props}
+        >
+          {children}
+        </select>
+        <ChevronDownIcon
+          className="pointer-events-none absolute top-1/2 right-2 size-4 -translate-y-1/2 text-muted-foreground"
+          aria-hidden
+        />
+      </div>
       {error && <FieldError>{error}</FieldError>}
     </Field>
   );

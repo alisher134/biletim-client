@@ -1,4 +1,9 @@
-import { HouseIcon, UsersIcon, type LucideIcon } from "lucide-react";
+import {
+  HouseIcon,
+  LibraryIcon,
+  UsersIcon,
+  type LucideIcon,
+} from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { AppSidebar } from "@/shared/ui/app-sidebar";
@@ -8,6 +13,7 @@ import { adminNavItems, type AdminNavHref } from "../model/nav-items";
 const navIcons = {
   "/admin": HouseIcon,
   "/admin/users": UsersIcon,
+  "/admin/courses": LibraryIcon,
 } as const satisfies Record<AdminNavHref, LucideIcon>;
 
 export async function AdminSidebar() {

@@ -1,11 +1,5 @@
-import { getTranslations } from "next-intl/server";
+import { MyCoursesList } from "@/features/courses";
 
-export async function MyCourses() {
-  const t = await getTranslations("dashboardSidebar");
-
-  return (
-    <h1 className="text-xl font-semibold text-center md:text-2xl md:text-left">
-      {t("myCourses")}
-    </h1>
-  );
+export function MyCourses() {
+  return <MyCoursesList />;
 }

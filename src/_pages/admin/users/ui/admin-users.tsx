@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/shared/ui/card";
 import { LinkButton } from "@/shared/ui/link-button";
-import { Spinner } from "@/shared/ui/spinner";
+import { CenteredSpinner } from "@/shared/ui/spinner";
 
 export async function AdminUsers() {
   const t = await getTranslations("adminUsers");
@@ -26,7 +26,7 @@ export async function AdminUsers() {
       </CardHeader>
 
       <CardContent>
-        <Suspense fallback={<Spinner />}>
+        <Suspense fallback={<CenteredSpinner />}>
           <AdminUsersList />
         </Suspense>
       </CardContent>

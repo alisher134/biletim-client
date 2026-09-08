@@ -4,6 +4,7 @@ import { cn } from "cn";
 import {
   BookMarkedIcon,
   BookPlusIcon,
+  HeartIcon,
   HouseIcon,
   MenuIcon,
   type LucideIcon,
@@ -19,6 +20,7 @@ const MENU_HREF = "/dashboard/menu";
 const tabIcons = {
   "/dashboard": HouseIcon,
   "/dashboard/my-courses": BookMarkedIcon,
+  "/dashboard/favorites": HeartIcon,
   "/dashboard/courses": BookPlusIcon,
 } as const satisfies Record<DashboardNavHref, LucideIcon>;
 

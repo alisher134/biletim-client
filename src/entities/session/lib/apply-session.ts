@@ -16,4 +16,9 @@ export function setSessionUser(queryClient: QueryClient, user: SessionUser) {
 export function resetSession(queryClient: QueryClient) {
   clearTokens();
   queryClient.removeQueries({ queryKey: SESSION_QUERY_KEY });
+  queryClient.removeQueries({ queryKey: ["courses"] });
+  queryClient.removeQueries({ queryKey: ["admin", "courses"] });
+  queryClient.removeQueries({ queryKey: ["lessons"] });
+  queryClient.removeQueries({ queryKey: ["tests"] });
+  queryClient.removeQueries({ queryKey: ["materials"] });
 }

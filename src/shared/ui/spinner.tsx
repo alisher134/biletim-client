@@ -13,4 +13,16 @@ function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
   );
 }
 
-export { Spinner };
+type CenteredSpinnerProps = {
+  className?: string;
+};
+
+function CenteredSpinner({ className }: CenteredSpinnerProps) {
+  return (
+    <div className="flex w-full flex-1 items-center justify-center py-16">
+      <Spinner className={cn("size-8", className)} />
+    </div>
+  );
+}
+
+export { CenteredSpinner, Spinner };

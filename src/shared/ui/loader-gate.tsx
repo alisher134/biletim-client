@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 
-import { Spinner } from "./spinner";
+import { CenteredSpinner } from "./spinner";
 
 type LoaderGateProps = {
   isLoading: boolean;
@@ -14,7 +14,7 @@ export function LoaderGate({
   children,
 }: LoaderGateProps) {
   if (isLoading) {
-    return loaderSlot ?? <Spinner />;
+    return loaderSlot ?? <CenteredSpinner />;
   }
 
   return children;

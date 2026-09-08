@@ -1,6 +1,7 @@
 import {
   BookMarkedIcon,
   BookPlusIcon,
+  HeartIcon,
   HouseIcon,
   type LucideIcon,
 } from "lucide-react";
@@ -15,6 +16,7 @@ import type {
 const menuNavIcons = {
   "/dashboard": HouseIcon,
   "/dashboard/my-courses": BookMarkedIcon,
+  "/dashboard/favorites": HeartIcon,
   "/dashboard/courses": BookPlusIcon,
 } as const satisfies Record<DashboardMenuNavHref, LucideIcon>;
 

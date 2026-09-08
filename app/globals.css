@@ -162,3 +162,10 @@
     cursor: pointer;
   }
 }
+
+.lesson-video-player {
+  --plyr-color-main: var(--primary);
+  --plyr-video-background: #000;
+  --plyr-font-family: inherit;
+  --plyr-control-radius: 0.5rem;
+}

@@ -1,0 +1,19 @@
+{
+  "courseFallback": "Курс",
+  "testFallback": "Тест",
+  "submit": "Тестті тапсыру",
+  "timeLeft": "Қалды: {time}",
+  "resultTitle": "Нәтиже",
+  "score": "Ұпай: {score}%",
+  "passed": "Тест тапсырылды",
+  "failed": "Тест тапсырылмады",
+  "backToCourse": "Курсқа",
+  "startingAttempt": "Әрекет дайындалуда...",
+  "empty": "Тестте әзірше сұрақ жоқ",
+  "errors": {
+    "loadFailed": "Тестті жүктеу мүмкін болмады",
+    "startFailed": "Әрекетті бастау мүмкін болмады",
+    "submitFailed": "Тестті тапсыру мүмкін болмады",
+    "unanswered": "Барлық сұраққа жауап беріңіз"
+  }
+}

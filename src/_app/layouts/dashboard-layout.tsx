@@ -5,14 +5,12 @@ import { AppShellLayout } from "./app-shell-layout";
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <RequireAuth>
-      <AppShellLayout
-        sidebar={<DashboardSidebar />}
-        footer={<DashboardTabBar />}
-        isHeaderHiddenOnMobile
-      >
-        {children}
-      </AppShellLayout>
-    </RequireAuth>
+    <AppShellLayout
+      sidebar={<DashboardSidebar />}
+      footer={<DashboardTabBar />}
+      isHeaderHiddenOnMobile
+    >
+      <RequireAuth>{children}</RequireAuth>
+    </AppShellLayout>
   );
 }

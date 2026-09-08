@@ -1,5 +1,6 @@
 import {
   BookIcon,
+  HeartIcon,
   HouseIcon,
   LibraryIcon,
   type LucideIcon,
@@ -14,6 +15,7 @@ import { DashboardAdminNavLink } from "./dashboard-admin-nav-link";
 const navIcons = {
   "/dashboard": HouseIcon,
   "/dashboard/my-courses": BookIcon,
+  "/dashboard/favorites": HeartIcon,
   "/dashboard/courses": LibraryIcon,
 } as const satisfies Record<DashboardNavHref, LucideIcon>;
 
