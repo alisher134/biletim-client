@@ -2,7 +2,7 @@
 
 import { BookOpenIcon } from "lucide-react";
 
-import type { Course } from "@/entities/course";
+import type { Course, MyCourseItemCourse } from "@/entities/course";
 import {
   Card,
   CardContent,
@@ -15,8 +15,12 @@ import { Show } from "@/shared/ui/show";
 
 import { CourseProgress } from "./course-progress";
 
+type CourseCardCourse = Pick<Course, "title" | "slug"> &
+  Partial<Pick<Course, "description">> &
+  Pick<MyCourseItemCourse, "id">;
+
 type CourseCardProps = {
-  course: Course;
+  course: CourseCardCourse;
   actionHref: string;
   actionLabel: string;
   meta?: string;
@@ -31,8 +35,7 @@ export function CourseCard({
   progress,
 }: CourseCardProps) {
   return (
-    <Card className="relative overflow-hidden border border-border py-0">
-
+    <Card className="relative overflow-hidden py-0">
       <div className="flex aspect-video items-center justify-center bg-muted">
         <BookOpenIcon
           className="size-10 text-muted-foreground"
@@ -55,7 +58,9 @@ export function CourseCard({
 
       <CardContent>
         <Show
-          when={course.description != null && course.description.length > 0}
+          when={
+            course.description != null && course.description.length > 0
+          }
         >
           <p className="line-clamp-2 text-sm text-muted-foreground">
             {course.description}

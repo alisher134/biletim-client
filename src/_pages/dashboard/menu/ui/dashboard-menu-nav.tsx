@@ -12,6 +12,7 @@ import type {
   DashboardMenuNavHref,
   DashboardMenuNavItem,
 } from "../model/menu-nav-items";
+import { DashboardMenuSection } from "./dashboard-menu-section";
 
 const menuNavIcons = {
   "/dashboard": HouseIcon,
@@ -26,7 +27,7 @@ type DashboardMenuNavProps = {
 
 export function DashboardMenuNav({ items }: DashboardMenuNavProps) {
   return (
-    <nav className="rounded-2xl bg-card p-4 shadow-[0_4px_24px_rgba(0,0,0,0.04)]">
+    <DashboardMenuSection className="p-4">
       <ul className="grid grid-cols-3 gap-x-2 gap-y-5">
         {items.map((item) => {
           const Icon = menuNavIcons[item.href];
@@ -40,7 +41,7 @@ export function DashboardMenuNav({ items }: DashboardMenuNavProps) {
                 <span className="flex size-10 items-center justify-center rounded-xl bg-accent text-primary">
                   <Icon className="size-6" strokeWidth={1.75} aria-hidden />
                 </span>
-                <span className="text-xs leading-tight text-secondary-foreground">
+                <span className="text-xs leading-tight text-muted-foreground">
                   {item.label}
                 </span>
               </Link>
@@ -48,6 +49,6 @@ export function DashboardMenuNav({ items }: DashboardMenuNavProps) {
           );
         })}
       </ul>
-    </nav>
+    </DashboardMenuSection>
   );
 }

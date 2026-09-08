@@ -7,11 +7,15 @@ import {
   adminCourseDetailQueryKey,
 } from "@/entities/course";
 
-export function useInvalidateAdminCourse(courseId: string, testId?: string) {
+export function useInvalidateAdminCourse(
+  courseId: string,
+  testId?: string,
+  lessonId?: string,
+) {
   const queryClient = useQueryClient();
 
   return () => {
-    invalidateCourseQueries(queryClient, { courseId, testId });
+    invalidateCourseQueries(queryClient, { courseId, testId, lessonId });
     queryClient.invalidateQueries({
       queryKey: adminCourseDetailQueryKey(courseId),
     });

@@ -12,8 +12,8 @@ export async function PricingSection() {
   const t = await getTranslations("home");
 
   return (
-    <section className="mx-auto max-w-5xl">
-      <div className="space-y-10 rounded-2xl border bg-card p-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)] md:p-10">
+    <section className="mx-auto max-w-5xl" id="pricing">
+      <div className="space-y-10 rounded-xl border bg-card p-6 md:p-10">
         <SectionHeader
           align="left"
           label={t("pricingLabel")}

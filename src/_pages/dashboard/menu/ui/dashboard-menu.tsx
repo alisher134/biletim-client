@@ -26,7 +26,7 @@ export async function DashboardMenu() {
   return (
     <Card className="mx-auto w-full max-w-lg">
       <CardHeader>
-        <CardTitle className="text-2xl font-semibold">{t("title")}</CardTitle>
+        <CardTitle size="page">{t("title")}</CardTitle>
         <CardAction className="md:hidden">
           <ChangeLanguage />
         </CardAction>

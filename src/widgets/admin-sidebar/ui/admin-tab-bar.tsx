@@ -11,5 +11,5 @@ export async function AdminTabBar() {
     label: t(item.labelKey),
   }));
 
-  return <AdminTabBarNav items={items} />;
+  return <AdminTabBarNav items={items} menuLabel={t("menu")} />;
 }

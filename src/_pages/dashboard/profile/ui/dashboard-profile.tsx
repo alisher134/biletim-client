@@ -11,9 +11,7 @@ export async function DashboardProfile() {
   return (
     <Card className="mx-auto w-full max-w-2xl">
       <CardHeader>
-        <CardTitle className="text-xl font-semibold text-center md:text-2xl md:text-left">
-          {t("title")}
-        </CardTitle>
+        <CardTitle size="page">{t("title")}</CardTitle>
       </CardHeader>
 
       <CardContent className="flex flex-col gap-10">

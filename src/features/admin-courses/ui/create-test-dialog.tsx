@@ -82,8 +82,23 @@ export function CreateTestDialog({
     );
   };
 
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+
+    if (!nextOpen) {
+      setSubmitError(null);
+      form.reset({
+        title: "",
+        description: "",
+        passingScore: 70,
+        timeLimit: "",
+        attemptsLimit: "",
+      });
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger render={<Button type="button" />}>
         {t("createTest")}
       </DialogTrigger>

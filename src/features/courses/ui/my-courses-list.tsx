@@ -2,7 +2,10 @@
 
 import { useTranslations } from "next-intl";
 
-import { getErrorMessage } from "@/shared/api";
+import { TelegramPurchaseButton } from "@/features/subscription";
+import { useLearningAccess } from "@/features/courses";
+import { getLocalizedApiErrorMessage } from "@/shared/api";
+import { SUBSCRIPTION_PLANS_HREF } from "@/shared/config/routes";
 import { AsyncWrapper } from "@/shared/ui/async-wrapper";
 import { EmptyState } from "@/shared/ui/empty-state";
 import { ErrorAlert } from "@/shared/ui/error-alert";
@@ -14,7 +17,9 @@ import { CourseCard } from "./course-card";
 
 export function MyCoursesList() {
   const t = useTranslations("courses");
+  const tErrors = useTranslations("errors");
   const enrollmentsQuery = useMyEnrollments();
+  const { hasAccess } = useLearningAccess();
 
   return (
     <AsyncWrapper
@@ -23,8 +28,9 @@ export function MyCoursesList() {
       data={enrollmentsQuery.data}
       errorSlot={
         <ErrorAlert
-          errorMessage={getErrorMessage(
+          errorMessage={getLocalizedApiErrorMessage(
             enrollmentsQuery.error,
+            (code) => tErrors(`apiCodes.${code}`),
             t("errors.loadFailed"),
           )}
         />
@@ -35,12 +41,26 @@ export function MyCoursesList() {
           when={items.length > 0}
           fallback={
             <EmptyState
-              title={t("emptyEnrolledTitle")}
-              description={t("emptyEnrolled")}
+              title={
+                hasAccess ? t("emptyEnrolledTitle") : t("emptyNoSubscriptionTitle")
+              }
+              description={
+                hasAccess ? t("emptyEnrolled") : t("emptyNoSubscription")
+              }
               action={
-                <LinkButton href="/dashboard/courses" variant="outline" size="sm">
-                  {t("browseCourses")}
-                </LinkButton>
+                hasAccess ? (
+                  <LinkButton
+                    href="/dashboard/courses"
+                    variant="outline"
+                    size="sm"
+                  >
+                    {t("browseCourses")}
+                  </LinkButton>
+                ) : (
+                  <TelegramPurchaseButton size="sm" variant="outline">
+                    {t("subscribe")}
+                  </TelegramPurchaseButton>
+                )
               }
             />
           }
@@ -48,16 +68,25 @@ export function MyCoursesList() {
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {items.map((item) => {
               const course = item.course;
-
-              if (course == null) return null;
+              const progress = item.isStarted ? item.progress : 0;
+              const meta = item.isStarted
+                ? item.status === "COMPLETED"
+                  ? t("completedBadge")
+                  : undefined
+                : t("notStarted");
 
               return (
                 <CourseCard
-                  key={item.id}
+                  key={course.id}
                   course={course}
-                  actionHref={`/dashboard/courses/${course.slug}`}
-                  actionLabel={t("continue")}
-                  progress={item.progress}
+                  actionHref={
+                    hasAccess
+                      ? `/dashboard/courses/${course.slug}`
+                      : SUBSCRIPTION_PLANS_HREF
+                  }
+                  actionLabel={hasAccess ? t("continue") : t("viewPlans")}
+                  meta={meta}
+                  progress={progress}
                 />
               );
             })}

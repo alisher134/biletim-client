@@ -9,6 +9,7 @@ import {
 import { getErrorMessage } from "@/shared/api";
 import { formatDateTime } from "@/shared/lib/dayjs";
 import { AsyncWrapper } from "@/shared/ui/async-wrapper";
+import { SectionHeading } from "@/shared/ui/section-heading";
 import { Button } from "@/shared/ui/button";
 import { ConfirmDeleteDialog } from "@/shared/ui/confirm-delete-dialog";
 import { EmptyState } from "@/shared/ui/empty-state";
@@ -47,7 +48,7 @@ export function AdminUserSubscriptions({ userId }: AdminUserSubscriptionsProps) 
     <section className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-lg font-semibold">{t("title")}</h2>
+          <SectionHeading>{t("title")}</SectionHeading>
           <p className="text-sm text-muted-foreground">{t("description")}</p>
         </div>
 

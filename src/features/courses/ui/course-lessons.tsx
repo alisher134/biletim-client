@@ -11,14 +11,15 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import type { CourseLesson } from "@/entities/course";
+import type { StudentCourseLesson } from "@/entities/course";
 import { Link } from "@/shared/config/i18n/navigation";
 import { formatDuration } from "@/shared/lib/format-duration";
+import { SectionHeading } from "@/shared/ui/section-heading";
 import { Show } from "@/shared/ui/show";
 
 type CourseLessonsProps = {
   slug: string;
-  lessons: CourseLesson[];
+  lessons: StudentCourseLesson[];
   canAccess: boolean;
 };
 
@@ -34,7 +35,9 @@ export function CourseLessons({
 
   return (
     <section className="flex flex-col gap-3">
-      <h2 className="text-lg font-semibold">{t("curriculum")}</h2>
+      <SectionHeading description={canAccess ? t("freeOrderHint") : undefined}>
+        {t("curriculum")}
+      </SectionHeading>
 
       <ul className="divide-y divide-border rounded-xl border border-border">
         {sortedLessons.map((lesson) => (
@@ -57,23 +60,21 @@ export function CourseLessons({
               lockedLabel={t("locked")}
             />
 
-            <Show when={lesson.test != null}>
-              {lesson.test != null ? (
-                <CurriculumRow
-                  title={lesson.test.title}
-                  meta={t("test")}
-                  icon={
-                    <ClipboardListIcon
-                      className="size-4 shrink-0 text-muted-foreground"
-                      aria-hidden
-                    />
-                  }
-                  canOpen={canAccess}
-                  href={`/dashboard/courses/${slug}/tests/${lesson.test.id}`}
-                  lockedLabel={t("locked")}
-                  className="border-t border-border bg-muted/20 pl-10"
-                />
-              ) : null}
+            <Show when={lesson.hasTest === true && lesson.testId != null}>
+              <CurriculumRow
+                title={t("test")}
+                meta={null}
+                icon={
+                  <ClipboardListIcon
+                    className="size-4 shrink-0 text-muted-foreground"
+                    aria-hidden
+                  />
+                }
+                canOpen={canAccess}
+                href={`/dashboard/courses/${slug}/lessons/${lesson.id}/test`}
+                lockedLabel={t("locked")}
+                className="border-t border-border bg-muted/20 pl-10"
+              />
             </Show>
           </li>
         ))}

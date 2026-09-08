@@ -5,7 +5,7 @@ export function getContinueLearningHref(
   nextAction: LearningNextAction,
 ) {
   if (nextAction.type === "TEST") {
-    return `/dashboard/courses/${courseSlug}/tests/${nextAction.testId}`;
+    return `/dashboard/courses/${courseSlug}/lessons/${nextAction.lessonId}/test`;
   }
 
   return `/dashboard/courses/${courseSlug}/lessons/${nextAction.lessonId}`;

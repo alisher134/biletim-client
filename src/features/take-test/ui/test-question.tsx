@@ -5,12 +5,14 @@ import type { StudentQuestion } from "@/entities/course";
 type TestQuestionProps = {
   question: StudentQuestion;
   selectedIds: string[];
+  disabled?: boolean;
   onToggle: (optionId: string) => void;
 };
 
 export function TestQuestion({
   question,
   selectedIds,
+  disabled = false,
   onToggle,
 }: TestQuestionProps) {
   const inputType = question.type === "MULTIPLE_CHOICE" ? "checkbox" : "radio";
@@ -19,7 +21,10 @@ export function TestQuestion({
   );
 
   return (
-    <fieldset className="flex flex-col gap-3 rounded-xl border border-border p-4">
+    <fieldset
+      className="flex flex-col gap-3 rounded-xl border border-border p-4"
+      disabled={disabled}
+    >
       <legend className="px-1 text-base font-semibold">{question.text}</legend>
 
       <ul className="flex flex-col gap-2">

@@ -5,7 +5,10 @@ import { useCallback, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import type { StudentLessonTest, TestAttempt } from "@/entities/course";
-import { getErrorMessage } from "@/shared/api";
+import {
+  getLocalizedApiErrorMessage,
+  isApiErrorCode,
+} from "@/shared/api";
 import { Button } from "@/shared/ui/button";
 import { EmptyState } from "@/shared/ui/empty-state";
 import { ErrorAlert } from "@/shared/ui/error-alert";
@@ -26,50 +29,113 @@ type TestAttemptFormProps = {
   test: StudentLessonTest;
   attempt: TestAttempt;
   onSubmitted: (attempt: TestAttempt) => void;
+  onRetryAttempt: () => void;
+  isRetrying?: boolean;
 };
 
 export function TestAttemptForm({
   test,
   attempt,
   onSubmitted,
+  onRetryAttempt,
+  isRetrying = false,
 }: TestAttemptFormProps) {
   const t = useTranslations("takeTest");
+  const tErrors = useTranslations("errors");
   const { mutate, isPending } = useSubmitAttempt();
   const [answers, setAnswers] = useState<AnswerMap>(() =>
     createEmptyAnswers(test),
   );
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isExpired, setIsExpired] = useState(false);
+  const [hasTimedOut, setHasTimedOut] = useState(false);
   const sortedQuestions = [...test.questions].sort(
     (left, right) => left.order - right.order,
   );
 
-  const handleSubmit = useCallback(() => {
-    setSubmitError(null);
+  const submitAnswers = useCallback(
+    (nextAnswers: AnswerMap, options?: { force?: boolean }) => {
+      if (isPending || isExpired || hasTimedOut) return;
 
-    if (hasUnansweredQuestions(test, answers)) {
-      setSubmitError(t("errors.unanswered"));
-      return;
-    }
+      setSubmitError(null);
 
-    mutate(
-      { attemptId: attempt.id, answers: toTestAnswers(answers) },
-      {
-        onSuccess: onSubmitted,
-        onError: (error) => {
-          setSubmitError(getErrorMessage(error, t("errors.submitFailed")));
+      if (!options?.force && hasUnansweredQuestions(test, nextAnswers)) {
+        setSubmitError(t("errors.unanswered"));
+        return;
+      }
+
+      setIsExpired(true);
+
+      mutate(
+        { attemptId: attempt.id, answers: toTestAnswers(nextAnswers) },
+        {
+          onSuccess: onSubmitted,
+          onError: (error) => {
+            if (isApiErrorCode(error, "TEST_TIME_LIMIT_EXCEEDED")) {
+              setHasTimedOut(true);
+              setIsExpired(true);
+              setSubmitError(tErrors("apiCodes.TEST_TIME_LIMIT_EXCEEDED"));
+              return;
+            }
+
+            setIsExpired(false);
+            setSubmitError(
+              getLocalizedApiErrorMessage(
+                error,
+                (code) => tErrors(`apiCodes.${code}`),
+                t("errors.submitFailed"),
+              ),
+            );
+          },
         },
-      },
-    );
-  }, [answers, attempt.id, mutate, onSubmitted, t, test]);
+      );
+    },
+    [
+      attempt.id,
+      hasTimedOut,
+      isExpired,
+      isPending,
+      mutate,
+      onSubmitted,
+      t,
+      tErrors,
+      test,
+    ],
+  );
+
+  const handleSubmit = useCallback(() => {
+    submitAnswers(answers);
+  }, [answers, submitAnswers]);
+
+  const handleExpire = useCallback(() => {
+    submitAnswers(answers, { force: true });
+  }, [answers, submitAnswers]);
 
   return (
     <div className="flex flex-col gap-6">
-      <Show when={test.timeLimit != null}>
+      <Show when={test.timeLimit != null && !isExpired && !hasTimedOut}>
         <TestTimer
           startedAt={attempt.startedAt}
           timeLimit={test.timeLimit ?? 0}
-          onExpire={handleSubmit}
+          onExpire={handleExpire}
         />
+      </Show>
+
+      <Show when={hasTimedOut}>
+        <p className="text-sm text-muted-foreground">{t("timeExpiredRetry")}</p>
+        <Button
+          type="button"
+          variant="outline"
+          className="self-start"
+          disabled={isRetrying}
+          onClick={onRetryAttempt}
+        >
+          {t("startNewAttempt")}
+        </Button>
+      </Show>
+
+      <Show when={isExpired && isPending && !hasTimedOut}>
+        <p className="text-sm text-muted-foreground">{t("timeExpired")}</p>
       </Show>
 
       <Show when={submitError != null}>
@@ -78,9 +144,7 @@ export function TestAttemptForm({
 
       <Show
         when={sortedQuestions.length > 0}
-        fallback={
-          <EmptyState title={t("empty")} />
-        }
+        fallback={<EmptyState title={t("empty")} />}
       >
         <div className="flex flex-col gap-4">
           {sortedQuestions.map((question) => (
@@ -88,6 +152,7 @@ export function TestAttemptForm({
               key={question.id}
               question={question}
               selectedIds={answers[question.id] ?? []}
+              disabled={isExpired || isPending || hasTimedOut}
               onToggle={(optionId) => {
                 setAnswers((current) => ({
                   ...current,
@@ -103,14 +168,16 @@ export function TestAttemptForm({
         </div>
       </Show>
 
-      <Button
-        type="button"
-        className="self-end"
-        disabled={isPending || sortedQuestions.length === 0}
-        onClick={handleSubmit}
-      >
-        {t("submit")}
-      </Button>
+      <Show when={!hasTimedOut}>
+        <Button
+          type="button"
+          className="self-end"
+          disabled={isPending || isExpired || sortedQuestions.length === 0}
+          onClick={handleSubmit}
+        >
+          {t("submit")}
+        </Button>
+      </Show>
     </div>
   );
 }

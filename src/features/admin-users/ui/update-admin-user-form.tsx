@@ -14,6 +14,7 @@ import { CheckboxField } from "@/shared/ui/checkbox-field";
 import { EmailField } from "@/shared/ui/email-field";
 import { ErrorAlert } from "@/shared/ui/error-alert";
 import { InputField } from "@/shared/ui/input-field";
+import { SectionHeading } from "@/shared/ui/section-heading";
 import { Show } from "@/shared/ui/show";
 import { showSuccessToast } from "@/shared/utils";
 
@@ -81,7 +82,7 @@ export function UpdateAdminUserForm({ user }: UpdateAdminUserFormProps) {
 
   return (
     <section className="flex flex-col gap-5">
-      <h2 className="text-lg font-semibold">{t("profileTitle")}</h2>
+      <SectionHeading>{t("profileTitle")}</SectionHeading>
 
       <Show when={submitError != null}>
         <ErrorAlert errorMessage={submitError!} />

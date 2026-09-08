@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 
 import { getErrorMessage } from "@/shared/api";
 import { AsyncWrapper } from "@/shared/ui/async-wrapper";
+import { SectionHeading } from "@/shared/ui/section-heading";
 import { EmptyState } from "@/shared/ui/empty-state";
 import { ErrorAlert } from "@/shared/ui/error-alert";
 import { LinkButton } from "@/shared/ui/link-button";
@@ -26,10 +27,9 @@ export function AdminAnalyticsCoursesSection() {
 
   return (
     <section className="flex flex-col gap-4">
-      <div>
-        <h2 className="text-lg font-semibold">{t("courses.title")}</h2>
-        <p className="text-sm text-muted-foreground">{t("courses.description")}</p>
-      </div>
+      <SectionHeading description={t("courses.description")}>
+        {t("courses.title")}
+      </SectionHeading>
 
       <AsyncWrapper
         isLoading={isLoading}

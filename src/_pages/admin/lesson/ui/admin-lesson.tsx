@@ -15,7 +15,7 @@ export async function AdminLesson({ courseId, lessonId }: AdminLessonProps) {
     <section className="flex flex-col gap-4">
       <Card className="mx-auto w-full max-w-3xl">
         <CardHeader>
-          <CardTitle className="text-2xl font-semibold">
+          <CardTitle size="page">
             {t("lessonTitle")}
           </CardTitle>
         </CardHeader>

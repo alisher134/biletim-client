@@ -2,17 +2,20 @@
 
 import { useTranslations } from "next-intl";
 
+import { SubscriptionRequiredNotice } from "@/features/subscription";
 import { getErrorMessage } from "@/shared/api";
+import { SUBSCRIPTION_PLANS_HREF } from "@/shared/config/routes";
 import { AsyncWrapper } from "@/shared/ui/async-wrapper";
 import { ErrorPageElement } from "@/shared/ui/error-page-element";
 import { LoaderGate } from "@/shared/ui/loader-gate";
+import { LinkButton } from "@/shared/ui/link-button";
 import { PageBreadcrumbs } from "@/shared/ui/page-breadcrumbs";
+import { PageTitle } from "@/shared/ui/page-title";
 import { Show } from "@/shared/ui/show";
 
 import { useCoursePage } from "../model/use-course-page";
 import { CourseLessons } from "./course-lessons";
 import { CourseProgress } from "./course-progress";
-import { EnrollCourseButton } from "./enroll-course-button";
 import { FavoriteCourseButton } from "./favorite-course-button";
 
 type CourseDetailsProps = {
@@ -31,6 +34,7 @@ export function CourseDetails({ slug }: CourseDetailsProps) {
       data={coursePage.course}
       errorSlot={
         <ErrorPageElement
+          layout="inline"
           title={t("errors.courseLoadFailed")}
           description={getErrorMessage(
             coursePage.error,
@@ -45,7 +49,7 @@ export function CourseDetails({ slug }: CourseDetailsProps) {
     >
       {(course) => {
         const testsCount = course.lessons.filter(
-          (lesson) => lesson.test != null,
+          (lesson) => lesson.hasTest === true,
         ).length;
 
         return (
@@ -62,7 +66,7 @@ export function CourseDetails({ slug }: CourseDetailsProps) {
 
             <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
               <div className="flex flex-col gap-2">
-                <h1 className="text-2xl font-semibold">{course.title}</h1>
+                <PageTitle>{course.title}</PageTitle>
                 <p className="text-sm text-muted-foreground">
                   {t("lessonsCount", { count: course.lessons.length })}
                   {" · "}
@@ -73,15 +77,20 @@ export function CourseDetails({ slug }: CourseDetailsProps) {
                     {course.description}
                   </p>
                 </Show>
-                <Show when={coursePage.enrollment != null} data={coursePage.enrollment}>
-                  {(enrollment) => (
+                <Show when={coursePage.myCourse != null} data={coursePage.myCourse}>
+                  {(myCourse) => (
                     <div className="mt-1 flex w-full max-w-sm flex-col gap-2">
-                      <p className="text-sm font-medium">
-                        {enrollment.status === "COMPLETED"
-                          ? t("completedBadge")
-                          : t("enrolledBadge")}
-                      </p>
-                      <CourseProgress value={enrollment.progress} />
+                      <Show when={myCourse.status === "COMPLETED"}>
+                        <p className="text-sm font-medium">{t("completedBadge")}</p>
+                      </Show>
+                      <Show when={!myCourse.isStarted}>
+                        <p className="text-sm text-muted-foreground">
+                          {t("notStarted")}
+                        </p>
+                      </Show>
+                      <CourseProgress
+                        value={myCourse.isStarted ? myCourse.progress : 0}
+                      />
                     </div>
                   )}
                 </Show>
@@ -93,12 +102,18 @@ export function CourseDetails({ slug }: CourseDetailsProps) {
                     courseId={course.id}
                     isFavorite={coursePage.isFavorite}
                   />
-                  <Show when={coursePage.enrollment == null}>
-                    <EnrollCourseButton courseId={course.id} />
+                  <Show when={!coursePage.canAccess}>
+                    <LinkButton href={SUBSCRIPTION_PLANS_HREF} size="sm">
+                      {t("viewPlans")}
+                    </LinkButton>
                   </Show>
                 </div>
               </LoaderGate>
             </div>
+
+            <Show when={!coursePage.canAccess}>
+              <SubscriptionRequiredNotice layout="inline" />
+            </Show>
 
             <CourseLessons
               slug={course.slug}

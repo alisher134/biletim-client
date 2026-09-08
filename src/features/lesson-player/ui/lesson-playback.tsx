@@ -2,7 +2,9 @@
 
 import { useTranslations } from "next-intl";
 
+import { SubscriptionRequiredNotice } from "@/features/subscription";
 import { getErrorMessage } from "@/shared/api";
+import { isSubscriptionRequiredError } from "@/shared/lib/is-subscription-required-error";
 import { AsyncWrapper } from "@/shared/ui/async-wrapper";
 import { ErrorAlert } from "@/shared/ui/error-alert";
 
@@ -11,12 +13,17 @@ import { LessonVideo } from "./lesson-video";
 
 type LessonPlaybackProps = {
   lessonId: string;
+  canAccess: boolean;
   progress: import("@/entities/course").UserLessonProgress | null;
 };
 
-export function LessonPlayback({ lessonId, progress }: LessonPlaybackProps) {
+export function LessonPlayback({
+  lessonId,
+  canAccess,
+  progress,
+}: LessonPlaybackProps) {
   const t = useTranslations("lessonPlayer");
-  const playbackQuery = usePlaybackUrl(lessonId, true);
+  const playbackQuery = usePlaybackUrl(lessonId, canAccess);
 
   if (
     !playbackQuery.isLoading &&
@@ -36,12 +43,16 @@ export function LessonPlayback({ lessonId, progress }: LessonPlaybackProps) {
       isError={playbackQuery.isError}
       data={playbackQuery.data}
       errorSlot={
-        <ErrorAlert
-          errorMessage={getErrorMessage(
-            playbackQuery.error,
-            t("errors.playbackFailed"),
-          )}
-        />
+        isSubscriptionRequiredError(playbackQuery.error) ? (
+          <SubscriptionRequiredNotice />
+        ) : (
+          <ErrorAlert
+            errorMessage={getErrorMessage(
+              playbackQuery.error,
+              t("errors.playbackFailed"),
+            )}
+          />
+        )
       }
     >
       {(playback) => (

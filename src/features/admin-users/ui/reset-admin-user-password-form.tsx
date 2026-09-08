@@ -10,6 +10,7 @@ import { AppForm } from "@/shared/ui/app-form";
 import { Button } from "@/shared/ui/button";
 import { ErrorAlert } from "@/shared/ui/error-alert";
 import { PasswordField } from "@/shared/ui/password-field";
+import { SectionHeading } from "@/shared/ui/section-heading";
 import { Show } from "@/shared/ui/show";
 import { showSuccessToast } from "@/shared/utils";
 
@@ -57,7 +58,7 @@ export function ResetAdminUserPasswordForm({
 
   return (
     <section className="flex flex-col gap-5">
-      <h2 className="text-lg font-semibold">{t("passwordTitle")}</h2>
+      <SectionHeading>{t("passwordTitle")}</SectionHeading>
 
       <Show when={submitError != null}>
         <ErrorAlert errorMessage={submitError!} />

@@ -1,12 +1,13 @@
 "use client";
 
-import { GripVerticalIcon, TrashIcon } from "lucide-react";
+import { TrashIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import type { CourseLesson } from "@/entities/course";
 import { getErrorMessage } from "@/shared/api";
 import type { GenerateCopyParent } from "@/shared/lib/generate-copy";
 import { Button } from "@/shared/ui/button";
+import { SectionHeading } from "@/shared/ui/section-heading";
 import { ConfirmDeleteDialog } from "@/shared/ui/confirm-delete-dialog";
 import { EmptyState } from "@/shared/ui/empty-state";
 import { LinkButton } from "@/shared/ui/link-button";
@@ -48,7 +49,7 @@ export function AdminCourseLessons({
 
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="text-lg font-semibold">{t("lessons")}</h2>
+      <SectionHeading>{t("lessons")}</SectionHeading>
 
       <Show
         when={sortedLessons.length > 0}
@@ -59,10 +60,6 @@ export function AdminCourseLessons({
         <ul className="divide-y divide-border rounded-xl border border-border">
           {sortedLessons.map((lesson) => (
             <li key={lesson.id} className="flex items-center gap-3 px-3 py-2.5">
-              <GripVerticalIcon
-                className="size-4 shrink-0 text-muted-foreground"
-                aria-hidden
-              />
               <span className="min-w-0 flex-1 truncate font-medium">
                 {lesson.title}
               </span>

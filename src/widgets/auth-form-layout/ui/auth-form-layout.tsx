@@ -20,9 +20,9 @@ export function AuthFormLayout({
   footer,
 }: AuthFormLayoutProps) {
   return (
-    <Card className="w-full max-w-md gap-2">
+    <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle className="text-center text-2xl font-bold">
+        <CardTitle size="page" className="text-center">
           {title}
         </CardTitle>
       </CardHeader>

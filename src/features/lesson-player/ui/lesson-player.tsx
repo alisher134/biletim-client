@@ -2,12 +2,17 @@
 
 import { useTranslations } from "next-intl";
 
+import { SubscriptionRequiredNotice } from "@/features/subscription";
 import { getErrorMessage } from "@/shared/api";
+import { isSubscriptionRequiredError } from "@/shared/lib/is-subscription-required-error";
 import { AsyncWrapper } from "@/shared/ui/async-wrapper";
+import { ErrorAlert } from "@/shared/ui/error-alert";
 import { ErrorPageElement } from "@/shared/ui/error-page-element";
 import { PageBreadcrumbs } from "@/shared/ui/page-breadcrumbs";
+import { PageTitle } from "@/shared/ui/page-title";
 import { Show } from "@/shared/ui/show";
 
+import { useLessonMaterials } from "../model/use-lesson-materials";
 import { useLessonPage } from "../model/use-lesson-page";
 import { useLessonProgress } from "../model/use-lesson-progress";
 import { LessonMaterials } from "./lesson-materials";
@@ -24,7 +29,10 @@ export function LessonPlayer({ slug, lessonId }: LessonPlayerProps) {
   const tCourses = useTranslations("courses");
   const tSidebar = useTranslations("dashboardSidebar");
   const lessonPage = useLessonPage(slug, lessonId);
-  const progressQuery = useLessonProgress(lessonId, lessonPage.lesson != null);
+  const progressQuery = useLessonProgress(lessonId, lessonPage.canAccess);
+  const materialsQuery = useLessonMaterials(lessonId, {
+    enabled: lessonPage.canAccess,
+  });
 
   return (
     <AsyncWrapper
@@ -33,6 +41,7 @@ export function LessonPlayer({ slug, lessonId }: LessonPlayerProps) {
       data={lessonPage.lesson}
       errorSlot={
         <ErrorPageElement
+          layout="inline"
           title={t("errors.loadFailed")}
           description={getErrorMessage(
             lessonPage.error,
@@ -41,7 +50,7 @@ export function LessonPlayer({ slug, lessonId }: LessonPlayerProps) {
           retryLabel={tCourses("retry")}
           onRetry={() => {
             lessonPage.refetchCourse();
-            lessonPage.refetchEnrollments();
+            lessonPage.refetchSubscription();
           }}
         />
       }
@@ -49,14 +58,7 @@ export function LessonPlayer({ slug, lessonId }: LessonPlayerProps) {
       {(currentLesson) => (
         <Show
           when={lessonPage.canAccess}
-          fallback={
-            <ErrorPageElement
-              title={tCourses("accessDeniedTitle")}
-              description={tCourses("accessDeniedDescription")}
-              homeLabel={tCourses("backToCourses")}
-              homeHref="/dashboard/courses"
-            />
-          }
+          fallback={<SubscriptionRequiredNotice />}
         >
           <div className="flex flex-col gap-6">
             <PageBreadcrumbs
@@ -74,7 +76,7 @@ export function LessonPlayer({ slug, lessonId }: LessonPlayerProps) {
             />
 
             <div className="flex flex-col gap-2">
-              <h1 className="text-2xl font-semibold">{currentLesson.title}</h1>
+              <PageTitle>{currentLesson.title}</PageTitle>
               <Show when={progressQuery.data?.completed === true}>
                 <p className="text-sm text-muted-foreground">
                   {t("completed")}
@@ -84,6 +86,7 @@ export function LessonPlayer({ slug, lessonId }: LessonPlayerProps) {
 
             <LessonPlayback
               lessonId={lessonId}
+              canAccess={lessonPage.canAccess}
               progress={progressQuery.data ?? null}
             />
 
@@ -98,12 +101,31 @@ export function LessonPlayer({ slug, lessonId }: LessonPlayerProps) {
               </p>
             </Show>
 
-            <LessonMaterials materials={currentLesson.materials} />
+            <AsyncWrapper
+              isLoading={materialsQuery.isLoading}
+              isError={materialsQuery.isError}
+              data={materialsQuery.data}
+              errorSlot={
+                isSubscriptionRequiredError(materialsQuery.error) ? (
+                  <SubscriptionRequiredNotice />
+                ) : (
+                  <ErrorAlert
+                    errorMessage={getErrorMessage(
+                      materialsQuery.error,
+                      t("errors.materialsLoadFailed"),
+                    )}
+                  />
+                )
+              }
+            >
+              {(materials) => <LessonMaterials materials={materials} />}
+            </AsyncWrapper>
 
             <LessonPlayerActions
               slug={slug}
               currentLesson={currentLesson}
               nextLesson={lessonPage.nextLesson}
+              isLessonCompleted={progressQuery.data?.completed === true}
             />
           </div>
         </Show>

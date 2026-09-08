@@ -7,6 +7,7 @@ import {
   MY_ENROLLMENTS_QUERY_KEY,
   adminCourseDetailQueryKey,
   courseBySlugQueryKey,
+  lessonMaterialsQueryKey,
   lessonProgressQueryKey,
   testDetailQueryKey,
 } from "./course-query";
@@ -43,6 +44,9 @@ export function invalidateCourseQueries(
   if (options.lessonId != null) {
     queryClient.invalidateQueries({
       queryKey: lessonProgressQueryKey(options.lessonId),
+    });
+    queryClient.invalidateQueries({
+      queryKey: lessonMaterialsQueryKey(options.lessonId),
     });
   }
 

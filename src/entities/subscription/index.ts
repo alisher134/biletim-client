@@ -1,6 +1,7 @@
 export type {
   GrantSubscriptionInput,
   MySubscription,
+  PurchaseLink,
   SubscriptionPlan,
   SubscriptionStatus,
   UserSubscription,
@@ -8,6 +9,7 @@ export type {
 
 export { getSubscriptionPlans } from "./api/get-subscription-plans";
 export { getMySubscription } from "./api/get-my-subscription";
+export { getPurchaseLink } from "./api/get-purchase-link";
 export { getUserSubscriptions } from "./api/get-user-subscriptions";
 export { grantUserSubscription } from "./api/grant-user-subscription";
 export { cancelUserSubscription } from "./api/cancel-user-subscription";
@@ -23,3 +25,4 @@ export {
   USER_SUBSCRIPTIONS_QUERY_KEY,
   userSubscriptionsQueryKey,
 } from "./model/subscription-query";
+export { useMySubscription } from "./model/use-my-subscription";

@@ -9,7 +9,8 @@
     "empty": "Оқу бойынша прогресс әлі жоқ. Курстар каталогынан бастаңыз.",
     "browseCourses": "Курстарды қарау",
     "watched": "{watched} / {total}",
-    "progress": "Прогресс"
+    "progress": "Прогресс",
+    "renewSubscription": "Жазылым рәсімдеу"
   },
   "overview": {
     "title": "Статистика",

@@ -4,7 +4,9 @@ import { useTranslations } from "next-intl";
 
 import type { LessonTest } from "@/entities/course";
 import type { GenerateCopyParent } from "@/shared/lib/generate-copy";
+import { EmptyState } from "@/shared/ui/empty-state";
 import { Show } from "@/shared/ui/show";
+import { SectionHeading } from "@/shared/ui/section-heading";
 
 import { AdminExistingTest } from "./admin-existing-test";
 import { CreateTestDialog } from "./create-test-dialog";
@@ -26,19 +28,21 @@ export function AdminLessonTest({
 
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="text-lg font-semibold">{t("test")}</h2>
+      <SectionHeading>{t("test")}</SectionHeading>
 
       <Show
         when={test != null}
         fallback={
-          <div className="flex flex-col items-start gap-3">
-            <p className="text-sm text-muted-foreground">{t("noTest")}</p>
-            <CreateTestDialog
-              courseId={courseId}
-              lessonId={lessonId}
-              copyParent={copyParent}
-            />
-          </div>
+          <EmptyState
+            title={t("noTest")}
+            action={
+              <CreateTestDialog
+                courseId={courseId}
+                lessonId={lessonId}
+                copyParent={copyParent}
+              />
+            }
+          />
         }
       >
         <AdminExistingTest courseId={courseId} test={test!} />

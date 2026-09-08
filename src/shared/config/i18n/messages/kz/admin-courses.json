@@ -24,6 +24,8 @@
   "videoKey": "Объект кілті",
   "videoDuration": "Ұзақтығы (сек)",
   "uploading": "Жүктеліп жатыр…",
+  "chooseFile": "Таңдау",
+  "noFileSelected": "Файл таңдалмаған",
   "lessons": "Сабақтар",
   "addLesson": "Сабақ қосу",
   "createLessonTitle": "Жаңа сабақ",
@@ -107,9 +109,13 @@
     "fileRequired": "Файл таңдаңыз",
     "loadFailed": "Курстарды жүктеу мүмкін болмады",
     "courseLoadFailed": "Курсты жүктеу мүмкін болмады",
+    "lessonNotFound": "Сабақ табылмады",
+    "testNotFound": "Тест табылмады",
+    "backToCourse": "Курсқа",
     "createFailed": "Құру мүмкін болмады",
     "updateFailed": "Сақтау мүмкін болмады",
     "deleteFailed": "Жою мүмкін болмады",
-    "uploadFailed": "Файлды жүктеу мүмкін болмады"
+    "uploadFailed": "Файлды жүктеу мүмкін болмады",
+    "uploadNotConfirmed": "Файлды жүктеп, аяқталуын күтіңіз"
   }
 }

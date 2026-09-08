@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { getErrorMessage } from "@/shared/api";
-import { useRouter } from "@/shared/config/i18n/navigation";
+import { usePostAuthRedirect } from "@/features/require-auth/model/use-auth-return-url";
 import { useZodForm } from "@/shared/hooks/use-zod-form";
 import { AppForm } from "@/shared/ui/app-form";
 import { Button } from "@/shared/ui/button";
@@ -20,7 +20,7 @@ import { useSignIn } from "../model/use-sign-in";
 
 export function SignInForm() {
   const t = useTranslations("signIn");
-  const router = useRouter();
+  const redirectAfterAuth = usePostAuthRedirect();
   const { mutate, isPending } = useSignIn();
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -39,7 +39,7 @@ export function SignInForm() {
     mutate(values, {
       onSuccess: () => {
         showSuccessToast(t("success"));
-        router.replace("/dashboard");
+        redirectAfterAuth();
       },
       onError: (error) => {
         setSubmitError(getErrorMessage(error, t("errors.requestFailed")));
@@ -48,7 +48,7 @@ export function SignInForm() {
   };
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <Show when={submitError != null}>
         <ErrorAlert errorMessage={submitError!} />
       </Show>
@@ -56,7 +56,7 @@ export function SignInForm() {
       <AppForm
         form={form}
         onSubmit={handleSignIn}
-        className="flex flex-col gap-2"
+        className="flex flex-col gap-4"
       >
         {({ register }) => (
           <>
@@ -75,16 +75,12 @@ export function SignInForm() {
               {...register("password")}
             />
 
-            <Button
-              type="submit"
-              disabled={isPending}
-              className="mt-2 w-full text-base"
-            >
+            <Button type="submit" disabled={isPending} className="mt-1 w-full">
               {t("submit")}
             </Button>
           </>
         )}
       </AppForm>
-    </>
+    </div>
   );
 }

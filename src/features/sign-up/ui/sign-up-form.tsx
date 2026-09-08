@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { getErrorMessage } from "@/shared/api";
-import { useRouter } from "@/shared/config/i18n/navigation";
+import { usePostAuthRedirect } from "@/features/require-auth/model/use-auth-return-url";
 import { useZodForm } from "@/shared/hooks/use-zod-form";
 import { AppForm } from "@/shared/ui/app-form";
 import { Button } from "@/shared/ui/button";
@@ -21,7 +21,7 @@ import { useSignUp } from "../model/use-sign-up";
 
 export function SignUpForm() {
   const t = useTranslations("signUp");
-  const router = useRouter();
+  const redirectAfterAuth = usePostAuthRedirect();
   const { mutate, isPending } = useSignUp();
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -50,7 +50,7 @@ export function SignUpForm() {
       {
         onSuccess: () => {
           showSuccessToast(t("success"));
-          router.replace("/dashboard");
+          redirectAfterAuth();
         },
         onError: (error) => {
           setSubmitError(getErrorMessage(error, t("errors.requestFailed")));
@@ -60,7 +60,7 @@ export function SignUpForm() {
   };
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <Show when={submitError != null}>
         <ErrorAlert errorMessage={submitError!} />
       </Show>
@@ -68,7 +68,7 @@ export function SignUpForm() {
       <AppForm
         form={form}
         onSubmit={handleSignUp}
-        className="flex flex-col gap-2"
+        className="flex flex-col gap-4"
       >
         {({ register }) => (
           <>
@@ -79,7 +79,7 @@ export function SignUpForm() {
               {...register("email")}
             />
 
-            <div className="grid gap-2 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-2">
               <InputField
                 label={t("firstName")}
                 placeholder={t("firstNamePlaceholder")}
@@ -112,16 +112,12 @@ export function SignUpForm() {
               {...register("confirmPassword")}
             />
 
-            <Button
-              type="submit"
-              disabled={isPending}
-              className="mt-2 w-full text-base"
-            >
+            <Button type="submit" disabled={isPending} className="mt-1 w-full">
               {t("submit")}
             </Button>
           </>
         )}
       </AppForm>
-    </>
+    </div>
   );
 }

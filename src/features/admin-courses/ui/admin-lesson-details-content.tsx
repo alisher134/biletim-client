@@ -38,8 +38,11 @@ export function AdminLessonDetailsContent({
       data={lesson}
       errorSlot={
         <ErrorPageElement
-          title={t("errors.courseLoadFailed")}
-          description={getErrorMessage(error, t("errors.courseLoadFailed"))}
+          layout="inline"
+          title={t("errors.lessonNotFound")}
+          description={getErrorMessage(error, t("errors.lessonNotFound"))}
+          homeLabel={t("errors.backToCourse")}
+          homeHref={`/admin/courses/${courseId}`}
         />
       }
     >

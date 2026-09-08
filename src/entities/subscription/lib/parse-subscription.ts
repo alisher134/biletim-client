@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import type {
   MySubscription,
+  PurchaseLink,
   SubscriptionPlan,
   UserSubscription,
 } from "../model/types";
@@ -22,13 +23,24 @@ const userSubscriptionSchema = z.object({
   remainingSeconds: z.number(),
   remainingDays: z.number(),
   isExpired: z.boolean(),
+  isUpcoming: z.boolean().optional().default(false),
   monthlyPriceKzt: z.number(),
   plan: subscriptionPlanSchema,
+});
+
+const purchaseLinkSchema = z.object({
+  channel: z.literal("telegram"),
+  url: z.string(),
+  instructions: z.string(),
 });
 
 const mySubscriptionSchema = z.object({
   isActive: z.boolean(),
   subscription: userSubscriptionSchema.nullable().optional().default(null),
+  upcomingSubscription: userSubscriptionSchema
+    .nullable()
+    .optional()
+    .default(null),
 });
 
 function parsePlansArray(data: unknown): SubscriptionPlan[] {
@@ -70,4 +82,8 @@ export function parseUserSubscriptions(data: unknown): UserSubscription[] {
 
 export function parseMySubscription(data: unknown): MySubscription {
   return mySubscriptionSchema.parse(data);
+}
+
+export function parsePurchaseLink(data: unknown): PurchaseLink {
+  return purchaseLinkSchema.parse(data);
 }

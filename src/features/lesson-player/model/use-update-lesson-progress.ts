@@ -16,10 +16,10 @@ export function useUpdateLessonProgress(lessonId: string) {
     mutationKey: ["lessons", lessonId, "progress", "update"],
     mutationFn: (input: UpdateLessonProgressInput) =>
       updateLessonProgress(lessonId, input),
-    onSuccess: (progress, input) => {
+    onSuccess: (progress) => {
       queryClient.setQueryData(lessonProgressQueryKey(lessonId), progress);
 
-      if (input.completed === true) {
+      if (progress.completed) {
         queryClient.invalidateQueries({ queryKey: MY_ENROLLMENTS_QUERY_KEY });
       }
     },

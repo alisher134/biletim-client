@@ -37,8 +37,11 @@ export function AdminTestDetailsContent({
       data={test}
       errorSlot={
         <ErrorPageElement
-          title={t("errors.courseLoadFailed")}
-          description={getErrorMessage(error, t("errors.courseLoadFailed"))}
+          layout="inline"
+          title={t("errors.testNotFound")}
+          description={getErrorMessage(error, t("errors.testNotFound"))}
+          homeLabel={t("errors.backToCourse")}
+          homeHref={`/admin/courses/${courseId}`}
         />
       }
     >

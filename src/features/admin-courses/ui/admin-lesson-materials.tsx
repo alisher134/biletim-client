@@ -7,6 +7,7 @@ import type { LessonMaterial } from "@/entities/course";
 import { MaterialListItem } from "@/entities/course/ui/material-list-item";
 import { getErrorMessage } from "@/shared/api";
 import { Button } from "@/shared/ui/button";
+import { SectionHeading } from "@/shared/ui/section-heading";
 import { ConfirmDeleteDialog } from "@/shared/ui/confirm-delete-dialog";
 import { EmptyState } from "@/shared/ui/empty-state";
 import { Show } from "@/shared/ui/show";
@@ -47,7 +48,7 @@ export function AdminLessonMaterials({
 
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="text-lg font-semibold">{t("materials")}</h2>
+      <SectionHeading>{t("materials")}</SectionHeading>
 
       <Show
         when={sortedMaterials.length > 0}

@@ -4,20 +4,23 @@ export { createLesson } from "./api/create-lesson";
 export { createMaterial } from "./api/create-material";
 export { createQuestion } from "./api/create-question";
 export { createTest } from "./api/create-test";
+export { confirmUploadIntent } from "./api/confirm-upload-intent";
 export { createUploadIntent } from "./api/create-upload-intent";
 export { deleteCourse } from "./api/delete-course";
 export { deleteLesson } from "./api/delete-lesson";
 export { deleteMaterial } from "./api/delete-material";
 export { deleteQuestion } from "./api/delete-question";
 export { deleteTest } from "./api/delete-test";
-export { enrollCourse } from "./api/enroll-course";
+export { getActiveTestAttempt } from "./api/get-active-test-attempt";
 export { getAdminCourse } from "./api/get-admin-course";
 export { getAdminCourses } from "./api/get-admin-courses";
 export { getCourseBySlug } from "./api/get-course-by-slug";
 export { getCourses } from "./api/get-courses";
 export { getDownloadUrl } from "./api/get-download-url";
 export { getFavorites } from "./api/get-favorites";
+export { getLessonMaterials } from "./api/get-lesson-materials";
 export { getLessonProgress } from "./api/get-lesson-progress";
+export { getLessonTest } from "./api/get-lesson-test";
 export { getMyEnrollments } from "./api/get-my-enrollments";
 export { getPlaybackUrl } from "./api/get-playback-url";
 export { getTest } from "./api/get-test";
@@ -52,10 +55,14 @@ export type {
   LessonMaterialType,
   LessonTest,
   ListMeta,
+  MyCourseItem,
+  MyCourseItemCourse,
   PlaybackUrl,
   Question,
   QuestionOption,
   QuestionType,
+  StudentCourseDetail,
+  StudentCourseLesson,
   StudentLessonTest,
   StudentQuestion,
   StudentQuestionOption,
@@ -85,10 +92,12 @@ export {
   adminCoursesListQueryKey,
   courseBySlugQueryKey,
   coursesListQueryKey,
+  lessonMaterialsQueryKey,
   lessonPlaybackQueryKey,
   lessonProgressQueryKey,
+  lessonTestQueryKey,
+  testActiveAttemptQueryKey,
   testDetailQueryKey,
 } from "./model/course-query";
 export { invalidateCourseQueries } from "./model/invalidate-course-queries";
-export { useCourseAccess } from "./model/use-course-access";
 export { useCourseBySlug } from "./model/use-course-by-slug";

@@ -24,6 +24,8 @@
   "videoKey": "Ключ объекта",
   "videoDuration": "Длительность (сек)",
   "uploading": "Загрузка…",
+  "chooseFile": "Выбрать",
+  "noFileSelected": "Файл не выбран",
   "lessons": "Уроки",
   "addLesson": "Добавить урок",
   "createLessonTitle": "Новый урок",
@@ -107,9 +109,13 @@
     "fileRequired": "Выберите файл",
     "loadFailed": "Не удалось загрузить курсы",
     "courseLoadFailed": "Не удалось загрузить курс",
+    "lessonNotFound": "Урок не найден",
+    "testNotFound": "Тест не найден",
+    "backToCourse": "К курсу",
     "createFailed": "Не удалось создать",
     "updateFailed": "Не удалось сохранить",
     "deleteFailed": "Не удалось удалить",
-    "uploadFailed": "Не удалось загрузить файл"
+    "uploadFailed": "Не удалось загрузить файл",
+    "uploadNotConfirmed": "Загрузите файл и дождитесь завершения перед сохранением"
   }
 }

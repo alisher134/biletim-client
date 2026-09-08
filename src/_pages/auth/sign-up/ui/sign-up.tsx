@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server";
 
 import { AuthFormLayout } from "@/widgets/auth-form-layout";
 import { SignUpForm } from "@/features/sign-up";
-import { Link } from "@/shared/config/i18n/navigation";
+import { LinkButton } from "@/shared/ui/link-button";
 
 export async function SignUp() {
   const t = await getTranslations("signUp");
@@ -13,9 +13,13 @@ export async function SignUp() {
       footer={
         <>
           {t("hasAccount")}{" "}
-          <Link href="/sign-in" className="text-primary hover:underline">
+          <LinkButton
+            href="/sign-in"
+            variant="link"
+            className="inline h-auto p-0"
+          >
             {t("signIn")}
-          </Link>
+          </LinkButton>
         </>
       }
     >

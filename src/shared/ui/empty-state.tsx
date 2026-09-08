@@ -25,9 +25,7 @@ export function EmptyState({
       )}
     >
       <div className="flex max-w-sm flex-col gap-1.5">
-        <p className="font-heading text-base font-medium tracking-tight">
-          {title}
-        </p>
+        <p className="text-base font-semibold">{title}</p>
         <Show when={description != null}>
           <p className="text-sm text-balance text-muted-foreground">
             {description}

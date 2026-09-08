@@ -38,7 +38,7 @@ export function DashboardTabBarNav({
     pathname === MENU_HREF || pathname.startsWith(`${MENU_HREF}/`);
 
   return (
-    <nav className="shrink-0 rounded-t-3xl bg-card pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_24px_rgba(0,0,0,0.06)] md:hidden">
+    <nav className="shrink-0 rounded-t-xl bg-card pb-[env(safe-area-inset-bottom)] shadow-soft-top md:hidden">
       <ul className="flex items-stretch">
         {items.map((item) => {
           const Icon = tabIcons[item.href];

@@ -2,19 +2,23 @@
 
 import { useMemo } from "react";
 
-import type { CourseDetail, CourseLesson } from "@/entities/course";
-import { useCourseAccess } from "@/entities/course";
+import type {
+  StudentCourseDetail,
+  StudentCourseLesson,
+} from "@/entities/course";
+
+import { useCourseAccess } from "@/features/courses";
 
 type UseLessonPageResult = {
-  course: CourseDetail | undefined;
-  lesson: CourseLesson | undefined;
-  nextLesson: CourseLesson | undefined;
+  course: StudentCourseDetail | undefined;
+  lesson: StudentCourseLesson | undefined;
+  nextLesson: StudentCourseLesson | undefined;
   canAccess: boolean;
   isLoading: boolean;
   isError: boolean;
   error: unknown;
   refetchCourse: () => void;
-  refetchEnrollments: () => void;
+  refetchSubscription: () => void;
 };
 
 export function useLessonPage(slug: string, lessonId: string): UseLessonPageResult {
@@ -45,8 +49,8 @@ export function useLessonPage(slug: string, lessonId: string): UseLessonPageResu
     refetchCourse: () => {
       void access.refetchCourse();
     },
-    refetchEnrollments: () => {
-      void access.refetchEnrollments();
+    refetchSubscription: () => {
+      void access.refetchSubscription();
     },
   };
 }

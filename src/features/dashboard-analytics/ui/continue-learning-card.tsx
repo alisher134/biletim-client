@@ -3,7 +3,9 @@
 import { PlayCircleIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+import { useLearningAccess } from "@/features/courses";
 import { getErrorMessage } from "@/shared/api";
+import { SUBSCRIPTION_PLANS_HREF } from "@/shared/config/routes";
 import { formatDuration } from "@/shared/lib/format-duration";
 import { AsyncWrapper } from "@/shared/ui/async-wrapper";
 import { EmptyState } from "@/shared/ui/empty-state";
@@ -14,6 +16,7 @@ import {
   ProgressLabel,
   ProgressValue,
 } from "@/shared/ui/progress";
+import { SectionHeading } from "@/shared/ui/section-heading";
 import { Show } from "@/shared/ui/show";
 
 import {
@@ -24,16 +27,14 @@ import { useContinueLearning } from "../model/use-continue-learning";
 
 export function ContinueLearningCard() {
   const t = useTranslations("dashboardAnalytics");
+  const { hasAccess } = useLearningAccess();
   const { data, isLoading, isError, isSuccess, error } = useContinueLearning();
 
   return (
     <section className="flex flex-col gap-4">
-      <div>
-        <h2 className="text-lg font-semibold">{t("continue.title")}</h2>
-        <p className="text-sm text-muted-foreground">
-          {t("continue.description")}
-        </p>
-      </div>
+      <SectionHeading description={t("continue.description")}>
+        {t("continue.title")}
+      </SectionHeading>
 
       <AsyncWrapper
         isLoading={isLoading}
@@ -65,7 +66,10 @@ export function ContinueLearningCard() {
               />
             }
           >
-            {(item) => (
+            {(item) => {
+              if (item == null) return null;
+
+              return (
               <div className="flex flex-col gap-4 rounded-xl border p-4">
                 <div className="flex items-start gap-3">
                   <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
@@ -94,16 +98,23 @@ export function ContinueLearningCard() {
                 </Progress>
 
                 <LinkButton
-                  href={getContinueLearningHref(
-                    item.course.slug,
-                    item.nextAction,
-                  )}
+                  href={
+                    hasAccess
+                      ? getContinueLearningHref(
+                          item.course.slug,
+                          item.nextAction,
+                        )
+                      : SUBSCRIPTION_PLANS_HREF
+                  }
                   className="w-full sm:w-fit"
                 >
-                  {t(getContinueActionLabelKey(item.nextAction))}
+                  {hasAccess
+                    ? t(getContinueActionLabelKey(item.nextAction))
+                    : t("continue.renewSubscription")}
                 </LinkButton>
               </div>
-            )}
+              );
+            }}
           </Show>
         )}
       </AsyncWrapper>

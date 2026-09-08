@@ -67,7 +67,7 @@ export function useLessonVideoProgress(
       const handleEnded = () => {
         const watchedSeconds = Math.floor(plyr.duration);
         lastSavedRef.current = watchedSeconds;
-        void flushProgress({ watchedSeconds, completed: true });
+        void flushProgress({ watchedSeconds });
       };
 
       const handleVisibilityChange = () => {

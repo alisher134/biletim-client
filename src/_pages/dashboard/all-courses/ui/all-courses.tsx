@@ -12,7 +12,7 @@ export async function AllCourses() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl font-semibold">{t("title")}</CardTitle>
+        <CardTitle size="page">{t("title")}</CardTitle>
       </CardHeader>
 
       <CardContent>

@@ -19,7 +19,7 @@ export async function AdminCourses() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl font-semibold">{t("title")}</CardTitle>
+        <CardTitle size="page">{t("title")}</CardTitle>
         <CardAction>
           <LinkButton href="/admin/courses/new">{t("create")}</LinkButton>
         </CardAction>

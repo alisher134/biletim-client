@@ -4,13 +4,14 @@ import { Alert, AlertTitle } from "./alert";
 
 type ErrorAlertProps = {
   errorMessage: string;
+  className?: string;
 };
 
-export function ErrorAlert({ errorMessage }: ErrorAlertProps) {
+export function ErrorAlert({ errorMessage, className }: ErrorAlertProps) {
   return (
-    <Alert variant="destructive">
+    <Alert variant="destructive" className={className}>
       <AlertCircleIcon />
-      <AlertTitle>{errorMessage}</AlertTitle>
+      <AlertTitle className="text-balance break-words">{errorMessage}</AlertTitle>
     </Alert>
   );
 }

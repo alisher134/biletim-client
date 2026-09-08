@@ -16,7 +16,7 @@ export async function AdminCourse({ courseId }: AdminCourseProps) {
 
       <Card className="mx-auto w-full max-w-3xl">
         <CardHeader>
-          <CardTitle className="text-2xl font-semibold">
+          <CardTitle size="page">
             {t("courseTitle")}
           </CardTitle>
         </CardHeader>

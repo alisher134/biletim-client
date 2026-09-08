@@ -9,9 +9,7 @@ export async function DashboardHome() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl font-semibold text-center md:text-2xl md:text-left">
-          {t("title")}
-        </CardTitle>
+        <CardTitle size="page">{t("title")}</CardTitle>
       </CardHeader>
 
       <CardContent>

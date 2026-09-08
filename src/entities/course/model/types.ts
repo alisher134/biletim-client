@@ -4,6 +4,24 @@ export type CourseStatus = (typeof COURSE_STATUSES)[number];
 
 export type CourseEnrollmentStatus = "ACTIVE" | "COMPLETED";
 
+export type MyCourseItemCourse = {
+  id: string;
+  title: string;
+  slug: string;
+  status: string;
+  order: number;
+};
+
+export type MyCourseItem = {
+  course: MyCourseItemCourse;
+  progress: number;
+  status: CourseEnrollmentStatus | null;
+  enrolledAt: string | null;
+  lastActivityAt: string | null;
+  completedAt: string | null;
+  isStarted: boolean;
+};
+
 export type LessonMaterialType =
   "PDF" | "DOCUMENT" | "PRESENTATION" | "ARCHIVE" | "FILE";
 
@@ -100,6 +118,8 @@ export type LessonMaterial = {
   fileName: string;
   fileSize: number;
   order: number;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type CourseLesson = {
@@ -109,19 +129,29 @@ export type CourseLesson = {
   videoObjectKey?: string | null;
   videoDuration: number | null;
   order: number;
+  hasMaterials?: boolean;
+  hasTest?: boolean;
   materials: LessonMaterial[];
   test: LessonTest | null;
 };
 
-export type StudentCourseLesson = Omit<CourseLesson, "test"> & {
-  test: StudentLessonTest | null;
+export type StudentCourseLesson = {
+  id: string;
+  title: string;
+  description: string | null;
+  videoObjectKey?: string | null;
+  videoDuration: number | null;
+  order: number;
+  hasMaterials?: boolean;
+  hasTest?: boolean;
+  testId: string | null;
 };
 
 export type CourseDetail = Course & {
   lessons: CourseLesson[];
 };
 
-export type StudentCourseDetail = Omit<CourseDetail, "lessons"> & {
+export type StudentCourseDetail = Course & {
   lessons: StudentCourseLesson[];
 };
 
@@ -259,7 +289,6 @@ export type UpdateQuestionInput = CreateQuestionInput;
 
 export type UpdateLessonProgressInput = {
   watchedSeconds: number;
-  completed?: boolean;
 };
 
 export type TestAnswerInput = {

@@ -9,6 +9,7 @@ import type { Question } from "@/entities/course";
 import { getErrorMessage } from "@/shared/api";
 import type { GenerateCopyParent } from "@/shared/lib/generate-copy";
 import { Button } from "@/shared/ui/button";
+import { SectionHeading } from "@/shared/ui/section-heading";
 import { ConfirmDeleteDialog } from "@/shared/ui/confirm-delete-dialog";
 import { EmptyState } from "@/shared/ui/empty-state";
 import { Show } from "@/shared/ui/show";
@@ -62,7 +63,7 @@ export function AdminQuestionsTable({
   return (
     <section className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-3">
-        <h2 className="text-lg font-semibold">{t("questions")}</h2>
+        <SectionHeading>{t("questions")}</SectionHeading>
         <Button type="button" onClick={() => setIsCreateOpen(true)}>
           {t("addQuestion")}
         </Button>

@@ -9,7 +9,7 @@ export async function Favorites() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl font-semibold">{t("favorites")}</CardTitle>
+        <CardTitle size="page">{t("favorites")}</CardTitle>
       </CardHeader>
 
       <CardContent>

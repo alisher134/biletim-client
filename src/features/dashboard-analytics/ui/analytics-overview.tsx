@@ -13,6 +13,7 @@ import { formatPriceKzt } from "@/entities/subscription";
 import { getErrorMessage } from "@/shared/api";
 import { formatDuration } from "@/shared/lib/format-duration";
 import { AsyncWrapper } from "@/shared/ui/async-wrapper";
+import { SectionHeading } from "@/shared/ui/section-heading";
 import { ErrorAlert } from "@/shared/ui/error-alert";
 import { LinkButton } from "@/shared/ui/link-button";
 
@@ -30,12 +31,9 @@ export function AnalyticsOverview() {
 
   return (
     <section className="flex flex-col gap-4">
-      <div>
-        <h2 className="text-lg font-semibold">{t("overview.title")}</h2>
-        <p className="text-sm text-muted-foreground">
-          {t("overview.description")}
-        </p>
-      </div>
+      <SectionHeading description={t("overview.description")}>
+        {t("overview.title")}
+      </SectionHeading>
 
       <AsyncWrapper
         isLoading={isLoading}

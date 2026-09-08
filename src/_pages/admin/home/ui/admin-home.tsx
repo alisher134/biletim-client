@@ -9,7 +9,7 @@ export async function AdminHome() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl font-semibold">{t("home")}</CardTitle>
+        <CardTitle size="page">{t("home")}</CardTitle>
       </CardHeader>
 
       <CardContent>

@@ -2,6 +2,7 @@ import type { QueryClient } from "@tanstack/react-query";
 import { isAxiosError, type InternalAxiosRequestConfig } from "axios";
 
 import { apiClient } from "@/shared/api";
+import { getApiErrorCode } from "@/shared/lib/api-error";
 
 import { refreshSession } from "../api/refresh-session";
 import { resetSession } from "./apply-session";
@@ -44,14 +45,23 @@ export function setupSessionClient(queryClient: QueryClient) {
         return Promise.reject(error);
       }
 
+      if (getApiErrorCode(error) === "TOKEN_VERSION_MISMATCH") {
+        resetSession(queryClient);
+        redirectToSignIn();
+        return Promise.reject(error);
+      }
+
       const originalRequest = error.config as
-        RetryableRequestConfig | undefined;
+        | RetryableRequestConfig
+        | undefined;
 
       if (!originalRequest || isPublicAuthRequest(originalRequest)) {
         return Promise.reject(error);
       }
 
       if (originalRequest._retry) {
+        resetSession(queryClient);
+        redirectToSignIn();
         return Promise.reject(error);
       }
 
@@ -62,11 +72,26 @@ export function setupSessionClient(queryClient: QueryClient) {
 
       originalRequest._retry = true;
 
-      const accessToken = await refreshAccessToken(queryClient);
-      originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-      return apiClient(originalRequest);
+      try {
+        const accessToken = await refreshAccessToken(queryClient);
+        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+        return apiClient(originalRequest);
+      } catch (refreshError) {
+        resetSession(queryClient);
+        redirectToSignIn();
+        return Promise.reject(refreshError);
+      }
     },
   );
+}
+
+function redirectToSignIn() {
+  if (typeof window === "undefined") return;
+
+  const signInPath = "/sign-in";
+  if (window.location.pathname.endsWith(signInPath)) return;
+
+  window.location.assign(signInPath);
 }
 
 function isPublicAuthRequest(config: InternalAxiosRequestConfig) {

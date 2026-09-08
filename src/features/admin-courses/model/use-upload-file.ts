@@ -3,6 +3,7 @@
 import { useMutation } from "@tanstack/react-query";
 
 import {
+  confirmUploadIntent,
   createUploadIntent,
   putUploadFile,
   type UploadPurpose,
@@ -34,6 +35,7 @@ export function useUploadFile() {
       });
 
       await putUploadFile(intent.uploadUrl, file);
+      await confirmUploadIntent(intent.objectKey);
 
       return {
         objectKey: intent.objectKey,

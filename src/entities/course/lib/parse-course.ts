@@ -10,8 +10,11 @@ import type {
   DownloadUrl,
   LessonMaterial,
   LessonTest,
+  MyCourseItem,
   PlaybackUrl,
   Question,
+  StudentCourseDetail,
+  StudentCourseLesson,
   StudentLessonTest,
   TestAttempt,
   UploadIntent,
@@ -102,6 +105,8 @@ const lessonMaterialSchema = z.object({
   fileName: z.string(),
   fileSize: z.number(),
   order: z.number(),
+  createdAt: z.string().optional().default(""),
+  updatedAt: z.string().optional().default(""),
 });
 
 export const courseLessonSchema = z.object({
@@ -112,11 +117,29 @@ export const courseLessonSchema = z.object({
   videoDuration: z.number().nullable().optional().default(null),
   order: z.number(),
   materials: z.array(lessonMaterialSchema).optional().default([]),
+  hasMaterials: z.boolean().optional(),
+  hasTest: z.boolean().optional(),
   test: lessonTestSchema.nullable().optional().default(null),
 });
 
 export const courseDetailSchema = courseSchema.extend({
   lessons: z.array(courseLessonSchema).optional().default([]),
+});
+
+export const studentCourseLessonSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  description: z.string().nullable().optional().default(null),
+  videoObjectKey: z.string().nullable().optional(),
+  videoDuration: z.number().nullable().optional().default(null),
+  order: z.number(),
+  hasMaterials: z.boolean().optional(),
+  hasTest: z.boolean().optional(),
+  testId: z.string().nullable(),
+});
+
+export const studentCourseDetailSchema = courseSchema.extend({
+  lessons: z.array(studentCourseLessonSchema).optional().default([]),
 });
 
 export const courseEnrollmentSchema = z.object({
@@ -128,6 +151,24 @@ export const courseEnrollmentSchema = z.object({
   progress: z.number(),
   status: z.enum(["ACTIVE", "COMPLETED"]),
   course: courseSchema.optional(),
+});
+
+const myCourseItemCourseSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  slug: z.string(),
+  status: z.string(),
+  order: z.number(),
+});
+
+export const myCourseItemSchema = z.object({
+  course: myCourseItemCourseSchema,
+  progress: z.number(),
+  status: z.enum(["ACTIVE", "COMPLETED"]).nullable(),
+  enrolledAt: z.string().nullable(),
+  lastActivityAt: z.string().nullable(),
+  completedAt: z.string().nullable(),
+  isStarted: z.boolean(),
 });
 
 export const courseFavoriteSchema = z.object({
@@ -187,6 +228,10 @@ export function parseCourseDetail(data: unknown): CourseDetail {
   return courseDetailSchema.parse(data);
 }
 
+export function parseStudentCourseDetail(data: unknown): StudentCourseDetail {
+  return studentCourseDetailSchema.parse(data);
+}
+
 export function parseCourseLesson(data: unknown): CourseLesson {
   return courseLessonSchema.parse(data);
 }
@@ -219,6 +264,14 @@ export function parseCourseEnrollments(data: unknown): CourseEnrollment[] {
   return z.object({ data: z.array(courseEnrollmentSchema) }).parse(data).data;
 }
 
+export function parseMyCourseItems(data: unknown): MyCourseItem[] {
+  if (Array.isArray(data)) {
+    return z.array(myCourseItemSchema).parse(data);
+  }
+
+  return z.object({ data: z.array(myCourseItemSchema) }).parse(data).data;
+}
+
 export function parseCourseFavorites(data: unknown): CourseFavorite[] {
   if (Array.isArray(data)) {
     return z.array(courseFavoriteSchema).parse(data);
@@ -247,4 +300,12 @@ export function parseTestAttempt(data: unknown): TestAttempt {
 
 export function parseUploadIntent(data: unknown): UploadIntent {
   return uploadIntentSchema.parse(data);
+}
+
+export function parseLessonMaterials(data: unknown): LessonMaterial[] {
+  if (Array.isArray(data)) {
+    return z.array(lessonMaterialSchema).parse(data);
+  }
+
+  return z.object({ data: z.array(lessonMaterialSchema) }).parse(data).data;
 }

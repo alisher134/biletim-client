@@ -32,6 +32,18 @@ export function lessonProgressQueryKey(lessonId: string) {
   return ["lessons", lessonId, "progress"] as const;
 }
 
+export function lessonMaterialsQueryKey(lessonId: string) {
+  return ["lessons", lessonId, "materials"] as const;
+}
+
+export function lessonTestQueryKey(lessonId: string) {
+  return ["lessons", lessonId, "test"] as const;
+}
+
 export function testDetailQueryKey(testId: string) {
   return ["tests", testId] as const;
+}
+
+export function testActiveAttemptQueryKey(testId: string) {
+  return ["tests", testId, "active-attempt"] as const;
 }

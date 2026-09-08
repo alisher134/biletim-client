@@ -78,8 +78,23 @@ export function CreateLessonDialog({
     );
   };
 
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+
+    if (!nextOpen) {
+      setSubmitError(null);
+      form.reset({
+        title: "",
+        description: "",
+        order: nextOrder,
+        videoObjectKey: "",
+        videoDuration: 0,
+      });
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger render={<Button type="button" />}>
         {t("addLesson")}
       </DialogTrigger>

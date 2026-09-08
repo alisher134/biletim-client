@@ -4,6 +4,7 @@ import { cn } from "cn";
 import {
   HouseIcon,
   LibraryIcon,
+  MenuIcon,
   UsersIcon,
   type LucideIcon,
 } from "lucide-react";
@@ -11,6 +12,7 @@ import {
 import { Link, usePathname } from "@/shared/config/i18n/navigation";
 import { isNavItemActive } from "@/shared/lib/is-nav-item-active";
 
+import { ADMIN_MENU_HREF } from "../model/admin-menu-href";
 import type { AdminNavHref, AdminNavItem } from "../model/nav-items";
 
 const tabIcons = {
@@ -21,13 +23,16 @@ const tabIcons = {
 
 type AdminTabBarNavProps = {
   items: readonly AdminNavItem[];
+  menuLabel: string;
 };
 
-export function AdminTabBarNav({ items }: AdminTabBarNavProps) {
+export function AdminTabBarNav({ items, menuLabel }: AdminTabBarNavProps) {
   const pathname = usePathname();
+  const isMenuActive =
+    pathname === ADMIN_MENU_HREF || pathname.startsWith(`${ADMIN_MENU_HREF}/`);
 
   return (
-    <nav className="shrink-0 rounded-t-3xl bg-card pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_24px_rgba(0,0,0,0.06)] md:hidden">
+    <nav className="shrink-0 rounded-t-xl bg-card pb-[env(safe-area-inset-bottom)] shadow-soft-top md:hidden">
       <ul className="flex items-stretch">
         {items.map((item) => {
           const Icon = tabIcons[item.href];
@@ -46,6 +51,17 @@ export function AdminTabBarNav({ items }: AdminTabBarNavProps) {
             </li>
           );
         })}
+
+        <li className="min-w-0 flex-1">
+          <Link
+            href={ADMIN_MENU_HREF}
+            aria-current={isMenuActive ? "page" : undefined}
+            className={tabClassName(isMenuActive)}
+          >
+            <MenuIcon className="size-4" strokeWidth={1.75} aria-hidden />
+            <span>{menuLabel}</span>
+          </Link>
+        </li>
       </ul>
     </nav>
   );

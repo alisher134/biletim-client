@@ -1,6 +1,6 @@
 import { cn } from "cn";
+import type { ReactNode } from "react";
 
-import { buttonVariants } from "@/shared/ui/button";
 import {
   Card,
   CardContent,
@@ -16,8 +16,7 @@ type PricingCardProps = {
   pricePerMonth: string;
   perMonthLabel: string;
   priceNote: string;
-  cta: string;
-  href: string;
+  action: ReactNode;
   featured?: boolean;
 };
 
@@ -28,8 +27,7 @@ export function PricingCard({
   pricePerMonth,
   perMonthLabel,
   priceNote,
-  cta,
-  href,
+  action,
   featured = false,
 }: PricingCardProps) {
   return (
@@ -61,22 +59,7 @@ export function PricingCard({
         </p>
       </CardContent>
 
-      <CardFooter className="border-t pt-(--card-spacing)">
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={cn(
-            buttonVariants({
-              variant: featured ? "default" : "outline",
-              size: "default",
-            }),
-            "w-full",
-          )}
-        >
-          {cta}
-        </a>
-      </CardFooter>
+      <CardFooter className="border-t pt-(--card-spacing)">{action}</CardFooter>
     </Card>
   );
 }

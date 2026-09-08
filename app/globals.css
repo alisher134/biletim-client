@@ -144,6 +144,8 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --shadow-soft: 0 4px 24px rgb(0 0 0 / 0.04);
+  --shadow-soft-top: 0 -4px 24px rgb(0 0 0 / 0.06);
 }
 
 @layer base {
@@ -151,7 +153,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-neutral-100 text-foreground;
+    @apply bg-background text-foreground;
   }
   html {
     @apply font-sans;

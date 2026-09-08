@@ -16,7 +16,7 @@ export async function AdminUser({ userId }: AdminUserProps) {
 
       <Card className="mx-auto w-full max-w-2xl">
         <CardHeader>
-          <CardTitle className="text-2xl font-semibold">
+          <CardTitle size="page">
             {t("userTitle")}
           </CardTitle>
         </CardHeader>

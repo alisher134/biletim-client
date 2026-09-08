@@ -4,6 +4,8 @@ import { LogOutIcon } from "lucide-react";
 
 import { useLogout } from "@/entities/session";
 
+import { DashboardMenuSection } from "./dashboard-menu-section";
+
 type DashboardMenuAccountProps = {
   logoutLabel: string;
 };
@@ -14,7 +16,7 @@ export function DashboardMenuAccount({
   const logout = useLogout();
 
   return (
-    <div className="flex flex-col items-center pt-2">
+    <DashboardMenuSection className="flex justify-center p-4">
       <button
         type="button"
         onClick={logout}
@@ -23,6 +25,6 @@ export function DashboardMenuAccount({
         {logoutLabel}
         <LogOutIcon className="size-4" strokeWidth={1.75} aria-hidden />
       </button>
-    </div>
+    </DashboardMenuSection>
   );
 }

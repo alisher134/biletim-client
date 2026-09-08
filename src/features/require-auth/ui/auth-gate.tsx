@@ -5,7 +5,8 @@ import { useEffect, type ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { resetSession } from "@/entities/session";
-import { useRouter } from "@/shared/config/i18n/navigation";
+import { usePathname, useRouter, useSearchParams } from "@/shared/config/i18n/navigation";
+import { buildSignInHref } from "@/shared/lib/auth-return-url";
 
 import { useAuthGate } from "../model/use-auth-gate";
 import { AuthGateLoader } from "./auth-gate-loader";
@@ -20,7 +21,11 @@ type AuthGateProps = {
 export function AuthGate({ children, mode }: AuthGateProps) {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { isLoading, isAuthenticated, isAdmin, isSessionError } = useAuthGate();
+  const query = searchParams.toString();
+  const currentPath = query.length === 0 ? pathname : `${pathname}?${query}`;
 
   const needsAuth = mode === "require-auth" || mode === "require-admin";
   const redirectTo = getRedirectTo({
@@ -28,6 +33,7 @@ export function AuthGate({ children, mode }: AuthGateProps) {
     isLoading,
     isAuthenticated,
     isAdmin,
+    currentPath,
   });
 
   useEffect(() => {
@@ -35,7 +41,7 @@ export function AuthGate({ children, mode }: AuthGateProps) {
       resetSession(queryClient);
 
       if (needsAuth) {
-        router.replace("/sign-in");
+        router.replace(buildSignInHref(currentPath));
       }
 
       return;
@@ -44,7 +50,7 @@ export function AuthGate({ children, mode }: AuthGateProps) {
     if (redirectTo == null) return;
 
     router.replace(redirectTo);
-  }, [isSessionError, needsAuth, redirectTo, queryClient, router]);
+  }, [currentPath, isSessionError, needsAuth, redirectTo, queryClient, router]);
 
   if (isLoading || redirectTo != null || (isSessionError && needsAuth)) {
     return <AuthGateLoader />;
@@ -58,16 +64,22 @@ function getRedirectTo({
   isLoading,
   isAuthenticated,
   isAdmin,
+  currentPath,
 }: {
   mode: AuthGateMode;
   isLoading: boolean;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  currentPath: string;
 }) {
   if (isLoading) return null;
   if (mode === "guest-only" && isAuthenticated) return "/dashboard";
-  if (mode === "require-auth" && !isAuthenticated) return "/sign-in";
-  if (mode === "require-admin" && !isAuthenticated) return "/sign-in";
+  if (mode === "require-auth" && !isAuthenticated) {
+    return buildSignInHref(currentPath);
+  }
+  if (mode === "require-admin" && !isAuthenticated) {
+    return buildSignInHref(currentPath);
+  }
   if (mode === "require-admin" && !isAdmin) return "/dashboard";
 
   return null;

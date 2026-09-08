@@ -2,28 +2,29 @@
 
 import { useCourse } from "../model/use-course";
 import { useFavorites } from "../model/use-favorites";
+import { useLearningAccess } from "../model/use-learning-access";
 import { useMyEnrollments } from "../model/use-my-enrollments";
 
 export function useCoursePage(slug: string) {
   const courseQuery = useCourse(slug);
   const enrollmentsQuery = useMyEnrollments();
   const favoritesQuery = useFavorites();
+  const access = useLearningAccess();
 
-  const enrollment = enrollmentsQuery.data?.find(
-    (item) => item.courseId === courseQuery.data?.id,
+  const myCourse = enrollmentsQuery.data?.find(
+    (item) => item.course.slug === slug || item.course.id === courseQuery.data?.id,
   );
   const isFavorite =
     favoritesQuery.data?.some(
       (item) => item.courseId === courseQuery.data?.id,
     ) === true;
-  const isAccessLoading =
-    enrollmentsQuery.isLoading || favoritesQuery.isLoading;
+  const isAccessLoading = access.isLoading;
 
   return {
     course: courseQuery.data,
-    enrollment,
+    myCourse,
     isFavorite,
-    canAccess: enrollment != null,
+    canAccess: access.hasAccess,
     isLoading: courseQuery.isLoading,
     isAccessLoading,
     isError: courseQuery.isError,

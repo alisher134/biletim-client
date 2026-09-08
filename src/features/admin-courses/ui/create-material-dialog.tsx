@@ -66,13 +66,28 @@ export function CreateMaterialDialog({
         form.reset();
       },
       onError: (error) => {
-        setSubmitError(getErrorMessage(error, t("errors.createFailed")));
+        const message = getErrorMessage(error, t("errors.createFailed"));
+
+        setSubmitError(
+          message.includes("Upload intent")
+            ? t("errors.uploadNotConfirmed")
+            : message,
+        );
       },
     });
   };
 
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+
+    if (!nextOpen) {
+      setSubmitError(null);
+      form.reset();
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger render={<Button type="button" variant="outline" />}>
         {t("addMaterial")}
       </DialogTrigger>
@@ -81,17 +96,20 @@ export function CreateMaterialDialog({
           <DialogTitle>{t("addMaterial")}</DialogTitle>
         </DialogHeader>
 
-        <Show when={submitError != null}>
-          <ErrorAlert errorMessage={submitError!} />
-        </Show>
-
         <AppForm
           form={form}
           onSubmit={handleCreate}
           className="flex flex-col gap-4"
         >
-          {({ register, setValue, formState }) => (
+          {(form) => {
+            const { register, setValue, watch, formState } = form;
+
+            return (
             <>
+              <Show when={submitError != null}>
+                <ErrorAlert errorMessage={submitError!} />
+              </Show>
+
               <InputField
                 label={t("materialTitle")}
                 error={formState.errors.title?.message}
@@ -110,20 +128,17 @@ export function CreateMaterialDialog({
                 courseId={courseId}
                 lessonId={lessonId}
                 label={t("materialFile")}
+                selectedFileName={watch("fileName")}
+                error={formState.errors.fileObjectKey?.message}
                 onUploaded={({ objectKey, fileName, fileSize }) => {
-                  setValue("fileObjectKey", objectKey);
-                  setValue("fileName", fileName);
-                  setValue("fileSize", fileSize);
+                  setValue("fileObjectKey", objectKey, { shouldValidate: true });
+                  setValue("fileName", fileName, { shouldValidate: true });
+                  setValue("fileSize", fileSize, { shouldValidate: true });
                   if (form.getValues("title").length === 0) {
                     setValue("title", fileName);
                   }
                 }}
               />
-              <Show when={formState.errors.fileObjectKey?.message != null}>
-                <ErrorAlert
-                  errorMessage={formState.errors.fileObjectKey?.message ?? ""}
-                />
-              </Show>
               <DialogFooter>
                 <DialogClose render={<Button variant="outline" />}>
                   {t("cancel")}
@@ -133,7 +148,8 @@ export function CreateMaterialDialog({
                 </Button>
               </DialogFooter>
             </>
-          )}
+            );
+          }}
         </AppForm>
       </DialogContent>
     </Dialog>

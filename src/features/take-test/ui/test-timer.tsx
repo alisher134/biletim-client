@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useTranslations } from "next-intl";
 
@@ -15,13 +15,22 @@ type TestTimerProps = {
 export function TestTimer({ startedAt, timeLimit, onExpire }: TestTimerProps) {
   const t = useTranslations("takeTest");
   const endsAt = new Date(startedAt).getTime() + timeLimit * 1000;
+  const onExpireRef = useRef(onExpire);
+  const hasExpiredRef = useRef(false);
   const [secondsLeft, setSecondsLeft] = useState(() =>
     Math.max(0, Math.floor((endsAt - Date.now()) / 1000)),
   );
 
   useEffect(() => {
+    onExpireRef.current = onExpire;
+  }, [onExpire]);
+
+  useEffect(() => {
+    if (hasExpiredRef.current) return;
+
     if (secondsLeft <= 0) {
-      onExpire();
+      hasExpiredRef.current = true;
+      onExpireRef.current();
       return;
     }
 
@@ -30,7 +39,7 @@ export function TestTimer({ startedAt, timeLimit, onExpire }: TestTimerProps) {
     }, 1000);
 
     return () => window.clearTimeout(timeoutId);
-  }, [secondsLeft, onExpire]);
+  }, [secondsLeft]);
 
   return (
     <p className="text-sm font-medium text-muted-foreground">

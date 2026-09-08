@@ -19,7 +19,7 @@ export async function AdminUsersNew() {
 
       <Card className="mx-auto w-full max-w-2xl">
         <CardHeader>
-          <CardTitle className="text-2xl font-semibold">
+          <CardTitle size="page">
             {t("createTitle")}
           </CardTitle>
         </CardHeader>

@@ -9,7 +9,8 @@
     "empty": "Пока нет прогресса обучения. Начните с каталога курсов.",
     "browseCourses": "Смотреть курсы",
     "watched": "{watched} / {total}",
-    "progress": "Прогресс"
+    "progress": "Прогресс",
+    "renewSubscription": "Оформить подписку"
   },
   "overview": {
     "title": "Статистика",

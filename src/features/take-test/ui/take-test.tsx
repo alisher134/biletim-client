@@ -1,53 +1,89 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 import { useTranslations } from "next-intl";
 
-import { useCourseAccess } from "@/entities/course";
+import { useCourseAccess } from "@/features/courses";
 import type { StudentLessonTest, TestAttempt } from "@/entities/course";
-import { getErrorMessage } from "@/shared/api";
+import { SubscriptionRequiredNotice } from "@/features/subscription";
+import {
+  getErrorMessage,
+  getLocalizedApiErrorMessage,
+  isApiErrorCode,
+} from "@/shared/api";
+import { isSubscriptionRequiredError } from "@/shared/lib/is-subscription-required-error";
 import { AsyncWrapper } from "@/shared/ui/async-wrapper";
+import { Button } from "@/shared/ui/button";
 import { ErrorAlert } from "@/shared/ui/error-alert";
 import { ErrorPageElement } from "@/shared/ui/error-page-element";
 import {
   PageBreadcrumbs,
   type PageBreadcrumbItem,
 } from "@/shared/ui/page-breadcrumbs";
+import { PageTitle } from "@/shared/ui/page-title";
 import { Show } from "@/shared/ui/show";
 
+import { useActiveAttempt } from "../model/use-active-attempt";
+import { useLessonTest } from "../model/use-lesson-test";
 import { useStartAttempt } from "../model/use-start-attempt";
-import { useTest } from "../model/use-test";
 import { TestAttemptForm } from "./test-attempt-form";
+import { TestIntro } from "./test-intro";
 import { TestResult } from "./test-result";
 
 type TakeTestProps = {
   slug: string;
-  testId: string;
+  lessonId: string;
 };
 
-function getTestViewState(attempt: TestAttempt | null) {
-  if (attempt == null) return "loading";
-  if (attempt.completedAt != null) return "result";
+type TestScreen = "checking" | "intro" | "form" | "result";
 
-  return "form";
+function getTestScreen(
+  activeAttempt: TestAttempt | null | undefined,
+  isChecking: boolean,
+  startedAttempt: TestAttempt | null,
+  result: TestAttempt | null,
+): TestScreen {
+  if (result != null) return "result";
+  if (startedAttempt != null) {
+    return startedAttempt.completedAt != null ? "result" : "form";
+  }
+
+  if (isChecking) return "checking";
+
+  if (activeAttempt == null) return "intro";
+
+  return activeAttempt.completedAt != null ? "result" : "form";
 }
 
-export function TakeTest({ slug, testId }: TakeTestProps) {
+export function TakeTest({ slug, lessonId }: TakeTestProps) {
   const t = useTranslations("takeTest");
+  const tErrors = useTranslations("errors");
   const tSidebar = useTranslations("dashboardSidebar");
   const tCourses = useTranslations("courses");
   const access = useCourseAccess(slug);
-  const testQuery = useTest(testId);
-  const startAttempt = useStartAttempt(testId);
-  const [attempt, setAttempt] = useState<TestAttempt | null>(null);
-  const [result, setResult] = useState<TestAttempt | null>(null);
-  const hasStartedRef = useRef(false);
-  const activeAttempt = result ?? attempt;
-  const viewState = getTestViewState(activeAttempt);
-  const lesson = access.course?.lessons.find(
-    (item) => item.test?.id === testId,
+  const testQuery = useLessonTest(lessonId, access.canAccess);
+  const testId = testQuery.data?.id ?? "";
+  const activeAttemptQuery = useActiveAttempt(
+    testId,
+    access.canAccess && testId.length > 0,
   );
+  const startAttempt = useStartAttempt(testId);
+  const [startedAttempt, setStartedAttempt] = useState<TestAttempt | null>(null);
+  const [result, setResult] = useState<TestAttempt | null>(null);
+  const currentAttempt =
+    result ??
+    startedAttempt ??
+    (activeAttemptQuery.data === undefined ? null : activeAttemptQuery.data);
+  const screen = getTestScreen(
+    activeAttemptQuery.data,
+    activeAttemptQuery.isLoading,
+    startedAttempt,
+    result,
+  );
+  const lesson = access.course?.lessons.find((item) => item.id === lessonId);
+  const lessonHref = `/dashboard/courses/${slug}/lessons/${lessonId}`;
+
   const breadcrumbItems: PageBreadcrumbItem[] = [
     { label: tSidebar("allCourses"), href: "/dashboard/courses" },
     {
@@ -59,7 +95,7 @@ export function TakeTest({ slug, testId }: TakeTestProps) {
   if (lesson != null) {
     breadcrumbItems.push({
       label: lesson.title,
-      href: `/dashboard/courses/${slug}/lessons/${lesson.id}`,
+      href: lessonHref,
     });
   }
 
@@ -67,16 +103,46 @@ export function TakeTest({ slug, testId }: TakeTestProps) {
     label: testQuery.data?.title ?? t("testFallback"),
   });
 
-  useEffect(() => {
-    if (testQuery.data == null || !access.canAccess || hasStartedRef.current) {
-      return;
-    }
-
-    hasStartedRef.current = true;
+  const handleStartAttempt = () => {
     startAttempt.mutate(undefined, {
-      onSuccess: setAttempt,
+      onSuccess: (attempt) => {
+        setStartedAttempt(attempt);
+        setResult(null);
+      },
     });
-  }, [access.canAccess, startAttempt, testQuery.data]);
+  };
+
+  const handleRetryStart = () => {
+    setStartedAttempt(null);
+    setResult(null);
+    handleStartAttempt();
+  };
+
+  const testLoadErrorSlot = isSubscriptionRequiredError(testQuery.error) ? (
+    <SubscriptionRequiredNotice />
+  ) : isApiErrorCode(testQuery.error, "LESSON_NOT_COMPLETED") ? (
+    <ErrorPageElement
+      layout="inline"
+      title={tErrors("apiCodes.LESSON_NOT_COMPLETED")}
+      description={t("lessonNotCompletedDescription")}
+      homeLabel={t("backToLesson")}
+      homeHref={lessonHref}
+    />
+  ) : (
+    <ErrorPageElement
+      layout="inline"
+      title={t("errors.loadFailed")}
+      description={getLocalizedApiErrorMessage(
+        testQuery.error,
+        (code) => tErrors(`apiCodes.${code}`),
+        t("errors.loadFailed"),
+      )}
+      retryLabel={tCourses("retry")}
+      onRetry={() => {
+        void testQuery.refetch();
+      }}
+    />
+  );
 
   return (
     <div className="flex flex-col gap-6">
@@ -88,6 +154,7 @@ export function TakeTest({ slug, testId }: TakeTestProps) {
         data={access.course}
         errorSlot={
           <ErrorPageElement
+            layout="inline"
             title={tCourses("errors.courseLoadFailed")}
             description={getErrorMessage(
               access.error,
@@ -96,7 +163,7 @@ export function TakeTest({ slug, testId }: TakeTestProps) {
             retryLabel={tCourses("retry")}
             onRetry={() => {
               void access.refetchCourse();
-              void access.refetchEnrollments();
+              void access.refetchSubscription();
             }}
           />
         }
@@ -104,37 +171,18 @@ export function TakeTest({ slug, testId }: TakeTestProps) {
         {() => (
           <Show
             when={access.canAccess}
-            fallback={
-              <ErrorPageElement
-                title={tCourses("accessDeniedTitle")}
-                description={tCourses("accessDeniedDescription")}
-                homeLabel={tCourses("backToCourses")}
-                homeHref="/dashboard/courses"
-              />
-            }
+            fallback={<SubscriptionRequiredNotice />}
           >
             <AsyncWrapper
               isLoading={testQuery.isLoading}
               isError={testQuery.isError}
               data={testQuery.data}
-              errorSlot={
-                <ErrorPageElement
-                  title={t("errors.loadFailed")}
-                  description={getErrorMessage(
-                    testQuery.error,
-                    t("errors.loadFailed"),
-                  )}
-                  retryLabel={tCourses("retry")}
-                  onRetry={() => {
-                    void testQuery.refetch();
-                  }}
-                />
-              }
+              errorSlot={testLoadErrorSlot}
             >
               {(test: StudentLessonTest) => (
                 <div className="flex flex-col gap-6">
                   <div className="flex flex-col gap-1">
-                    <h1 className="text-2xl font-semibold">{test.title}</h1>
+                    <PageTitle>{test.title}</PageTitle>
                     <Show
                       when={
                         test.description != null && test.description.length > 0
@@ -146,33 +194,91 @@ export function TakeTest({ slug, testId }: TakeTestProps) {
                     </Show>
                   </div>
 
-                  <Show when={startAttempt.isPending || viewState === "loading"}>
+                  <Show when={activeAttemptQuery.isError}>
+                    <ErrorAlert
+                      errorMessage={getLocalizedApiErrorMessage(
+                        activeAttemptQuery.error,
+                        (code) => tErrors(`apiCodes.${code}`),
+                        t("errors.loadAttemptFailed"),
+                      )}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="self-start"
+                      onClick={() => {
+                        void activeAttemptQuery.refetch();
+                      }}
+                    >
+                      {tCourses("retry")}
+                    </Button>
+                  </Show>
+
+                  <Show when={screen === "checking"}>
                     <p className="text-sm text-muted-foreground">
-                      {t("startingAttempt")}
+                      {t("checkingAttempt")}
                     </p>
                   </Show>
 
-                  <Show when={startAttempt.isError}>
-                    <ErrorAlert
-                      errorMessage={getErrorMessage(
-                        startAttempt.error,
-                        t("errors.startFailed"),
-                      )}
+                  <Show when={screen === "intro"}>
+                    <TestIntro
+                      test={test}
+                      onStart={handleStartAttempt}
+                      isStarting={startAttempt.isPending}
                     />
                   </Show>
 
-                  <Show when={viewState === "form" && activeAttempt != null}>
+                  <Show when={startAttempt.isError}>
+                    {isSubscriptionRequiredError(startAttempt.error) ? (
+                      <SubscriptionRequiredNotice />
+                    ) : isApiErrorCode(
+                        startAttempt.error,
+                        "LESSON_NOT_COMPLETED",
+                      ) ? (
+                      <ErrorPageElement
+                        layout="inline"
+                        title={tErrors("apiCodes.LESSON_NOT_COMPLETED")}
+                        description={t("lessonNotCompletedDescription")}
+                        homeLabel={t("backToLesson")}
+                        homeHref={lessonHref}
+                      />
+                    ) : (
+                      <div className="flex flex-col gap-3">
+                        <ErrorAlert
+                          errorMessage={getLocalizedApiErrorMessage(
+                            startAttempt.error,
+                            (code) => tErrors(`apiCodes.${code}`),
+                            t("errors.startFailed"),
+                          )}
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="self-start"
+                          onClick={handleRetryStart}
+                          disabled={startAttempt.isPending}
+                        >
+                          {tCourses("retry")}
+                        </Button>
+                      </div>
+                    )}
+                  </Show>
+
+                  <Show when={screen === "form" && currentAttempt != null}>
                     <TestAttemptForm
                       test={test}
-                      attempt={activeAttempt!}
+                      attempt={currentAttempt!}
                       onSubmitted={setResult}
+                      onRetryAttempt={handleRetryStart}
+                      isRetrying={startAttempt.isPending}
                     />
                   </Show>
 
-                  <Show when={viewState === "result" && activeAttempt != null}>
+                  <Show when={screen === "result" && currentAttempt != null}>
                     <TestResult
-                      attempt={activeAttempt!}
+                      attempt={currentAttempt!}
                       courseHref={`/dashboard/courses/${slug}`}
+                      passingScore={test.passingScore}
                     />
                   </Show>
                 </div>

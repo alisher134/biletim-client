@@ -2,14 +2,18 @@
 
 import { useState } from "react";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 
-import { getErrorMessage } from "@/shared/api";
+import { resetSession } from "@/entities/session";
+import { getLocalizedApiErrorMessage } from "@/shared/api";
+import { useRouter } from "@/shared/config/i18n/navigation";
 import { useZodForm } from "@/shared/hooks/use-zod-form";
 import { AppForm } from "@/shared/ui/app-form";
 import { Button } from "@/shared/ui/button";
 import { ErrorAlert } from "@/shared/ui/error-alert";
 import { PasswordField } from "@/shared/ui/password-field";
+import { SectionHeading } from "@/shared/ui/section-heading";
 import { Show } from "@/shared/ui/show";
 import { showSuccessToast } from "@/shared/utils";
 
@@ -27,6 +31,9 @@ const emptyPasswordValues = {
 
 export function ChangePasswordForm() {
   const t = useTranslations("changePassword");
+  const tErrors = useTranslations("errors");
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const { mutate, isPending } = useChangePassword();
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -46,11 +53,18 @@ export function ChangePasswordForm() {
       { currentPassword, newPassword },
       {
         onSuccess: () => {
+          resetSession(queryClient);
           showSuccessToast(t("success"));
-          form.reset(emptyPasswordValues);
+          router.replace("/sign-in");
         },
         onError: (error) => {
-          setSubmitError(getErrorMessage(error, t("errors.requestFailed")));
+          setSubmitError(
+            getLocalizedApiErrorMessage(
+              error,
+              (code) => tErrors(`apiCodes.${code}`),
+              t("errors.requestFailed"),
+            ),
+          );
         },
       },
     );
@@ -58,7 +72,7 @@ export function ChangePasswordForm() {
 
   return (
     <section className="flex flex-col gap-5">
-      <h2 className="text-lg font-semibold">{t("title")}</h2>
+      <SectionHeading>{t("title")}</SectionHeading>
 
       <Show when={submitError != null}>
         <ErrorAlert errorMessage={submitError!} />
