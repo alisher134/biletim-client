@@ -9,6 +9,7 @@ import {
 } from "@/entities/subscription";
 import { getErrorMessage } from "@/shared/api";
 import { AsyncWrapper } from "@/shared/ui/async-wrapper";
+import { EmptyState } from "@/shared/ui/empty-state";
 import { ErrorAlert } from "@/shared/ui/error-alert";
 import { Show } from "@/shared/ui/show";
 
@@ -45,7 +46,7 @@ export function PricingPlans() {
         <Show
           when={plans.length > 0}
           fallback={
-            <p className="text-sm text-muted-foreground">{t("plansEmpty")}</p>
+            <EmptyState title={t("plansEmpty")} />
           }
         >
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -62,7 +63,7 @@ export function PricingPlans() {
                   perMonthLabel={t("perMonth")}
                   priceNote={t("priceNote")}
                   cta={t("cta")}
-                  href="/sign-up"
+                  href="https://t.me/tarih_pay_bot"
                   featured={plan.id === featuredPlanId}
                 />
               </li>

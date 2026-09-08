@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 
 import { getErrorMessage } from "@/shared/api";
 import { AsyncWrapper } from "@/shared/ui/async-wrapper";
+import { EmptyState } from "@/shared/ui/empty-state";
 import { ErrorAlert } from "@/shared/ui/error-alert";
 import { Show } from "@/shared/ui/show";
 
@@ -57,7 +58,7 @@ export function AdminUsersList() {
             <Show
               when={usersList.data.length > 0}
               fallback={
-                <p className="text-sm text-muted-foreground">{t("empty")}</p>
+                <EmptyState title={t("empty")} />
               }
             >
               <AdminUsersTable users={usersList.data} />

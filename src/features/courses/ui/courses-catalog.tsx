@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 
 import { getErrorMessage } from "@/shared/api";
 import { AsyncWrapper } from "@/shared/ui/async-wrapper";
+import { EmptyState } from "@/shared/ui/empty-state";
 import { ErrorAlert } from "@/shared/ui/error-alert";
 import { Field, FieldLabel } from "@/shared/ui/field";
 import { SearchInput } from "@/shared/ui/search-input";
@@ -54,7 +55,10 @@ export function CoursesCatalog() {
             <Show
               when={coursesList.data.length > 0}
               fallback={
-                <p className="text-sm text-muted-foreground">{t("empty")}</p>
+                <EmptyState
+                  title={t("emptyTitle")}
+                  description={t("empty")}
+                />
               }
             >
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">

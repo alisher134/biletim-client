@@ -11,6 +11,7 @@ import { AppForm } from "@/shared/ui/app-form";
 import { Button } from "@/shared/ui/button";
 import { EmailField } from "@/shared/ui/email-field";
 import { ErrorAlert } from "@/shared/ui/error-alert";
+import { InputField } from "@/shared/ui/input-field";
 import { PasswordField } from "@/shared/ui/password-field";
 import { Show } from "@/shared/ui/show";
 import { showSuccessToast } from "@/shared/utils";
@@ -27,6 +28,8 @@ export function SignUpForm() {
   const form = useZodForm(createSignUpSchema(t), {
     defaultValues: {
       email: "",
+      firstName: "",
+      lastName: "",
       password: "",
       confirmPassword: "",
     },
@@ -34,11 +37,16 @@ export function SignUpForm() {
 
   const { errors } = form.formState;
 
-  const handleSignUp = ({ email, password }: SignUpValues) => {
+  const handleSignUp = ({
+    email,
+    firstName,
+    lastName,
+    password,
+  }: SignUpValues) => {
     setSubmitError(null);
 
     mutate(
-      { email, password },
+      { email, firstName, lastName, password },
       {
         onSuccess: () => {
           showSuccessToast(t("success"));
@@ -70,6 +78,23 @@ export function SignUpForm() {
               error={errors.email?.message}
               {...register("email")}
             />
+
+            <div className="grid gap-2 sm:grid-cols-2">
+              <InputField
+                label={t("firstName")}
+                placeholder={t("firstNamePlaceholder")}
+                error={errors.firstName?.message}
+                autoComplete="given-name"
+                {...register("firstName")}
+              />
+              <InputField
+                label={t("lastName")}
+                placeholder={t("lastNamePlaceholder")}
+                error={errors.lastName?.message}
+                autoComplete="family-name"
+                {...register("lastName")}
+              />
+            </div>
 
             <PasswordField
               label={t("password")}

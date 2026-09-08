@@ -3,11 +3,12 @@
 import { TrashIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { MaterialListItem } from "@/entities/course/ui/material-list-item";
 import type { LessonMaterial } from "@/entities/course";
+import { MaterialListItem } from "@/entities/course/ui/material-list-item";
 import { getErrorMessage } from "@/shared/api";
 import { Button } from "@/shared/ui/button";
 import { ConfirmDeleteDialog } from "@/shared/ui/confirm-delete-dialog";
+import { EmptyState } from "@/shared/ui/empty-state";
 import { Show } from "@/shared/ui/show";
 import { showSuccessToast } from "@/shared/utils";
 
@@ -51,7 +52,7 @@ export function AdminLessonMaterials({
       <Show
         when={sortedMaterials.length > 0}
         fallback={
-          <p className="text-sm text-muted-foreground">{t("emptyMaterials")}</p>
+          <EmptyState title={t("emptyMaterials")} />
         }
       >
         <ul className="divide-y divide-border rounded-xl border border-border">

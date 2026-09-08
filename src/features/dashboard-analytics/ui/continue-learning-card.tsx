@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { getErrorMessage } from "@/shared/api";
 import { formatDuration } from "@/shared/lib/format-duration";
 import { AsyncWrapper } from "@/shared/ui/async-wrapper";
+import { EmptyState } from "@/shared/ui/empty-state";
 import { ErrorAlert } from "@/shared/ui/error-alert";
 import { LinkButton } from "@/shared/ui/link-button";
 import {
@@ -13,6 +14,7 @@ import {
   ProgressLabel,
   ProgressValue,
 } from "@/shared/ui/progress";
+import { Show } from "@/shared/ui/show";
 
 import {
   getContinueActionLabelKey,
@@ -22,7 +24,7 @@ import { useContinueLearning } from "../model/use-continue-learning";
 
 export function ContinueLearningCard() {
   const t = useTranslations("dashboardAnalytics");
-  const { data, isLoading, isError, error } = useContinueLearning();
+  const { data, isLoading, isError, isSuccess, error } = useContinueLearning();
 
   return (
     <section className="flex flex-col gap-4">
@@ -36,76 +38,74 @@ export function ContinueLearningCard() {
       <AsyncWrapper
         isLoading={isLoading}
         isError={isError}
-        data={data}
+        data={isSuccess ? { continueLearning: data } : undefined}
         errorSlot={
           <ErrorAlert
             errorMessage={getErrorMessage(error, t("errors.loadFailed"))}
           />
         }
       >
-        {(continueLearning) => {
-          if (continueLearning == null) {
-            return (
-              <div className="rounded-xl border bg-muted/30 p-4">
-                <p className="text-sm text-muted-foreground">
-                  {t("continue.empty")}
-                </p>
+        {({ continueLearning }) => (
+          <Show
+            when={continueLearning != null}
+            data={continueLearning}
+            fallback={
+              <EmptyState
+                title={t("continue.emptyTitle")}
+                description={t("continue.empty")}
+                action={
+                  <LinkButton
+                    href="/dashboard/courses"
+                    variant="outline"
+                    size="sm"
+                  >
+                    {t("continue.browseCourses")}
+                  </LinkButton>
+                }
+              />
+            }
+          >
+            {(item) => (
+              <div className="flex flex-col gap-4 rounded-xl border p-4">
+                <div className="flex items-start gap-3">
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                    <PlayCircleIcon
+                      className="size-5 text-primary"
+                      aria-hidden
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm text-muted-foreground">
+                      {item.course.title}
+                    </p>
+                    <p className="font-medium">{item.lesson.title}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t("continue.watched", {
+                        watched: formatDuration(item.lesson.watchedSeconds),
+                        total: formatDuration(item.lesson.videoDuration),
+                      })}
+                    </p>
+                  </div>
+                </div>
+
+                <Progress value={item.course.progress} className="w-full">
+                  <ProgressLabel>{t("continue.progress")}</ProgressLabel>
+                  <ProgressValue />
+                </Progress>
+
                 <LinkButton
-                  href="/dashboard/courses"
-                  variant="outline"
-                  size="sm"
-                  className="mt-3 w-fit"
+                  href={getContinueLearningHref(
+                    item.course.slug,
+                    item.nextAction,
+                  )}
+                  className="w-full sm:w-fit"
                 >
-                  {t("continue.browseCourses")}
+                  {t(getContinueActionLabelKey(item.nextAction))}
                 </LinkButton>
               </div>
-            );
-          }
-
-          return (
-            <div className="flex flex-col gap-4 rounded-xl border p-4">
-              <div className="flex items-start gap-3">
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                  <PlayCircleIcon
-                    className="size-5 text-primary"
-                    aria-hidden
-                  />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm text-muted-foreground">
-                    {continueLearning.course.title}
-                  </p>
-                  <p className="font-medium">{continueLearning.lesson.title}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {t("continue.watched", {
-                      watched: formatDuration(
-                        continueLearning.lesson.watchedSeconds,
-                      ),
-                      total: formatDuration(
-                        continueLearning.lesson.videoDuration,
-                      ),
-                    })}
-                  </p>
-                </div>
-              </div>
-
-              <Progress value={continueLearning.course.progress} className="w-full">
-                <ProgressLabel>{t("continue.progress")}</ProgressLabel>
-                <ProgressValue />
-              </Progress>
-
-              <LinkButton
-                href={getContinueLearningHref(
-                  continueLearning.course.slug,
-                  continueLearning.nextAction,
-                )}
-                className="w-full sm:w-fit"
-              >
-                {t(getContinueActionLabelKey(continueLearning.nextAction))}
-              </LinkButton>
-            </div>
-          );
-        }}
+            )}
+          </Show>
+        )}
       </AsyncWrapper>
     </section>
   );

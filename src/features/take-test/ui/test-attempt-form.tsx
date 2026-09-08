@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import type { StudentLessonTest, TestAttempt } from "@/entities/course";
 import { getErrorMessage } from "@/shared/api";
 import { Button } from "@/shared/ui/button";
+import { EmptyState } from "@/shared/ui/empty-state";
 import { ErrorAlert } from "@/shared/ui/error-alert";
 import { Show } from "@/shared/ui/show";
 
@@ -77,7 +78,9 @@ export function TestAttemptForm({
 
       <Show
         when={sortedQuestions.length > 0}
-        fallback={<p className="text-sm text-muted-foreground">{t("empty")}</p>}
+        fallback={
+          <EmptyState title={t("empty")} />
+        }
       >
         <div className="flex flex-col gap-4">
           {sortedQuestions.map((question) => (

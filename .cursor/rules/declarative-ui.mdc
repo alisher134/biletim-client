@@ -1,5 +1,5 @@
 ---
-description: Declarative UI with Show, gates, AsyncWrapper, and error primitives
+description: Declarative UI with Show, gates, AsyncWrapper, EmptyState, and error primitives
 alwaysApply: true
 ---
 
@@ -12,11 +12,12 @@ Describe *what* is on screen. Do not branch with `if` / `&&` / ternaries in page
 | loading + error + data | `AsyncWrapper` |
 | only loading | `LoaderGate` |
 | only error (replace children) | `ErrorGate` |
-| boolean / optional data / empty | `Show` |
+| boolean / optional data | `Show` |
+| empty list / no content | `EmptyState` (as `Show` fallback) |
 | inline error | `ErrorAlert` |
 | full-page error | `ErrorPageElement` |
 
-Import from the file, not a made-up barrel: `@/shared/ui/async-wrapper`, `loader-gate`, `error-gate`, `show`, `error-alert`, `error-page-element`, `spinner`.
+Import from the file, not a made-up barrel: `@/shared/ui/async-wrapper`, `loader-gate`, `error-gate`, `show`, `empty-state`, `error-alert`, `error-page-element`, `spinner`.
 
 ## Fetch with data
 
@@ -159,7 +160,7 @@ If the form or list must stay visible, do **not** use `ErrorGate` / `AsyncWrappe
 
 Use `ErrorPageElement` as `errorSlot` of `AsyncWrapper` when the whole screen depends on that query.
 
-## Optional UI and empty states
+## Optional UI
 
 Use `Show` instead of `&&`, ternaries, and early returns for visibility. Use the render-prop `children` when you need the value narrowed.
 
@@ -167,7 +168,6 @@ Use `Show` instead of `&&`, ternaries, and early returns for visibility. Use the
 
 ```tsx
 {user && <Avatar name={user.name} />}
-{items.length === 0 ? <Empty /> : <List items={items} />}
 {isModalOpen ? <EventModal /> : null}
 ```
 
@@ -176,14 +176,6 @@ Use `Show` instead of `&&`, ternaries, and early returns for visibility. Use the
 ```tsx
 <Show when={isModalOpen}>
   <EventModal />
-</Show>
-```
-
-### GOOD — fallback
-
-```tsx
-<Show when={items.length > 0} fallback={<EmptyState />}>
-  <EventList events={items} />
 </Show>
 ```
 
@@ -205,10 +197,68 @@ Do not use `Show` for loading or fetch errors (`when={!isLoading}`). That is `Lo
 </Show>
 ```
 
+## Empty content
+
+When a list or block has no data (after a successful fetch), use `EmptyState` as the `Show` fallback. Do not use a bare muted `<p>`, custom empty cards, or invent a feature-local empty component.
+
+`EmptyState` props: `title` (required), optional `description`, optional `action` (usually `LinkButton`). No icons.
+
+### BAD — plain text or ad-hoc empty UI
+
+```tsx
+{items.length === 0 ? (
+  <p className="text-sm text-muted-foreground">{t("empty")}</p>
+) : (
+  <EventList events={items} />
+)}
+```
+
+```tsx
+<div className="rounded-xl border bg-muted/30 p-4">
+  <p className="text-sm text-muted-foreground">{t("empty")}</p>
+  <LinkButton href="/courses">{t("browse")}</LinkButton>
+</div>
+```
+
+### GOOD — Show + EmptyState
+
+```tsx
+<Show
+  when={items.length > 0}
+  fallback={
+    <EmptyState
+      title={t("emptyTitle")}
+      description={t("empty")}
+      action={
+        <LinkButton href="/dashboard/courses" variant="outline" size="sm">
+          {t("browseCourses")}
+        </LinkButton>
+      }
+    />
+  }
+>
+  <EventList events={items} />
+</Show>
+```
+
+Title-only is fine when there is nothing useful to add:
+
+```tsx
+<Show
+  when={items.length > 0}
+  fallback={<EmptyState title={t("empty")} />}
+>
+  <AdminUsersTable users={items} />
+</Show>
+```
+
+`EmptyState` is for **successful empty** data, not for fetch failures (`ErrorAlert` / `ErrorPageElement`) or loading (`LoaderGate` / `AsyncWrapper`).
+
 ## Do not
 
 - Mix `AsyncWrapper` with `LoaderGate` / `ErrorGate` for the same request
 - Recreate loading/error/empty helpers in a feature
 - Default `errorSlot` to a bare string when `ErrorAlert` / `ErrorPageElement` exists
+- Use a muted `<p>` or custom empty card when `EmptyState` fits
 - Use `Show`’s `data` without `when` (it will not render)
 - Hide interactive UI with `ErrorGate` when the user still needs it

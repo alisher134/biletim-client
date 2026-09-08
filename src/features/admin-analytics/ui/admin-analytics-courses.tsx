@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 
 import { getErrorMessage } from "@/shared/api";
 import { AsyncWrapper } from "@/shared/ui/async-wrapper";
+import { EmptyState } from "@/shared/ui/empty-state";
 import { ErrorAlert } from "@/shared/ui/error-alert";
 import { LinkButton } from "@/shared/ui/link-button";
 import { Show } from "@/shared/ui/show";
@@ -44,7 +45,7 @@ export function AdminAnalyticsCoursesSection() {
           <Show
             when={coursesAnalytics.data.length > 0}
             fallback={
-              <p className="text-sm text-muted-foreground">{t("courses.empty")}</p>
+              <EmptyState title={t("courses.empty")} />
             }
           >
             <Table>

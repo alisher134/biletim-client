@@ -61,7 +61,9 @@ const courseLearningSummarySchema = z.object({
 });
 
 export function parseContinueLearning(data: unknown): ContinueLearning | null {
-  if (data == null) return null;
+  if (data == null || data === "") return null;
+  if (typeof data !== "object") return null;
+
   return continueLearningSchema.parse(data);
 }
 

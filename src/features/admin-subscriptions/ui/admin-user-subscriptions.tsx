@@ -11,6 +11,7 @@ import { formatDateTime } from "@/shared/lib/dayjs";
 import { AsyncWrapper } from "@/shared/ui/async-wrapper";
 import { Button } from "@/shared/ui/button";
 import { ConfirmDeleteDialog } from "@/shared/ui/confirm-delete-dialog";
+import { EmptyState } from "@/shared/ui/empty-state";
 import { ErrorAlert } from "@/shared/ui/error-alert";
 import { Show } from "@/shared/ui/show";
 
@@ -69,7 +70,7 @@ export function AdminUserSubscriptions({ userId }: AdminUserSubscriptionsProps) 
           <Show
             when={subscriptions.length > 0}
             fallback={
-              <p className="text-sm text-muted-foreground">{t("empty")}</p>
+              <EmptyState title={t("empty")} />
             }
           >
             <ul className="flex flex-col gap-3">

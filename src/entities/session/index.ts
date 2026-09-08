@@ -3,6 +3,7 @@ export type {
   Session,
   SessionTokens,
   SessionUser,
+  SignUpCredentials,
 } from "./model/types";
 export {
   applySession,

@@ -1,5 +1,6 @@
 import { cn } from "cn";
 
+import { buttonVariants } from "@/shared/ui/button";
 import {
   Card,
   CardContent,
@@ -7,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/ui/card";
-import { LinkButton } from "@/shared/ui/link-button";
 
 type PricingCardProps = {
   months: number;
@@ -17,7 +17,7 @@ type PricingCardProps = {
   perMonthLabel: string;
   priceNote: string;
   cta: string;
-  href: "/sign-up";
+  href: string;
   featured?: boolean;
 };
 
@@ -62,14 +62,20 @@ export function PricingCard({
       </CardContent>
 
       <CardFooter className="border-t pt-(--card-spacing)">
-        <LinkButton
+        <a
           href={href}
-          variant={featured ? "default" : "outline"}
-          size="default"
-          className="w-full"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn(
+            buttonVariants({
+              variant: featured ? "default" : "outline",
+              size: "default",
+            }),
+            "w-full",
+          )}
         >
           {cta}
-        </LinkButton>
+        </a>
       </CardFooter>
     </Card>
   );

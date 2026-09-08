@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 
 import { getErrorMessage } from "@/shared/api";
 import { AsyncWrapper } from "@/shared/ui/async-wrapper";
+import { EmptyState } from "@/shared/ui/empty-state";
 import { ErrorAlert } from "@/shared/ui/error-alert";
 import { Show } from "@/shared/ui/show";
 
@@ -45,7 +46,7 @@ export function AdminCoursesList() {
             <Show
               when={coursesList.data.length > 0}
               fallback={
-                <p className="text-sm text-muted-foreground">{t("empty")}</p>
+                <EmptyState title={t("empty")} />
               }
             >
               <AdminCoursesTable courses={coursesList.data} />

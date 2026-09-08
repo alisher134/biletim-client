@@ -10,6 +10,7 @@ import { getErrorMessage } from "@/shared/api";
 import type { GenerateCopyParent } from "@/shared/lib/generate-copy";
 import { Button } from "@/shared/ui/button";
 import { ConfirmDeleteDialog } from "@/shared/ui/confirm-delete-dialog";
+import { EmptyState } from "@/shared/ui/empty-state";
 import { Show } from "@/shared/ui/show";
 import {
   Table,
@@ -88,7 +89,7 @@ export function AdminQuestionsTable({
       <Show
         when={sortedQuestions.length > 0}
         fallback={
-          <p className="text-sm text-muted-foreground">{t("emptyQuestions")}</p>
+          <EmptyState title={t("emptyQuestions")} />
         }
       >
         <Table>

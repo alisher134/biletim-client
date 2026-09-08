@@ -8,6 +8,7 @@ import { getErrorMessage } from "@/shared/api";
 import type { GenerateCopyParent } from "@/shared/lib/generate-copy";
 import { Button } from "@/shared/ui/button";
 import { ConfirmDeleteDialog } from "@/shared/ui/confirm-delete-dialog";
+import { EmptyState } from "@/shared/ui/empty-state";
 import { LinkButton } from "@/shared/ui/link-button";
 import { Show } from "@/shared/ui/show";
 import { showSuccessToast } from "@/shared/utils";
@@ -52,7 +53,7 @@ export function AdminCourseLessons({
       <Show
         when={sortedLessons.length > 0}
         fallback={
-          <p className="text-sm text-muted-foreground">{t("emptyLessons")}</p>
+          <EmptyState title={t("emptyLessons")} />
         }
       >
         <ul className="divide-y divide-border rounded-xl border border-border">
