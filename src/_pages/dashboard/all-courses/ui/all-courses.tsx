@@ -1,12 +1,25 @@
 import { Suspense } from "react";
 
+import { getTranslations } from "next-intl/server";
+
 import { CoursesCatalog } from "@/features/courses";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { CenteredSpinner } from "@/shared/ui/spinner";
 
-export function AllCourses() {
+export async function AllCourses() {
+  const t = await getTranslations("courses");
+
   return (
-    <Suspense fallback={<CenteredSpinner />}>
-      <CoursesCatalog />
-    </Suspense>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-2xl font-semibold">{t("title")}</CardTitle>
+      </CardHeader>
+
+      <CardContent>
+        <Suspense fallback={<CenteredSpinner />}>
+          <CoursesCatalog />
+        </Suspense>
+      </CardContent>
+    </Card>
   );
 }

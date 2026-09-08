@@ -1,14 +1,20 @@
 import { getTranslations } from "next-intl/server";
 
 import { AdminAnalytics } from "@/features/admin-analytics";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 
 export async function AdminHome() {
   const t = await getTranslations("adminSidebar");
 
   return (
-    <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-semibold">{t("home")}</h1>
-      <AdminAnalytics />
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-2xl font-semibold">{t("home")}</CardTitle>
+      </CardHeader>
+
+      <CardContent>
+        <AdminAnalytics />
+      </CardContent>
+    </Card>
   );
 }

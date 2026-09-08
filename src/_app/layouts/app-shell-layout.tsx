@@ -14,12 +14,10 @@ export function AppShellLayout({
   isHeaderHiddenOnMobile = false,
 }: AppShellLayoutProps) {
   return (
-    <div className="flex min-h-dvh flex-col">
-      <div
-        className={isHeaderHiddenOnMobile ? "hidden md:contents" : "contents"}
-      >
-        <Header />
-      </div>
+    <div className="flex h-dvh flex-col overflow-hidden">
+      <Header
+        className={isHeaderHiddenOnMobile ? "hidden md:block" : undefined}
+      />
 
       <div className="flex min-h-0 flex-1">
         {sidebar}

@@ -15,50 +15,46 @@ export function FavoritesList() {
   const favoritesQuery = useFavorites();
 
   return (
-    <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-semibold">{t("favorites")}</h1>
+    <AsyncWrapper
+      isLoading={favoritesQuery.isLoading}
+      isError={favoritesQuery.isError}
+      data={favoritesQuery.data}
+      errorSlot={
+        <ErrorAlert
+          errorMessage={getErrorMessage(
+            favoritesQuery.error,
+            t("errors.loadFailed"),
+          )}
+        />
+      }
+    >
+      {(items) => (
+        <Show
+          when={items.length > 0}
+          fallback={
+            <p className="text-sm text-muted-foreground">
+              {t("emptyFavorites")}
+            </p>
+          }
+        >
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {items.map((item) => {
+              const course = item.course;
 
-      <AsyncWrapper
-        isLoading={favoritesQuery.isLoading}
-        isError={favoritesQuery.isError}
-        data={favoritesQuery.data}
-        errorSlot={
-          <ErrorAlert
-            errorMessage={getErrorMessage(
-              favoritesQuery.error,
-              t("errors.loadFailed"),
-            )}
-          />
-        }
-      >
-        {(items) => (
-          <Show
-            when={items.length > 0}
-            fallback={
-              <p className="text-sm text-muted-foreground">
-                {t("emptyFavorites")}
-              </p>
-            }
-          >
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-              {items.map((item) => {
-                const course = item.course;
+              if (course == null) return null;
 
-                if (course == null) return null;
-
-                return (
-                  <CourseCard
-                    key={item.id}
-                    course={course}
-                    actionHref={`/dashboard/courses/${course.slug}`}
-                    actionLabel={t("details")}
-                  />
-                );
-              })}
-            </div>
-          </Show>
-        )}
-      </AsyncWrapper>
-    </div>
+              return (
+                <CourseCard
+                  key={item.id}
+                  course={course}
+                  actionHref={`/dashboard/courses/${course.slug}`}
+                  actionLabel={t("details")}
+                />
+              );
+            })}
+          </div>
+        </Show>
+      )}
+    </AsyncWrapper>
   );
 }

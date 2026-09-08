@@ -63,7 +63,7 @@ export function CourseCard({
         </Show>
       </CardContent>
 
-      <CardFooter className="pt-0">
+      <CardFooter className="px-(--card-spacing) pt-0 pb-(--card-spacing)">
         <LinkButton
           href={actionHref}
           variant="default"

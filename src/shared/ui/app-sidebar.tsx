@@ -21,18 +21,20 @@ export function AppSidebar({
   return (
     <aside
       className={cn(
-        "w-[320px] shrink-0 flex-col gap-5 overflow-y-auto border-r border-sidebar-border bg-sidebar py-6 pl-3",
-        isHiddenOnMobile ? "hidden md:flex" : "flex",
+        "w-[320px] shrink-0",
+        isHiddenOnMobile ? "hidden md:block" : "block",
       )}
     >
-      <p className="px-3 text-base font-medium text-muted-foreground">
-        {title}
-      </p>
-      <AppSidebarNav
-        items={items}
-        rootHref={rootHref}
-        footerSlot={footerSlot}
-      />
+      <div className="fixed top-16 bottom-0 z-40 flex w-[320px] flex-col gap-5 overflow-y-auto border-r border-sidebar-border bg-sidebar py-6 pl-3">
+        <p className="px-3 text-base font-medium text-muted-foreground">
+          {title}
+        </p>
+        <AppSidebarNav
+          items={items}
+          rootHref={rootHref}
+          footerSlot={footerSlot}
+        />
+      </div>
     </aside>
   );
 }

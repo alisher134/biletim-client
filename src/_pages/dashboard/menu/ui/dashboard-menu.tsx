@@ -1,6 +1,13 @@
 import { getTranslations } from "next-intl/server";
 
 import { ChangeLanguage } from "@/features/change-language";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/shared/ui/card";
 
 import { dashboardMenuNavItems } from "../model/menu-nav-items";
 import { DashboardMenuAccount } from "./dashboard-menu-account";
@@ -17,18 +24,20 @@ export async function DashboardMenu() {
   }));
 
   return (
-    <div className="mx-auto flex w-full max-w-lg flex-col gap-5">
-      <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">{t("title")}</h1>
-        <div className="md:hidden">
+    <Card className="mx-auto w-full max-w-lg">
+      <CardHeader>
+        <CardTitle className="text-2xl font-semibold">{t("title")}</CardTitle>
+        <CardAction className="md:hidden">
           <ChangeLanguage />
-        </div>
-      </header>
+        </CardAction>
+      </CardHeader>
 
-      <DashboardMenuProfile />
-      <DashboardMenuNav items={items} />
-      <DashboardMenuAdminLink label={t("admin")} />
-      <DashboardMenuAccount logoutLabel={t("logout")} />
-    </div>
+      <CardContent className="flex flex-col gap-5">
+        <DashboardMenuProfile />
+        <DashboardMenuNav items={items} />
+        <DashboardMenuAdminLink label={t("admin")} />
+        <DashboardMenuAccount logoutLabel={t("logout")} />
+      </CardContent>
+    </Card>
   );
 }

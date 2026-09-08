@@ -1,4 +1,5 @@
 import { TakeTest } from "@/features/take-test";
+import { Card, CardContent } from "@/shared/ui/card";
 
 type DashboardTestProps = {
   slug: string;
@@ -6,5 +7,11 @@ type DashboardTestProps = {
 };
 
 export function DashboardTest({ slug, testId }: DashboardTestProps) {
-  return <TakeTest slug={slug} testId={testId} />;
+  return (
+    <Card>
+      <CardContent>
+        <TakeTest slug={slug} testId={testId} />
+      </CardContent>
+    </Card>
+  );
 }
