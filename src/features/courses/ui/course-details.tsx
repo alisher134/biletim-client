@@ -15,6 +15,7 @@ import { Show } from "@/shared/ui/show";
 
 import { useCoursePage } from "../model/use-course-page";
 import { CourseLessons } from "./course-lessons";
+import { CourseNextActionCta } from "./course-next-action-cta";
 import { CourseProgress } from "./course-progress";
 import { FavoriteCourseButton } from "./favorite-course-button";
 
@@ -102,6 +103,14 @@ export function CourseDetails({ slug }: CourseDetailsProps) {
                     courseId={course.id}
                     isFavorite={coursePage.isFavorite}
                   />
+                  <Show when={coursePage.canAccess}>
+                    <CourseNextActionCta
+                      courseSlug={course.slug}
+                      nextAction={coursePage.nextAction}
+                      canAccess={coursePage.canAccess}
+                      isLoading={coursePage.isLearningSummaryLoading}
+                    />
+                  </Show>
                   <Show when={!coursePage.canAccess}>
                     <LinkButton href={SUBSCRIPTION_PLANS_HREF} size="sm">
                       {t("viewPlans")}

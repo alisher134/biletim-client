@@ -10,6 +10,13 @@ export { getContinueLearning } from "./api/get-continue-learning";
 export { getCourseLearningSummary } from "./api/get-course-learning-summary";
 
 export {
+  getCourseNextActionLabelKey,
+  getLearningNextActionHref,
+} from "./lib/next-action";
+
+export { useCourseLearningSummary } from "./model/use-course-learning-summary";
+
+export {
   CONTINUE_LEARNING_QUERY_KEY,
   COURSE_LEARNING_SUMMARY_QUERY_KEY,
   courseLearningSummaryQueryKey,

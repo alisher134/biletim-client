@@ -168,7 +168,7 @@ export function TakeTest({ slug, lessonId }: TakeTestProps) {
           />
         }
       >
-        {() => (
+        {(course) => (
           <Show
             when={access.canAccess}
             fallback={<SubscriptionRequiredNotice />}
@@ -277,6 +277,8 @@ export function TakeTest({ slug, lessonId }: TakeTestProps) {
                   <Show when={screen === "result" && currentAttempt != null}>
                     <TestResult
                       attempt={currentAttempt!}
+                      courseId={course.id}
+                      courseSlug={slug}
                       courseHref={`/dashboard/courses/${slug}`}
                       passingScore={test.passingScore}
                     />

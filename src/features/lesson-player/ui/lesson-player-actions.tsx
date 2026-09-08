@@ -23,26 +23,31 @@ export function LessonPlayerActions({
 }: LessonPlayerActionsProps) {
   const t = useTranslations("lessonPlayer");
 
-  const hasAvailableTest =
-    currentLesson.hasTest === true && currentLesson.testId != null;
+  const shouldTakeTest =
+    isLessonCompleted &&
+    currentLesson.hasTest === true &&
+    currentLesson.testId != null;
+  const shouldGoToNextLesson = nextLesson != null && !shouldTakeTest;
 
   return (
     <div className="flex flex-wrap justify-end gap-2">
-      <Show when={hasAvailableTest && isLessonCompleted}>
+      <Show when={shouldTakeTest}>
         <Link
           href={`/dashboard/courses/${slug}/lessons/${currentLesson.id}/test`}
-          className={cn(buttonVariants({ variant: "outline" }))}
+          className={cn(buttonVariants({ variant: "default" }))}
         >
           {t("takeTest")}
         </Link>
       </Show>
-      <Show when={nextLesson != null}>
-        <Link
-          href={`/dashboard/courses/${slug}/lessons/${nextLesson?.id}`}
-          className={cn(buttonVariants({ variant: "default" }))}
-        >
-          {t("nextLesson")}
-        </Link>
+      <Show when={shouldGoToNextLesson} data={nextLesson}>
+        {(lesson) => (
+          <Link
+            href={`/dashboard/courses/${slug}/lessons/${lesson.id}`}
+            className={cn(buttonVariants({ variant: "default" }))}
+          >
+            {t("nextLesson")}
+          </Link>
+        )}
       </Show>
     </div>
   );

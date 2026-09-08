@@ -1,14 +1,11 @@
 import type { ContinueLearning, LearningNextAction } from "@/entities/learning";
+import { getLearningNextActionHref } from "@/entities/learning";
 
 export function getContinueLearningHref(
   courseSlug: string,
   nextAction: LearningNextAction,
 ) {
-  if (nextAction.type === "TEST") {
-    return `/dashboard/courses/${courseSlug}/lessons/${nextAction.lessonId}/test`;
-  }
-
-  return `/dashboard/courses/${courseSlug}/lessons/${nextAction.lessonId}`;
+  return getLearningNextActionHref(courseSlug, nextAction);
 }
 
 export function getContinueActionLabelKey(
