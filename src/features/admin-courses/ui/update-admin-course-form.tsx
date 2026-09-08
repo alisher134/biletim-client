@@ -13,7 +13,6 @@ import { ErrorAlert } from "@/shared/ui/error-alert";
 import { InputField } from "@/shared/ui/input-field";
 import { SelectField } from "@/shared/ui/select-field";
 import { Show } from "@/shared/ui/show";
-import { TextareaField } from "@/shared/ui/textarea-field";
 import { showSuccessToast } from "@/shared/utils";
 
 import {
@@ -21,6 +20,7 @@ import {
   type CourseFormValues,
 } from "../model/course-schema";
 import { useUpdateCourse } from "../model/use-update-course";
+import { AdminCopyFields, GENERATED_COPY_OPTIONS } from "./admin-copy-fields";
 
 type UpdateAdminCourseFormProps = {
   course: Course;
@@ -60,18 +60,22 @@ export function UpdateAdminCourseForm({ course }: UpdateAdminCourseFormProps) {
         onSubmit={handleSave}
         className="flex flex-col gap-5"
       >
-        {({ register }) => (
+        {({ register, setValue, watch }) => (
           <>
-            <InputField
-              label={t("name")}
-              error={errors.title?.message}
-              {...register("title")}
-            />
-            <TextareaField
-              label={t("description")}
-              error={errors.description?.message}
-              rows={4}
-              {...register("description")}
+            <AdminCopyFields
+              entity="course"
+              title={watch("title")}
+              description={watch("description")}
+              titleError={errors.title?.message}
+              descriptionError={errors.description?.message}
+              titleRegister={register("title")}
+              descriptionRegister={register("description")}
+              onTitleGenerated={(text) =>
+                setValue("title", text, GENERATED_COPY_OPTIONS)
+              }
+              onDescriptionGenerated={(text) =>
+                setValue("description", text, GENERATED_COPY_OPTIONS)
+              }
             />
             <InputField
               label={t("slug")}

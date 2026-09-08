@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "cn";
 
@@ -173,6 +173,32 @@ function FieldSeparator({
   );
 }
 
+function FieldHeader({
+  htmlFor,
+  label,
+  action,
+}: {
+  htmlFor: string;
+  label?: string;
+  action?: ReactNode;
+}) {
+  if (label == null && action == null) return null;
+
+  return (
+    <div className="flex items-center justify-between gap-2">
+      {label && (
+        <FieldLabel
+          htmlFor={htmlFor}
+          className="font-normal text-muted-foreground"
+        >
+          {label}
+        </FieldLabel>
+      )}
+      {action}
+    </div>
+  );
+}
+
 function FieldError({
   className,
   children,
@@ -230,6 +256,7 @@ export {
   FieldDescription,
   FieldError,
   FieldGroup,
+  FieldHeader,
   FieldLegend,
   FieldSeparator,
   FieldSet,

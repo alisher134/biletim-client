@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 
 import type { CourseLesson } from "@/entities/course";
 import { getErrorMessage } from "@/shared/api";
+import type { GenerateCopyParent } from "@/shared/lib/generate-copy";
 import { Button } from "@/shared/ui/button";
 import { ConfirmDeleteDialog } from "@/shared/ui/confirm-delete-dialog";
 import { LinkButton } from "@/shared/ui/link-button";
@@ -17,11 +18,13 @@ import { CreateLessonDialog } from "./create-lesson-dialog";
 type AdminCourseLessonsProps = {
   courseId: string;
   lessons: CourseLesson[];
+  copyParent?: GenerateCopyParent;
 };
 
 export function AdminCourseLessons({
   courseId,
   lessons,
+  copyParent,
 }: AdminCourseLessonsProps) {
   const t = useTranslations("adminCourses");
   const { mutate, isPending } = useDeleteLesson(courseId);
@@ -96,6 +99,7 @@ export function AdminCourseLessons({
       <CreateLessonDialog
         courseId={courseId}
         nextOrder={sortedLessons.length}
+        copyParent={copyParent}
       />
     </section>
   );

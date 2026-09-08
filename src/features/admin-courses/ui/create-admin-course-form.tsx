@@ -14,7 +14,6 @@ import { ErrorAlert } from "@/shared/ui/error-alert";
 import { InputField } from "@/shared/ui/input-field";
 import { SelectField } from "@/shared/ui/select-field";
 import { Show } from "@/shared/ui/show";
-import { TextareaField } from "@/shared/ui/textarea-field";
 import { showSuccessToast } from "@/shared/utils";
 
 import {
@@ -22,6 +21,7 @@ import {
   type CourseFormValues,
 } from "../model/course-schema";
 import { useCreateCourse } from "../model/use-create-course";
+import { AdminCopyFields, GENERATED_COPY_OPTIONS } from "./admin-copy-fields";
 
 export function CreateAdminCourseForm() {
   const t = useTranslations("adminCourses");
@@ -66,10 +66,13 @@ export function CreateAdminCourseForm() {
       >
         {({ register, setValue, watch }) => (
           <>
-            <InputField
-              label={t("name")}
-              error={errors.title?.message}
-              {...register("title", {
+            <AdminCopyFields
+              entity="course"
+              title={watch("title")}
+              description={watch("description")}
+              titleError={errors.title?.message}
+              descriptionError={errors.description?.message}
+              titleRegister={register("title", {
                 onChange: (event) => {
                   if (watch("slug").length > 0) return;
                   setValue("slug", slugify(event.target.value), {
@@ -77,12 +80,15 @@ export function CreateAdminCourseForm() {
                   });
                 },
               })}
-            />
-            <TextareaField
-              label={t("description")}
-              error={errors.description?.message}
-              rows={4}
-              {...register("description")}
+              descriptionRegister={register("description")}
+              onTitleGenerated={(text) => {
+                setValue("title", text, GENERATED_COPY_OPTIONS);
+                if (watch("slug").length > 0) return;
+                setValue("slug", slugify(text), { shouldValidate: false });
+              }}
+              onDescriptionGenerated={(text) =>
+                setValue("description", text, GENERATED_COPY_OPTIONS)
+              }
             />
             <InputField
               label={t("slug")}

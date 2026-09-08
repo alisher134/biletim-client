@@ -89,6 +89,10 @@
   "successTestCreate": "Тест құрылды",
   "successQuestionSave": "Сұрақ сақталды",
   "successUpload": "Файл жүктелді",
+  "generateCopy": "ИИ арқылы жазу",
+  "generateCopySuccess": "Мәтін дайын — тексеріп, сақтаңыз",
+  "generateCopyFailed": "Мәтінді генерациялау мүмкін болмады",
+  "generateCopyNeedContext": "Атауын, сипаттамасын немесе қысқа нұсқау енгізіңіз — ИИ толықтырады",
   "errors": {
     "titleRequired": "Атауын енгізіңіз",
     "titleMax": "Атауы 200 таңбадан аспауы керек",

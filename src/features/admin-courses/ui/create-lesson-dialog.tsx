@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { getErrorMessage } from "@/shared/api";
 import { useRouter } from "@/shared/config/i18n/navigation";
 import { useZodForm } from "@/shared/hooks/use-zod-form";
+import type { GenerateCopyParent } from "@/shared/lib/generate-copy";
 import { AppForm } from "@/shared/ui/app-form";
 import { Button } from "@/shared/ui/button";
 import {
@@ -19,9 +20,7 @@ import {
   DialogTrigger,
 } from "@/shared/ui/dialog";
 import { ErrorAlert } from "@/shared/ui/error-alert";
-import { InputField } from "@/shared/ui/input-field";
 import { Show } from "@/shared/ui/show";
-import { TextareaField } from "@/shared/ui/textarea-field";
 import { showSuccessToast } from "@/shared/utils";
 
 import {
@@ -29,15 +28,18 @@ import {
   type LessonFormValues,
 } from "../model/lesson-schema";
 import { useCreateLesson } from "../model/use-create-lesson";
+import { AdminCopyFields, GENERATED_COPY_OPTIONS } from "./admin-copy-fields";
 
 type CreateLessonDialogProps = {
   courseId: string;
   nextOrder: number;
+  copyParent?: GenerateCopyParent;
 };
 
 export function CreateLessonDialog({
   courseId,
   nextOrder,
+  copyParent,
 }: CreateLessonDialogProps) {
   const t = useTranslations("adminCourses");
   const router = useRouter();
@@ -95,17 +97,23 @@ export function CreateLessonDialog({
           onSubmit={handleCreate}
           className="flex flex-col gap-4"
         >
-          {({ register, formState }) => (
+          {({ register, setValue, watch, formState }) => (
             <>
-              <InputField
-                label={t("name")}
-                error={formState.errors.title?.message}
-                {...register("title")}
-              />
-              <TextareaField
-                label={t("description")}
-                error={formState.errors.description?.message}
-                {...register("description")}
+              <AdminCopyFields
+                entity="lesson"
+                parent={copyParent}
+                title={watch("title")}
+                description={watch("description")}
+                titleError={formState.errors.title?.message}
+                descriptionError={formState.errors.description?.message}
+                titleRegister={register("title")}
+                descriptionRegister={register("description")}
+                onTitleGenerated={(text) =>
+                  setValue("title", text, GENERATED_COPY_OPTIONS)
+                }
+                onDescriptionGenerated={(text) =>
+                  setValue("description", text, GENERATED_COPY_OPTIONS)
+                }
               />
               <DialogFooter>
                 <DialogClose render={<Button variant="outline" />}>

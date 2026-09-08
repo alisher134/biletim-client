@@ -89,6 +89,10 @@
   "successTestCreate": "Тест создан",
   "successQuestionSave": "Вопрос сохранён",
   "successUpload": "Файл загружен",
+  "generateCopy": "Сгенерировать с ИИ",
+  "generateCopySuccess": "Текст готов — проверьте и сохраните",
+  "generateCopyFailed": "Не удалось сгенерировать текст",
+  "generateCopyNeedContext": "Введите название, описание или короткую подсказку — ИИ доработает",
   "errors": {
     "titleRequired": "Введите название",
     "titleMax": "Название не длиннее 200 символов",

@@ -7,12 +7,12 @@ import { useTranslations } from "next-intl";
 import type { LessonTest } from "@/entities/course";
 import { getErrorMessage } from "@/shared/api";
 import { useZodForm } from "@/shared/hooks/use-zod-form";
+import type { GenerateCopyParent } from "@/shared/lib/generate-copy";
 import { AppForm } from "@/shared/ui/app-form";
 import { Button } from "@/shared/ui/button";
 import { ErrorAlert } from "@/shared/ui/error-alert";
 import { InputField } from "@/shared/ui/input-field";
 import { Show } from "@/shared/ui/show";
-import { TextareaField } from "@/shared/ui/textarea-field";
 import { showSuccessToast } from "@/shared/utils";
 
 import {
@@ -21,15 +21,18 @@ import {
   type TestFormValues,
 } from "../model/test-schema";
 import { useUpdateTest } from "../model/use-update-test";
+import { AdminCopyFields, GENERATED_COPY_OPTIONS } from "./admin-copy-fields";
 
 type UpdateAdminTestFormProps = {
   courseId: string;
   test: LessonTest;
+  copyParent?: GenerateCopyParent;
 };
 
 export function UpdateAdminTestForm({
   courseId,
   test,
+  copyParent,
 }: UpdateAdminTestFormProps) {
   const t = useTranslations("adminCourses");
   const { mutate, isPending } = useUpdateTest(courseId, test.id);
@@ -73,16 +76,22 @@ export function UpdateAdminTestForm({
         onSubmit={handleSave}
         className="flex flex-col gap-5"
       >
-        {({ register }) => (
+        {({ register, setValue, watch }) => (
           <>
-            <InputField
-              label={t("name")}
-              error={errors.title?.message}
-              {...register("title")}
-            />
-            <TextareaField
-              label={t("description")}
-              {...register("description")}
+            <AdminCopyFields
+              entity="test"
+              parent={copyParent}
+              title={watch("title")}
+              description={watch("description")}
+              titleError={errors.title?.message}
+              titleRegister={register("title")}
+              descriptionRegister={register("description")}
+              onTitleGenerated={(text) =>
+                setValue("title", text, GENERATED_COPY_OPTIONS)
+              }
+              onDescriptionGenerated={(text) =>
+                setValue("description", text, GENERATED_COPY_OPTIONS)
+              }
             />
             <div className="grid gap-5 sm:grid-cols-3">
               <InputField

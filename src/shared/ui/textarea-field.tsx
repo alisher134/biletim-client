@@ -1,25 +1,26 @@
 "use client";
 
-import { useId } from "react";
+import { useId, type ReactNode } from "react";
 
 import type { FormUIProps } from "../types/form";
-import { Field, FieldError, FieldLabel } from "./field";
+import { Field, FieldError, FieldHeader } from "./field";
 import { Textarea } from "./textarea";
+
+type TextareaFieldProps = FormUIProps<"textarea"> & {
+  action?: ReactNode;
+};
 
 export function TextareaField({
   label,
   error,
+  action,
   ...props
-}: FormUIProps<"textarea">) {
+}: TextareaFieldProps) {
   const id = useId();
 
   return (
     <Field data-invalid={error ? true : undefined}>
-      {label && (
-        <FieldLabel htmlFor={id} className="font-normal text-muted-foreground">
-          {label}
-        </FieldLabel>
-      )}
+      <FieldHeader htmlFor={id} label={label} action={action} />
       <Textarea
         id={id}
         autoComplete="off"

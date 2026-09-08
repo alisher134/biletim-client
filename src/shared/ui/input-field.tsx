@@ -1,19 +1,24 @@
-import { useId } from "react";
+import { useId, type ReactNode } from "react";
 
 import type { FormUIProps } from "../types/form";
-import { Field, FieldError, FieldLabel } from "../ui/field";
-import { Input } from "../ui/input";
+import { Field, FieldError, FieldHeader } from "./field";
+import { Input } from "./input";
 
-export function InputField({ label, error, ...props }: FormUIProps<"input">) {
+type InputFieldProps = FormUIProps<"input"> & {
+  action?: ReactNode;
+};
+
+export function InputField({
+  label,
+  error,
+  action,
+  ...props
+}: InputFieldProps) {
   const id = useId();
 
   return (
     <Field data-invalid={error ? true : undefined}>
-      {label && (
-        <FieldLabel htmlFor={id} className="font-normal text-muted-foreground">
-          {label}
-        </FieldLabel>
-      )}
+      <FieldHeader htmlFor={id} label={label} action={action} />
       <Input
         autoComplete="off"
         id={id}

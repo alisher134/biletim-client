@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 
 import type { LessonTest } from "@/entities/course";
+import type { GenerateCopyParent } from "@/shared/lib/generate-copy";
 import { Show } from "@/shared/ui/show";
 
 import { AdminExistingTest } from "./admin-existing-test";
@@ -12,12 +13,14 @@ type AdminLessonTestProps = {
   courseId: string;
   lessonId: string;
   test: LessonTest | null;
+  copyParent?: GenerateCopyParent;
 };
 
 export function AdminLessonTest({
   courseId,
   lessonId,
   test,
+  copyParent,
 }: AdminLessonTestProps) {
   const t = useTranslations("adminCourses");
 
@@ -30,7 +33,11 @@ export function AdminLessonTest({
         fallback={
           <div className="flex flex-col items-start gap-3">
             <p className="text-sm text-muted-foreground">{t("noTest")}</p>
-            <CreateTestDialog courseId={courseId} lessonId={lessonId} />
+            <CreateTestDialog
+              courseId={courseId}
+              lessonId={lessonId}
+              copyParent={copyParent}
+            />
           </div>
         }
       >

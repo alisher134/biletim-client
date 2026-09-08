@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import type { Question } from "@/entities/course";
 import { getErrorMessage } from "@/shared/api";
 import { useZodForm } from "@/shared/hooks/use-zod-form";
+import type { GenerateCopyParent } from "@/shared/lib/generate-copy";
 import { AppForm } from "@/shared/ui/app-form";
 import { Button } from "@/shared/ui/button";
 import {
@@ -18,10 +19,7 @@ import {
   DialogTitle,
 } from "@/shared/ui/dialog";
 import { ErrorAlert } from "@/shared/ui/error-alert";
-import { InputField } from "@/shared/ui/input-field";
-import { SelectField } from "@/shared/ui/select-field";
 import { Show } from "@/shared/ui/show";
-import { TextareaField } from "@/shared/ui/textarea-field";
 import { showSuccessToast } from "@/shared/utils";
 
 import {
@@ -29,13 +27,15 @@ import {
   type QuestionFormValues,
 } from "../model/question-schema";
 import { useSaveQuestion } from "../model/use-save-question";
-import { QuestionOptionsEditor } from "./question-options-editor";
+import { QuestionDialogFields } from "./question-dialog-fields";
 
 type QuestionDialogProps = {
   courseId: string;
   testId: string;
   question?: Question;
   nextOrder: number;
+  copyParent?: GenerateCopyParent;
+  existingQuestions?: string[];
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
@@ -45,6 +45,8 @@ export function QuestionDialog({
   testId,
   question,
   nextOrder,
+  copyParent,
+  existingQuestions,
   open,
   onOpenChange,
 }: QuestionDialogProps) {
@@ -111,45 +113,13 @@ export function QuestionDialog({
           onSubmit={handleSave}
           className="flex min-h-0 flex-1 flex-col gap-4"
         >
-          {({ register, setValue, control, formState }) => (
+          {(dialogForm) => (
             <>
-              <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto">
-                <TextareaField
-                  label={t("questionText")}
-                  error={formState.errors.text?.message}
-                  {...register("text")}
-                />
-                <div className="grid gap-4 sm:grid-cols-[1fr_8rem]">
-                  <SelectField
-                    label={t("questionType")}
-                    {...register("type", {
-                      onChange: (event) => {
-                        if (event.target.value === "TRUE_FALSE") {
-                          setValue("options", [
-                            { text: "True", isCorrect: true },
-                            { text: "False", isCorrect: false },
-                          ]);
-                        }
-                      },
-                    })}
-                  >
-                    <option value="SINGLE_CHOICE">{t("typeSingle")}</option>
-                    <option value="MULTIPLE_CHOICE">{t("typeMultiple")}</option>
-                    <option value="TRUE_FALSE">{t("typeTrueFalse")}</option>
-                  </SelectField>
-                  <InputField
-                    label={t("points")}
-                    type="number"
-                    {...register("points", { valueAsNumber: true })}
-                  />
-                </div>
-                <QuestionOptionsEditor control={control} form={form} />
-                <Show when={formState.errors.options?.message != null}>
-                  <ErrorAlert
-                    errorMessage={formState.errors.options?.message ?? ""}
-                  />
-                </Show>
-              </div>
+              <QuestionDialogFields
+                form={dialogForm}
+                copyParent={copyParent}
+                existingQuestions={existingQuestions}
+              />
               <DialogFooter>
                 <DialogClose render={<Button variant="outline" />}>
                   {t("cancel")}

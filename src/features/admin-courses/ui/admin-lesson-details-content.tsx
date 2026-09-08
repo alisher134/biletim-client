@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 
 import type { CourseLesson } from "@/entities/course";
 import { getErrorMessage } from "@/shared/api";
+import type { GenerateCopyParent } from "@/shared/lib/generate-copy";
 import { AsyncWrapper } from "@/shared/ui/async-wrapper";
 import { ErrorPageElement } from "@/shared/ui/error-page-element";
 
@@ -14,6 +15,7 @@ import { UpdateAdminLessonForm } from "./update-admin-lesson-form";
 type AdminLessonDetailsContentProps = {
   courseId: string;
   lesson: CourseLesson | undefined;
+  copyParent?: GenerateCopyParent;
   isLoading: boolean;
   isError: boolean;
   error: unknown;
@@ -22,6 +24,7 @@ type AdminLessonDetailsContentProps = {
 export function AdminLessonDetailsContent({
   courseId,
   lesson,
+  copyParent,
   isLoading,
   isError,
   error,
@@ -42,7 +45,11 @@ export function AdminLessonDetailsContent({
     >
       {(currentLesson) => (
         <div className="flex flex-col gap-10">
-          <UpdateAdminLessonForm courseId={courseId} lesson={currentLesson} />
+          <UpdateAdminLessonForm
+            courseId={courseId}
+            lesson={currentLesson}
+            copyParent={copyParent}
+          />
           <AdminLessonMaterials
             courseId={courseId}
             lessonId={currentLesson.id}
@@ -52,6 +59,11 @@ export function AdminLessonDetailsContent({
             courseId={courseId}
             lessonId={currentLesson.id}
             test={currentLesson.test}
+            copyParent={{
+              ...copyParent,
+              lessonTitle: currentLesson.title,
+              lessonDescription: currentLesson.description ?? undefined,
+            }}
           />
         </div>
       )}

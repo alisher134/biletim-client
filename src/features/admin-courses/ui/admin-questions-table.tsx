@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 
 import type { Question } from "@/entities/course";
 import { getErrorMessage } from "@/shared/api";
+import type { GenerateCopyParent } from "@/shared/lib/generate-copy";
 import { Button } from "@/shared/ui/button";
 import { ConfirmDeleteDialog } from "@/shared/ui/confirm-delete-dialog";
 import { Show } from "@/shared/ui/show";
@@ -27,12 +28,14 @@ type AdminQuestionsTableProps = {
   courseId: string;
   testId: string;
   questions: Question[];
+  copyParent?: GenerateCopyParent;
 };
 
 export function AdminQuestionsTable({
   courseId,
   testId,
   questions,
+  copyParent,
 }: AdminQuestionsTableProps) {
   const t = useTranslations("adminCourses");
   const { mutate, isPending } = useDeleteQuestion(courseId, testId);
@@ -69,6 +72,10 @@ export function AdminQuestionsTable({
         testId={testId}
         question={editingQuestion ?? undefined}
         nextOrder={sortedQuestions.length}
+        copyParent={copyParent}
+        existingQuestions={sortedQuestions
+          .filter((item) => item.id !== editingQuestion?.id)
+          .map((item) => item.text)}
         open={isCreateOpen || editingQuestion != null}
         onOpenChange={(nextOpen) => {
           if (!nextOpen) {

@@ -7,12 +7,12 @@ import { useTranslations } from "next-intl";
 import type { CourseLesson } from "@/entities/course";
 import { getErrorMessage } from "@/shared/api";
 import { useZodForm } from "@/shared/hooks/use-zod-form";
+import type { GenerateCopyParent } from "@/shared/lib/generate-copy";
 import { AppForm } from "@/shared/ui/app-form";
 import { Button } from "@/shared/ui/button";
 import { ErrorAlert } from "@/shared/ui/error-alert";
 import { InputField } from "@/shared/ui/input-field";
 import { Show } from "@/shared/ui/show";
-import { TextareaField } from "@/shared/ui/textarea-field";
 import { showSuccessToast } from "@/shared/utils";
 
 import {
@@ -20,16 +20,19 @@ import {
   type LessonFormValues,
 } from "../model/lesson-schema";
 import { useUpdateLesson } from "../model/use-update-lesson";
+import { AdminCopyFields, GENERATED_COPY_OPTIONS } from "./admin-copy-fields";
 import { FileUploadButton } from "./file-upload-button";
 
 type UpdateAdminLessonFormProps = {
   courseId: string;
   lesson: CourseLesson;
+  copyParent?: GenerateCopyParent;
 };
 
 export function UpdateAdminLessonForm({
   courseId,
   lesson,
+  copyParent,
 }: UpdateAdminLessonFormProps) {
   const t = useTranslations("adminCourses");
   const { mutate, isPending } = useUpdateLesson(courseId, lesson.id);
@@ -75,16 +78,21 @@ export function UpdateAdminLessonForm({
       >
         {({ register, setValue, watch }) => (
           <>
-            <InputField
-              label={t("name")}
-              error={errors.title?.message}
-              {...register("title")}
-            />
-            <TextareaField
-              label={t("description")}
-              error={errors.description?.message}
-              rows={4}
-              {...register("description")}
+            <AdminCopyFields
+              entity="lesson"
+              parent={copyParent}
+              title={watch("title")}
+              description={watch("description")}
+              titleError={errors.title?.message}
+              descriptionError={errors.description?.message}
+              titleRegister={register("title")}
+              descriptionRegister={register("description")}
+              onTitleGenerated={(text) =>
+                setValue("title", text, GENERATED_COPY_OPTIONS)
+              }
+              onDescriptionGenerated={(text) =>
+                setValue("description", text, GENERATED_COPY_OPTIONS)
+              }
             />
             <InputField
               label={t("order")}

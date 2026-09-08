@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 
+import { toCopyParent } from "../lib/to-copy-parent";
 import { useAdminCourse } from "../model/use-admin-course";
 import { AdminTestBreadcrumbs } from "./admin-test-breadcrumbs";
 import { AdminTestDetailsContent } from "./admin-test-details-content";
@@ -13,13 +14,11 @@ type AdminTestPageProps = {
 
 export function AdminTestPage({ courseId, testId }: AdminTestPageProps) {
   const { data, isLoading, isError, error } = useAdminCourse(courseId);
-  const test = useMemo(
-    () =>
-      data?.lessons
-        .map((lesson) => lesson.test)
-        .find((item) => item?.id === testId) ?? undefined,
+  const lesson = useMemo(
+    () => data?.lessons.find((item) => item.test?.id === testId),
     [data?.lessons, testId],
   );
+  const test = lesson?.test ?? undefined;
 
   return (
     <div className="flex flex-col gap-4">
@@ -32,6 +31,7 @@ export function AdminTestPage({ courseId, testId }: AdminTestPageProps) {
       <AdminTestDetailsContent
         courseId={courseId}
         test={test}
+        copyParent={toCopyParent({ course: data, lesson, test })}
         isLoading={isLoading}
         isError={isError || (!isLoading && test == null)}
         error={error}

@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 
+import { toCopyParent } from "../lib/to-copy-parent";
 import { useAdminCourse } from "../model/use-admin-course";
 import { AdminLessonBreadcrumbs } from "./admin-lesson-breadcrumbs";
 import { AdminLessonDetailsContent } from "./admin-lesson-details-content";
@@ -29,6 +30,7 @@ export function AdminLessonPage({ courseId, lessonId }: AdminLessonPageProps) {
       <AdminLessonDetailsContent
         courseId={courseId}
         lesson={lesson}
+        copyParent={toCopyParent({ course: data })}
         isLoading={isLoading}
         isError={isError || (!isLoading && lesson == null)}
         error={error}
