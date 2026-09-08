@@ -41,3 +41,12 @@ export function useIsAuth() {
 
   return !isLoading && user != null;
 }
+
+export function useIsAdmin() {
+  const { data: user, isLoading } = useSession();
+
+  return {
+    isAdmin: user?.isAdmin === true,
+    isLoading,
+  };
+}

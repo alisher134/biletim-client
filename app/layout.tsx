@@ -14,8 +14,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "biletim.kz",
-  description: "biletim.kz",
+  title: "tarih edu",
+  description: "tarih edu",
 };
 
 export default async function RootLayout({

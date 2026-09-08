@@ -10,8 +10,8 @@ import {
 } from "lucide-react";
 
 import { Link, usePathname } from "@/shared/config/i18n/navigation";
+import { isNavItemActive } from "@/shared/lib/is-nav-item-active";
 
-import { isNavItemActive } from "../lib/is-nav-item-active";
 import type { DashboardNavHref, DashboardNavItem } from "../model/nav-items";
 
 const MENU_HREF = "/dashboard/menu";
@@ -40,7 +40,7 @@ export function DashboardTabBarNav({
       <ul className="flex items-stretch">
         {items.map((item) => {
           const Icon = tabIcons[item.href];
-          const isActive = isNavItemActive(pathname, item.href);
+          const isActive = isNavItemActive(pathname, item.href, "/dashboard");
 
           return (
             <li key={item.href} className="min-w-0 flex-1">

@@ -8,6 +8,7 @@ export const sessionUserSchema = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
   avatarUrl: z.string().optional(),
+  isAdmin: z.boolean().optional().default(false),
 });
 
 export const sessionTokensSchema = z.object({

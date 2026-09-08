@@ -9,6 +9,7 @@ export type SessionUser = {
   firstName?: string;
   lastName?: string;
   avatarUrl?: string;
+  isAdmin: boolean;
 };
 
 export type SessionTokens = {

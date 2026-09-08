@@ -11,7 +11,7 @@ import { ErrorAlert } from "@/shared/ui/error-alert";
 import { useAuthGate } from "../model/use-auth-gate";
 import { AuthGateLoader } from "./auth-gate-loader";
 
-type AuthGateMode = "require-auth" | "guest-only";
+type AuthGateMode = "require-auth" | "guest-only" | "require-admin";
 
 type AuthGateProps = {
   children: ReactNode;
@@ -21,22 +21,25 @@ type AuthGateProps = {
 export function AuthGate({ children, mode }: AuthGateProps) {
   const t = useTranslations("requireAuth");
   const router = useRouter();
-  const { isLoading, isAuthenticated, isSessionError, refetch } = useAuthGate();
+  const { isLoading, isAuthenticated, isAdmin, isSessionError, refetch } =
+    useAuthGate();
 
-  const isRequireAuth = mode === "require-auth";
-  const shouldRedirect =
-    !isLoading &&
-    !isSessionError &&
-    (isRequireAuth ? !isAuthenticated : isAuthenticated);
-  const redirectTo = isRequireAuth ? "/sign-in" : "/dashboard";
+  const needsAuth = mode === "require-auth" || mode === "require-admin";
+  const redirectTo = getRedirectTo({
+    mode,
+    isLoading,
+    isSessionError,
+    isAuthenticated,
+    isAdmin,
+  });
 
   useEffect(() => {
-    if (!shouldRedirect) return;
+    if (redirectTo == null) return;
 
     router.replace(redirectTo);
-  }, [redirectTo, router, shouldRedirect]);
+  }, [redirectTo, router]);
 
-  if (isSessionError && isRequireAuth) {
+  if (isSessionError && needsAuth) {
     return (
       <div className="flex min-h-dvh flex-col items-center justify-center gap-4 p-4">
         <ErrorAlert errorMessage={t("sessionError")} />
@@ -47,11 +50,31 @@ export function AuthGate({ children, mode }: AuthGateProps) {
     );
   }
 
-  const showLoader = isLoading || shouldRedirect;
-
-  if (showLoader) {
+  if (isLoading || redirectTo != null) {
     return <AuthGateLoader />;
   }
 
   return children;
+}
+
+function getRedirectTo({
+  mode,
+  isLoading,
+  isSessionError,
+  isAuthenticated,
+  isAdmin,
+}: {
+  mode: AuthGateMode;
+  isLoading: boolean;
+  isSessionError: boolean;
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+}) {
+  if (isLoading || isSessionError) return null;
+  if (mode === "guest-only" && isAuthenticated) return "/dashboard";
+  if (mode === "require-auth" && !isAuthenticated) return "/sign-in";
+  if (mode === "require-admin" && !isAuthenticated) return "/sign-in";
+  if (mode === "require-admin" && !isAdmin) return "/dashboard";
+
+  return null;
 }

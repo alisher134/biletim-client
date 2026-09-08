@@ -1,5 +1,7 @@
 import type { Locale } from "./routing";
 
+import adminSidebarKz from "./messages/kz/admin-sidebar.json";
+import adminUsersKz from "./messages/kz/admin-users.json";
 import changeLanguageKz from "./messages/kz/change-language.json";
 import changePasswordKz from "./messages/kz/change-password.json";
 import changeRegionKz from "./messages/kz/change-region.json";
@@ -13,6 +15,8 @@ import requireAuthKz from "./messages/kz/require-auth.json";
 import signInKz from "./messages/kz/sign-in.json";
 import signUpKz from "./messages/kz/sign-up.json";
 import updateProfileKz from "./messages/kz/update-profile.json";
+import adminSidebarRu from "./messages/ru/admin-sidebar.json";
+import adminUsersRu from "./messages/ru/admin-users.json";
 import changeLanguageRu from "./messages/ru/change-language.json";
 import changePasswordRu from "./messages/ru/change-password.json";
 import changeRegionRu from "./messages/ru/change-region.json";
@@ -29,6 +33,8 @@ import updateProfileRu from "./messages/ru/update-profile.json";
 
 const messages = {
   kz: {
+    adminSidebar: adminSidebarKz,
+    adminUsers: adminUsersKz,
     changeLanguage: changeLanguageKz,
     changePassword: changePasswordKz,
     changeRegion: changeRegionKz,
@@ -44,6 +50,8 @@ const messages = {
     updateProfile: updateProfileKz,
   },
   ru: {
+    adminSidebar: adminSidebarRu,
+    adminUsers: adminUsersRu,
     changeLanguage: changeLanguageRu,
     changePassword: changePasswordRu,
     changeRegion: changeRegionRu,
@@ -61,6 +69,8 @@ const messages = {
 } satisfies Record<
   Locale,
   {
+    adminSidebar: typeof adminSidebarKz;
+    adminUsers: typeof adminUsersKz;
     changeLanguage: typeof changeLanguageKz;
     changePassword: typeof changePasswordKz;
     changeRegion: typeof changeRegionKz;

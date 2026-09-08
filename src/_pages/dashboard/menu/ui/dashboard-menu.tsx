@@ -4,6 +4,7 @@ import { ChangeLanguage } from "@/features/change-language";
 
 import { dashboardMenuNavItems } from "../model/menu-nav-items";
 import { DashboardMenuAccount } from "./dashboard-menu-account";
+import { DashboardMenuAdminLink } from "./dashboard-menu-admin-link";
 import { DashboardMenuNav } from "./dashboard-menu-nav";
 import { DashboardMenuProfile } from "./dashboard-menu-profile";
 
@@ -26,6 +27,7 @@ export async function DashboardMenu() {
 
       <DashboardMenuProfile />
       <DashboardMenuNav items={items} />
+      <DashboardMenuAdminLink label={t("admin")} />
       <DashboardMenuAccount logoutLabel={t("logout")} />
     </div>
   );

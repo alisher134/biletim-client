@@ -7,10 +7,12 @@ export function useAuthGate() {
   const hasToken = getAccessToken() != null;
   const isAuthenticated = user != null && hasToken;
   const isSessionError = isError && hasToken;
+  const isAdmin = user?.isAdmin === true;
 
   return {
     isLoading,
     isAuthenticated,
+    isAdmin,
     isSessionError,
     refetch,
   };
