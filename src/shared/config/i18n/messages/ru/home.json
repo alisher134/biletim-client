@@ -8,6 +8,10 @@
   "priceNote": "за весь период",
   "perMonth": "в месяц",
   "cta": "Выбрать",
+  "plansEmpty": "Тарифы временно недоступны",
+  "errors": {
+    "plansLoadFailed": "Не удалось загрузить тарифы"
+  },
   "month1": {
     "period": "месяц"
   },

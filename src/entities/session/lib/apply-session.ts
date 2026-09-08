@@ -21,4 +21,7 @@ export function resetSession(queryClient: QueryClient) {
   queryClient.removeQueries({ queryKey: ["lessons"] });
   queryClient.removeQueries({ queryKey: ["tests"] });
   queryClient.removeQueries({ queryKey: ["materials"] });
+  queryClient.removeQueries({ queryKey: ["subscription-plans"] });
+  queryClient.removeQueries({ queryKey: ["subscriptions"] });
+  queryClient.removeQueries({ queryKey: ["admin", "users", "subscriptions"] });
 }

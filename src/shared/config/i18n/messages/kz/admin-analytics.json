@@ -1,0 +1,36 @@
+{
+  "overview": {
+    "title": "Жалпы шолу",
+    "description": "Соңғы 30 күннің аналитикасы",
+    "newUsers": "Жаңа пайдаланушылар",
+    "activeUsers": "Белсенді пайдаланушылар",
+    "enrollments": "Жазылымдар",
+    "tests": "Тесттер",
+    "enrollmentsCompleted": "{count} аяқталды",
+    "testsPassRate": "Өту {passRate}"
+  },
+  "subscriptions": {
+    "title": "Жазылымдар",
+    "description": "Пайдаланушыға жазылым беру және тарихы",
+    "active": "Белсенді",
+    "expiring7Days": "7 күнде аяқталады",
+    "expiring30Days": "30 күнде аяқталады",
+    "grantedInPeriod": "Кезеңде берілді",
+    "cancelled": "Бас тартылды",
+    "expired": "Мерзімі өтті",
+    "byPlan": "Тарифтер бойынша"
+  },
+  "courses": {
+    "title": "Курстар",
+    "description": "Курстар бойынша аналитика",
+    "course": "Курс",
+    "completed": "Аяқталды",
+    "progress": "Орташа прогресс",
+    "testPassRate": "Тест өту",
+    "open": "Ашу",
+    "empty": "Курстар табылмады"
+  },
+  "errors": {
+    "loadFailed": "Деректерді жүктеу сәтсіз аяқталды"
+  }
+}

@@ -15,7 +15,6 @@ import { useCoursesFilters } from "../model/use-courses-filters";
 import { useCoursesList } from "../model/use-courses-list";
 import { CourseCard } from "./course-card";
 import { CoursesPagination } from "./courses-pagination";
-import { CoursesTabs } from "./courses-tabs";
 
 export function CoursesCatalog() {
   const t = useTranslations("courses");
@@ -25,10 +24,7 @@ export function CoursesCatalog() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <h1 className="text-2xl font-semibold">{t("title")}</h1>
-        <CoursesTabs />
-      </div>
+      <h1 className="text-2xl font-semibold">{t("title")}</h1>
 
       <Field>
         <FieldLabel

@@ -9,7 +9,6 @@ import { Show } from "@/shared/ui/show";
 
 import { useMyEnrollments } from "../model/use-my-enrollments";
 import { CourseCard } from "./course-card";
-import { CoursesTabs } from "./courses-tabs";
 
 export function MyCoursesList() {
   const t = useTranslations("courses");
@@ -17,10 +16,7 @@ export function MyCoursesList() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <h1 className="text-2xl font-semibold">{t("myCourses")}</h1>
-        <CoursesTabs />
-      </div>
+      <h1 className="text-2xl font-semibold">{t("myCourses")}</h1>
 
       <AsyncWrapper
         isLoading={enrollmentsQuery.isLoading}

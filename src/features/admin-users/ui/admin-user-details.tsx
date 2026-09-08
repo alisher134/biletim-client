@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 
+import { AdminUserSubscriptions } from "@/features/admin-subscriptions";
 import { getErrorMessage } from "@/shared/api";
 import { formatDateTime } from "@/shared/lib/dayjs";
 import { AsyncWrapper } from "@/shared/ui/async-wrapper";
@@ -39,6 +40,7 @@ export function AdminUserDetails({ userId }: AdminUserDetailsProps) {
             {t("updatedAt")}: {formatDateTime(user.updatedAt, locale)}
           </p>
           <UpdateAdminUserForm user={user} />
+          <AdminUserSubscriptions userId={user.id} />
           <ResetAdminUserPasswordForm userId={user.id} />
           <DeleteAdminUserDialog user={user} />
         </div>
